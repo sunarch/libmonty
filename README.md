@@ -1,3 +1,3 @@
-# libmonty - Python Library
+# libmonty - Python collection
 
-Library repository providing Python utilities to other programs.
+Python libraries, utilities, snippets, etc.
