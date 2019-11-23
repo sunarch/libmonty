@@ -1,0 +1,259 @@
+#!/usr/bin/python
+
+'''
+The MIT License (MIT)
+
+Copyright (c) 2014 Németh András
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+'''
+
+# import 'sys' and 'getopt' for command-line argument passing
+import sys
+import getopt
+# import 'Image' from the PIL and 'numpy' for image processing and calculations
+import Image
+import numpy
+
+# basic functions
+
+def arithmetic_mean_int(arg_numList):
+    numList = arg_numList
+    numCount = len(numList)
+    numSum = 0
+    for i1 in range(numCount):
+        numSum += numList[i1]
+    returnValue = int( numSum / numCount )
+    return returnValue
+
+def isEven(arg_num):
+    if arg_num % 2 == 0:
+        return True
+    else:
+        return False
+
+def isOdd(arg_num):
+    if arg_num % 2 == 1:
+        return True
+    else:
+        return False
+
+# global variables
+
+src_array = False
+src_image_height = 0
+src_image_width = 0
+final_image_height = 0
+final_image_width = 0
+final_array = False
+
+# preparation functions
+
+def double_pixels_1():
+    # insert a black pixel between every source pixel
+    # Required by filling function two_point_filling_1()
+    # Required by filling function four_point_filling_1()
+    
+    # defining scope for global variables
+    global src_array
+    global src_image_height
+    global src_image_width
+    global final_image_height
+    global final_image_width
+    global final_array
+    
+    # define new image target dimensions
+    final_image_height = 2 * src_image_height - 1
+    final_image_width = 2 * src_image_width - 1
+    
+    # create array for new image grid and fill it up with zeros
+    # it is important that the data type is uint8 (unsigned integer 8) or the output will be scrambled
+    final_array = numpy.zeros((final_image_height,final_image_width,3), dtype=numpy.uint8)
+    
+    # Runthrough 1: filling the new grid with source pixels and black pixels
+    for i1 in range(final_image_height):
+        # odd vertical pixels
+        if isOdd(i1 + 1):
+            for i2 in range(final_image_width):
+                # odd horizontal pixels
+                if isOdd(i2 + 1):
+                    for i3 in range(3):
+                        final_array[i1][i2][i3] = src_array[(i1-1)/2][(i2-1)/2][i3]
+                else:
+                    for i3 in range(3):
+                        final_array[i1][i2][i3] = 0
+        else:
+            for i2 in range(final_image_width):
+                for i3 in range(3):
+                    final_array[i1][i2][i3] = 0
+    
+    # Debugging new image dimensions
+    print("Final image height: " + str( len(final_array) ) )
+    print("Final image width: " + str( len(final_array[1]) ) )
+
+# filling functions
+
+def two_point_filling_1():
+    # 1) horizontal 2-point: pos_5 = arithmetic_mean_int((pos_4, pos_6)) where both are original pixels
+    # 2) vertical 2-point: pos_5 = arithmetic_mean_int((pos_8, pos_2)) where both are original pixels
+    # 3) diagonal 4-point: pos_5 = arithmetic_mean_int((pos_7, pos_9, pos_1, pos_2)) where all 4 art original pixels
+    
+    # defining scope for global variables
+    global src_array
+    global src_image_height
+    global src_image_width
+    global final_image_height
+    global final_image_width
+    global final_array
+    
+    # Requires preparation function double_pixels_1()
+    double_pixels_1()
+    
+    # Runthrough 1: estimating new pixels with 2 horizontal source pixel neighbors
+    for i1 in range(final_image_height):
+        # odd vertical pixels
+        if isOdd(i1 + 1):
+            for i2 in range(final_image_width):
+                # even horizontal pixels
+                if isEven(i2 + 1):
+                    for i3 in range(3):
+                        # horizontal 2-point average
+                        final_array[i1][i2][i3] = arithmetic_mean_int((final_array[i1][i2-1][i3],final_array[i1][i2+1][i3]))
+    
+    # Runthrough 2: estimating new pixels with 2 vertical source pixel neighbors
+    for i1 in range(final_image_height):
+        # even vertical pixels
+        if isEven(i1 + 1):
+            for i2 in range(final_image_width):
+                # odd horizontal pixels
+                if isOdd(i2 + 1):
+                    for i3 in range(3):
+                        # vertical 2-point average
+                        final_array[i1][i2][i3] = arithmetic_mean_int((final_array[i1-1][i2][i3],final_array[i1+1][i2][i3]))
+    
+    # Runthrough 3: estimating new pixels with only diagonal source pixel neighbors
+    for i1 in range(final_image_height):
+        # even vertical pixels
+        if isEven(i1 + 1):
+            for i2 in range(final_image_width):
+                # even horizontal pixels
+                if isEven(i2 + 1):
+                    for i3 in range(3):
+                        top_left = final_array[i1-1][i2-1][i3]
+                        top_right = final_array[i1-1][i2+1][i3]
+                        bottom_left = final_array[i1+1][i2-1][i3]
+                        bottom_right = final_array[i1+1][i2+1][i3]
+                        # diagonal 4-point average
+                        final_array[i1][i2][i3] = arithmetic_mean_int((top_left,top_right,bottom_left,bottom_right))
+    
+    return True
+
+def four_point_filling_1():
+    # 1) diagonal 4-point: pos_5 = arithmetic_mean_int((pos_7, pos_9, pos_1, pos_2)) where all 4 are original pixels
+    # 2) horizontal 4-point: pos_5 = arithmetic_mean_int((pos_8, pos_2, pos_4, pos_6)) where pos_4 and pos_6 are original pixels
+    # 3) vertical 4-point: pos_5 = arithmetic_mean_int((pos_8, pos_2, pos_4, pos_6)) where pos_8 and pos_2 are original pixels
+    
+    # defining scope for global variables
+    global src_array
+    global src_image_height
+    global src_image_width
+    global final_image_height
+    global final_image_width
+    global final_array
+    
+    # Requires preparation function double_pixels_1()
+    double_pixels_1()
+    
+    return True   
+
+# main function
+
+def main(argv):
+    
+    # defining scope for global variables
+    global src_array
+    global src_image_height
+    global src_image_width
+    global final_image_height
+    global final_image_width
+    global final_array
+    
+    # function-scoped variables for command arguments
+    inputfile = ''
+    outputfile = ''
+    
+    # define command argument possibilities
+    try:
+        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+    except getopt.GetoptError:
+        print 'Usage: "./imgel.py -i <inputfile> -o <outputfile>"'
+        sys.exit(2)
+    
+    # define actions based on command argument switches
+    for opt, arg in opts:
+        if opt == '-h':
+            print 'Usage: \"./imgel.py -i <inputfile> -o <outputfile>\"'
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            inputfile = arg
+        elif opt in ("-o", "--ofile"):
+            outputfile = arg
+    
+    # debug variable values gotten out of arguments
+    print 'Input file is "', inputfile
+    print 'Output file is "', outputfile
+    
+    # get source file name and target file name from args
+    src_file = str(inputfile)
+    target_file = str(outputfile)
+    
+    # [ORIGINAL:] Open the image file
+    src_image = Image.open(src_file)
+    
+    # [ORIGINAL:] Attempt to ensure image is RGB
+    src_rgb = src_image.convert(mode="RGB")
+    
+    # [ORIGINAL:] Create array of image using numpy
+    src_array = numpy.asarray(src_rgb)
+    
+    # save values of image array length for easier referencing
+    src_image_height = len(src_array)
+    src_image_width = len(src_array[1])
+    
+    # debug source image dimension values
+    print("Source image height: " + str( src_image_height ) )
+    print("Source image width: " + str( src_image_width ) )
+    
+    # [ORIGINAL:] Modify array here
+    
+    # execute modification functions
+    # not optioned yet, default is present
+    two_point_filling_1()
+    
+    # [ORIGINAL:] Create image from array
+    final_image = Image.fromarray(final_array, "RGB")
+    
+    # [ORIGINAL:] Save
+    final_image.save(target_file)
+
+# END of function 'main'
+
+if __name__ == "__main__":
+   main(sys.argv[1:])
+
