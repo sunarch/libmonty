@@ -1,3 +1,12 @@
+""" Output styling with ASCII escape sequences
+    Version 1.0
+
+    https://en.wikipedia.org/wiki/ANSI_escape_code
+
+    Python utilites
+    https://github.com/sunarch/libmonty
+    'utils' folder
+"""
 
 # style ########################################################################
 
@@ -89,14 +98,6 @@ class AsciiColor():
     @staticmethod
     def white(arg_printable):
         return "\x1b[37m{0}\x1b[0m".format(arg_printable)
-# Output styling with ASCII escape sequences
-# Version 1.0
-
-# https://en.wikipedia.org/wiki/ANSI_escape_code
-
-# Python utilites
-# https://github.com/sunarch/libmonty
-# 'utils' folder
 
 # background ###################################################################
 
