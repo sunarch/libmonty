@@ -18,14 +18,14 @@ def setchar(stdscr, y, x, char):
         raise ValueError("incorrect argument: row")
     if x < 0 or x >= target_col_count:
         raise ValueError("incorrect argument: column")
-    
+
     stdscr.addch(y, x, char, curses.color_pair(1))
 
 def main(stdscr):
 
     # Change color
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
-    
+
     # Clear screen
     stdscr.clear()
 
@@ -34,10 +34,9 @@ def main(stdscr):
     stdscr.addstr(10, 10, rows)
     stdscr.addstr(11, 10, columns)
 
-    stdscr.move(0, 0)    
-    
+    stdscr.move(0, 0)
+
     stdscr.refresh()
     stdscr.getkey()
 
 curses.wrapper(main)
-

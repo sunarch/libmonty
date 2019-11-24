@@ -19,20 +19,17 @@ class WavePCMAudioClass(object):
         print("Bits per Sample:     " + str(self.get_BitsPerSample()))
         print("Sample Format:       " + str(self.get_SampleFormat()))
 
-    # ================================================================ #
+    ############################################################################
+    # The canonical WAVE format starts with the RIFF header: ###################
 
-    # The canonical WAVE format starts with the RIFF header:
-
-    # ---------------------------------------------------------------- #
-    # ChunkID
+    # ChunkID ##################################################################
 
     # Offset: 0, Size: 4, Endian: big
     # Contains the letters "RIFF" in ASCII form
     # (0x52494646 big-endian form)
     __ChunkID = b"RIFF"
 
-    # ---------------------------------------------------------------- #
-    # ChunkSize
+    # ChunkSize ################################################################
 
     # Offset: 4, Size: 4, Endian: little
     # 36 + SubChunk2Size, or more precisely:
@@ -54,32 +51,27 @@ class WavePCMAudioClass(object):
         self.update_ChunkSize()
         return self.__ChunkSizeInt
 
-    # ---------------------------------------------------------------- #
-    # Format
+    # Format ###################################################################
 
     # Offset: 8, Size: 4, Endian: big
     # Contains the letters "WAVE"
     # (0x57415645 big-endian form)
     __Format = b"WAVE"
 
-    # ---------------------------------------------------------------- #
+    ############################################################################
+    # The "WAVE" format consists of two subchunks: "fmt " and "data": ##########
 
-    # The "WAVE" format consists of two subchunks: "fmt " and "data":
+    ############################################################################
+    # The "fmt " subchunk describes the sound data's format: ###################
 
-    # ================================================================ #
-
-    # The "fmt " subchunk describes the sound data's format:
-
-    # ---------------------------------------------------------------- #
-    # Subchunk1ID
+    # Subchunk1ID ##############################################################
 
     # Offset: 12, Size: 4, Endian: big
     # Contains the letters "fmt "
     # (0x666d7420 big-endian form)
     __Subchunk1ID = b"fmt "
 
-    # ---------------------------------------------------------------- #
-    # Subchunk1Size
+    # Subchunk1Size ############################################################
 
     # Offset: 16, Size: 4, Endian: little
     # 16 for PCM.  This is the size of the
@@ -87,16 +79,14 @@ class WavePCMAudioClass(object):
     __Subchunk1Size = int(16).to_bytes(4, byteorder='little', signed=False)
     __Subchunk1SizeInt = 16
 
-    # ---------------------------------------------------------------- #
-    # AudioFormat
+    # AudioFormat ##############################################################
 
     # Offset: 20, Size: 2, Endian: little
     # PCM = 1 (i.e. Linear quantization)
     # Values other than 1 indicate some form of compression.
     __AudioFormat = int(1).to_bytes(2, byteorder='little', signed=False)
 
-    # ---------------------------------------------------------------- #
-    # NumChannels
+    # NumChannels ##############################################################
 
     # Offset: 22, Size: 2, Endian: little
     # Mono = 1, Stereo = 2, etc.
@@ -121,8 +111,7 @@ class WavePCMAudioClass(object):
     def get_NumChannels(self):
         return self.__NumChannelsInt
 
-    # ---------------------------------------------------------------- #
-    # SampleRate
+    # SampleRate ###############################################################
 
     # Offset: 24, Size: 4, Endian: little
     # 8000, 44100, etc.
@@ -146,8 +135,7 @@ class WavePCMAudioClass(object):
     def get_SampleRate(self):
         return self.__SampleRateInt
 
-    # ---------------------------------------------------------------- #
-    # ByteRate
+    # ByteRate #################################################################
 
     # Offset: 28, Size: 4, Endian: little
     # == SampleRate * NumChannels * BitsPerSample/8
@@ -164,8 +152,7 @@ class WavePCMAudioClass(object):
     def get_ByteRate(self):
         return self.__ByteRateInt
 
-    # ---------------------------------------------------------------- #
-    # BlockAlign
+    # BlockAlign ###############################################################
 
     # Offset: 32, Size: 2, Endian: little
     # == NumChannels * BitsPerSample/8
@@ -184,8 +171,7 @@ class WavePCMAudioClass(object):
     def get_BlockAlign(self):
         return self.__BlockAlignInt
 
-    # ---------------------------------------------------------------- #
-    # BitsPerSample
+    # BitsPerSample ############################################################
 
     # Offset: 34, Size: 2, Endian: little
     # 8 bits = 8, 16 bits = 16, etc.
@@ -249,7 +235,7 @@ class WavePCMAudioClass(object):
     def get_MaxSampleValue(self):
         return self.__MaxSampleValue
 
-    # ---------------------------------------------------------------- #
+    ############################################################################
 
     # Offset: ---, Size: 2, Endian: little
     # if PCM, then doesn't exist
@@ -259,20 +245,17 @@ class WavePCMAudioClass(object):
     # space for extra parameters
     # ExtraParams
 
-    # ================================================================ #
+    ############################################################################
+    # The "data" subchunk contains the size of the data and the actual sound: ##
 
-    # The "data" subchunk contains the size of the data and the actual sound:
-
-    # ---------------------------------------------------------------- #
-    # Subchunk2ID
+    # Subchunk2ID ##############################################################
 
     # Offset: 36, Size: 4, Endian: big
     # Contains the letters "data"
     # (0x64617461 big-endian form)
     __Subchunk2ID = b"data"
 
-    # ---------------------------------------------------------------- #
-    # Subchunk2Size
+    # Subchunk2Size ############################################################
 
     # Offset: 40, Size: 4, Endian: little
     # == NumSamples * NumChannels * BitsPerSample/8
@@ -293,8 +276,7 @@ class WavePCMAudioClass(object):
         self.update_Subchunk2Size()
         return self.__Subchunk2SizeInt
 
-    # ---------------------------------------------------------------- #
-    # Data
+    # Data #####################################################################
 
     # Offset: 44, Size: *, Endian: little
     # The actual sound data.
@@ -335,8 +317,7 @@ class WavePCMAudioClass(object):
             samplePartBytes = int(argIntList[i]).to_bytes(BytesPerSample, byteorder='little', signed=False)
             self.__extend_Data(bytearray(samplePartBytes))
 
-    # ================================================================ #
-    # OTHER
+    # OTHER ####################################################################
 
     def writeToFile(self, argFileName="output.wav"):
 
@@ -389,3 +370,5 @@ class WavePCMAudioClass(object):
         f.close()
 
         print("done.")
+
+    # END ######################################################################

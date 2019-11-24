@@ -1,5 +1,4 @@
 
-
 class ListUtils():
 
     @staticmethod
@@ -15,4 +14,3 @@ class ListUtils():
             else:
                 return_list.append(argument)
         return return_list
-

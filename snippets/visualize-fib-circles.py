@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
+# imports ######################################################################
+
 import pygame
+
+# main function ################################################################
 
 def main():
 
@@ -56,7 +60,7 @@ def main():
     p_display.blit(p_surface, (0, 0))
     pygame.display.flip()
 
-    # Event loop
+    # Event loop ###############################################################
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -88,5 +92,8 @@ def main():
         p_display.blit(p_surface, (0, 0))
         pygame.display.flip()
 
+# start program ################################################################
 
 if __name__ == '__main__': main()
+
+# END ##########################################################################

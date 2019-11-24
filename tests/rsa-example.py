@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
+# imports ######################################################################
+
 import rsa
 
-# participants
+# participants #################################################################
 
 (sender_pub_key, sender_priv_key) = rsa.newkeys(1024, poolsize=4)
 
 (receiver_pub_key, receiver_priv_key) = rsa.newkeys(1024, poolsize=4)
 
-# side of sender
+# side of sender ###############################################################
 
 message = "Hello"
 print("Message: " + str(message))
@@ -34,3 +36,5 @@ else:
 
 decrypted = bindecrypted.decode()
 print("Decrypted message: " + str(decrypted))
+
+# END ##########################################################################

@@ -14,4 +14,3 @@ for n1 in range(0,40):
     for n2 in range(0,80):
         output += characters[random.randrange(0,characters_count)]
     print(output)
-
