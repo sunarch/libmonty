@@ -1,4 +1,8 @@
-#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 # TODO (MILESTONE, MLSTN, DONE, YAGNI, TBD, TOBEDONE)
 #     To do: Informal tasks/features that are pending completion.
 # FIXME (XXX, DEBUG, BROKEN, REFACTOR, REFACT, RFCTR, OOPS, SMELL, NEEDSWORK, INSPECT)
