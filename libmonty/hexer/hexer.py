@@ -14,9 +14,6 @@ from libmonty.formatting import number_str
 
 def main(args: list[str], kwargs: dict) -> None:
 
-    print(args)
-    print(kwargs)
-
     stream = stream_gen_random  # default
 
     try:
