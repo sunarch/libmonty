@@ -14,7 +14,13 @@ def main(args: list[str]) -> None:
     while True:
 
         if len(ls_input) == 0:
-            s_input = input("libmonty $ ")
+            try:
+                s_input = input("libmonty $ ")
+            except KeyboardInterrupt:
+                print("")  # input command empty => linebreak
+                print("Type 'exit' to exit interactive mode.")
+                continue
+
             ls_input = s_input.split(" ")
 
         if len(ls_input) < 1:
@@ -24,17 +30,22 @@ def main(args: list[str]) -> None:
         ls_args = ls_input[1:]
 
         try:
-            process_command(command, ls_args)
+            s_next = process_command(command, ls_args)
         except ValueError as err:
             print(err)
+        else:
+            if s_next is not None:
+                break
 
         ls_input = []
 
 
-def process_command(command: str, args: list[str]) -> None:
+def process_command(command: str, args: list[str]) -> str:
 
     d_commands = {
+        "exit": exit_interactive,
         "hexer": hexer.main
+
     }
 
     ls_args = []
@@ -53,8 +64,14 @@ def process_command(command: str, args: list[str]) -> None:
 
         d_kwargs[ls_pair[0]] = ls_pair[1]
 
-    if command in d_commands:
-        d_commands[command](args, d_kwargs)
+    if command not in d_commands:
+        raise ValueError("Unknown command: {}".format(command))
+
+    return d_commands[command](args, d_kwargs)
+
+
+def exit_interactive(args: list[str], kwargs: dict) -> str:
+    return "break"
 
 
 if __name__ == "__main__":
