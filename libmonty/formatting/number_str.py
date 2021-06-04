@@ -6,7 +6,7 @@
 def hexadecimal(value: int, form: str = "f") -> str:
 
     if value < -1:
-        raise ValueError("Illegal value in number formatting: {}".format(value))
+        raise ValueError("Negative value in number formatting: {}".format(value))
 
     if value == -1:
         return "h"
@@ -30,7 +30,7 @@ def hexadecimal(value: int, form: str = "f") -> str:
 def decimal(value: int, form: str = "0") -> str:
 
     if value < -1:
-        raise ValueError("Illegal value in number formatting: {}".format(value))
+        raise ValueError("Negative value in number formatting: {}".format(value))
 
     if value == -1:
         return "d"
@@ -47,7 +47,7 @@ def decimal(value: int, form: str = "0") -> str:
 def octal(value: int, form: str = "8") -> str:
 
     if value < -1:
-        raise ValueError("Illegal value in number formatting: {}".format(value))
+        raise ValueError("Negative value in number formatting: {}".format(value))
 
     if value == -1:
         return "o"
@@ -68,7 +68,7 @@ def octal(value: int, form: str = "8") -> str:
 def binary(value: int, form: str = "2") -> str:
 
     if value < -1:
-        raise ValueError("Illegal value in number formatting: {}".format(value))
+        raise ValueError("Negative value in number formatting: {}".format(value))
 
     if value == -1:
         return "b"
