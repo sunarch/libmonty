@@ -9,6 +9,7 @@ import os.path
 from typing import Callable, Generator
 
 from libmonty.hexer import hexer_lib
+from libmonty.formatting import number_str
 
 
 def main(args: list[str], kwargs: dict) -> None:
@@ -67,7 +68,34 @@ def main(args: list[str], kwargs: dict) -> None:
                 if s_confirm.lower() not in ("y", "yes"):
                     return
 
-    run(stream, i_bytes_per_line, i_sleep)
+    d_index_formats = {
+        "h": number_str.hexadecimal,
+        "hex": number_str.hexadecimal,
+        "hexadecimal": number_str.hexadecimal,
+        "d": number_str.decimal,
+        "decimal": number_str.decimal,
+        "o": number_str.octal,
+        "octal": number_str.octal
+    }
+
+    index_converter = number_str.hexadecimal
+
+    if len(args) > 3:
+
+        try:
+            index_converter = d_index_formats[args[3]]
+
+        except KeyError:
+            print("Value for index format not recognized: '{}'".format(args[3]))
+
+            s_confirm = input("Do you wish to continue with the default [hexadecimal] ? (y/n) ")
+            if s_confirm.lower() not in ("y", "yes"):
+                return
+
+    try:
+        run(stream, i_bytes_per_line, i_sleep, index_converter)
+    except ValueError:
+        raise
 
 
 def create_stream_file(path: str) -> Callable:
@@ -100,12 +128,15 @@ def stream_gen_random(bytes_per_line: int) -> Generator:
 
 def run(stream_gen: Generator = None,
         bytes_per_line: int = None,
-        sleep: float = 0.1
+        sleep: float = 0.1,
+        index_converter: Callable = None
         ) -> None:
 
     if stream_gen is None:
-        print("No input stream specified!")
-        return
+        raise ValueError("No input stream specified!")
+
+    if index_converter is None:
+        raise ValueError("No index formatting method specified!")
 
     print("")
 
@@ -115,13 +146,13 @@ def run(stream_gen: Generator = None,
 
     i_offset = 0
 
-    hexer_lib.print_header(bytes_per_line)
+    hexer_lib.print_header(bytes_per_line, index_converter)
     print("")
 
     for b_unit in stream_gen(bytes_per_line):
 
         try:
-            hexer_lib.print_line(b_unit, bytes_per_line, i_offset)
+            hexer_lib.print_line(b_unit, bytes_per_line, i_offset, index_converter)
             time.sleep(sleep)
 
             i_offset += bytes_per_line

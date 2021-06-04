@@ -4,6 +4,9 @@
 
 import os
 import string
+from typing import Callable
+
+from libmonty.formatting import number_str
 
 
 def get_terminal_cols() -> int:
@@ -20,21 +23,25 @@ def get_terminal_cols() -> int:
     return i_cols
 
 
-def _line_part_counter(offset: int = 0, digits: int = 8) -> str:
+def _line_part_counter(offset: int,
+                       digits: int,
+                       index_formatter: Callable
+                       ) -> str:
 
     s_format = " {:0>" + str(digits) + "}  "
 
-    return s_format.format(get_hex_output(offset, "ff"))
+    return s_format.format(index_formatter(offset, "f"))
 
 
 def _line_part_bytes(b_unit: bytes,
-                     bytes_per_line: int
+                     bytes_per_line: int,
+                     number_converter: Callable
                      ) -> str:
 
     s_bytes = ""
 
     for i_byte in b_unit:
-        s_bytes += "{} ".format(get_hex_output(i_byte, "ff"))
+        s_bytes += "{:0>2} ".format(number_converter(i_byte, "f"))
 
     s_format = "{:<" + str(bytes_per_line * 3) + "} "
 
@@ -57,23 +64,24 @@ def _line_part_chars(b_unit: bytes,
 
 def print_line(b_unit: bytes,
                bytes_per_line: int,
-               offset: int = 0
+               offset: int,
+               index_converter: Callable
                ) -> None:
 
     s_line = ""
-    s_line += _line_part_counter(offset)
-    s_line += _line_part_bytes(b_unit, bytes_per_line)
+    s_line += _line_part_counter(offset, 8, index_converter)
+    s_line += _line_part_bytes(b_unit, bytes_per_line, number_str.hexadecimal)
     s_line += _line_part_chars(b_unit, bytes_per_line)
 
     print(s_line, flush=True)
 
 
-def print_header(bytes_per_line: int) -> None:
+def print_header(bytes_per_line: int, index_converter: Callable) -> None:
 
     s_line = ""
-    s_line += "Offset (h) "
+    s_line += "Offset ({}) ".format(index_converter(-1))
     b_unit = bytes(range(bytes_per_line))
-    s_line += _line_part_bytes(b_unit, bytes_per_line)
+    s_line += _line_part_bytes(b_unit, bytes_per_line, index_converter)
     s_line += "Decoded text"
 
     print(s_line, flush=True)
@@ -81,7 +89,7 @@ def print_header(bytes_per_line: int) -> None:
 
 def _min_line_length(bytes_per_line: int) -> int:
 
-    part_counter = len(_line_part_counter())
+    part_counter = len(_line_part_counter(0, 8, lambda x, y: x))
     part_bytes = len(_line_part_bytes(bytes(bytes_per_line), bytes_per_line))
     part_chars = len(_line_part_chars(bytes(bytes_per_line), bytes_per_line))
     line_end = 1
@@ -122,26 +130,6 @@ def get_char_output(value: int) -> str:
         return s_char
 
     return "."
-
-
-def get_hex_output(value: int,
-                   formatting: str = "ff"
-                   ) -> str:
-
-    if formatting == "FF":
-        s_output = format(value, 'X')  # 'FF'
-
-    # formatting == "ff" or "0x" / default
-    s_output = format(value, 'x')  # 'ff'
-
-    if len(s_output) % 2 != 0:
-        s_output = '0' + s_output
-
-    if formatting == "0x":  # '0xff'
-        # format(value, '#x') | hex(value)
-        s_output = "0x" + s_output
-
-    return s_output
 
 
 def get_int_from_byte(value: bytes) -> int:
