@@ -28,9 +28,7 @@ def _line_part_counter(offset: int,
                        index_formatter: Callable
                        ) -> str:
 
-    s_format = " {:0>" + str(digits) + "}  "
-
-    return s_format.format(index_formatter(offset, "f"))
+    return " " + index_formatter(offset, digits) + "  "
 
 
 def _line_part_bytes(b_unit: bytes,
@@ -41,10 +39,9 @@ def _line_part_bytes(b_unit: bytes,
     s_bytes = ""
 
     for i_byte in b_unit:
-        s_bytes += "{:0>2} ".format(number_converter(i_byte, "f"))
+        s_bytes += number_converter(i_byte, 2) + " "
 
     s_format = "{:<" + str(bytes_per_line * 3) + "} "
-
     return s_format.format(s_bytes)
 
 
@@ -89,8 +86,11 @@ def print_header(bytes_per_line: int, index_converter: Callable) -> None:
 
 def _min_line_length(bytes_per_line: int) -> int:
 
-    part_counter = len(_line_part_counter(0, 8, lambda x, y: x))
-    part_bytes = len(_line_part_bytes(bytes(bytes_per_line), bytes_per_line))
+    def pseudo_converter(x, y):
+        return str(x).zfill(y)
+
+    part_counter = len(_line_part_counter(0, 8, pseudo_converter))
+    part_bytes = len(_line_part_bytes(bytes(bytes_per_line), bytes_per_line, pseudo_converter))
     part_chars = len(_line_part_chars(bytes(bytes_per_line), bytes_per_line))
     line_end = 1
 
