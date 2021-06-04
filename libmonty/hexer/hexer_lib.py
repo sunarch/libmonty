@@ -133,14 +133,4 @@ def get_char_output(value: int) -> str:
 
     return "."
 
-
-def get_int_from_byte(value: bytes) -> int:
-
-    return int(value)
-
-
-def get_int_from_char(value: str = '.') -> int:
-
-    return ord(value)
-
 # -------------------------------------------------------------------- #
