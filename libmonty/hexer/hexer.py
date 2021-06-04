@@ -8,7 +8,7 @@ import os.path
 
 from typing import Callable, Generator
 
-from hexer import hexer_lib
+from libmonty.hexer import hexer_lib
 
 
 def main(args: list[str]) -> None:
