@@ -73,7 +73,9 @@ def print_line(b_unit: bytes,
     print(s_line, flush=True)
 
 
-def print_header(bytes_per_line: int, index_converter: Callable) -> None:
+def print_header(bytes_per_line: int,
+                 index_converter: Callable
+                 ) -> None:
 
     s_line = ""
     s_line += "Offset ({}) ".format(index_converter(-1))
