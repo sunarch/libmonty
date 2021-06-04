@@ -23,7 +23,10 @@ def main(args: list[str]) -> None:
         command = ls_input[0]
         ls_args = ls_input[1:]
 
-        process_command(command, ls_args)
+        try:
+            process_command(command, ls_args)
+        except ValueError as err:
+            print(err)
 
         ls_input = []
 
@@ -34,8 +37,24 @@ def process_command(command: str, args: list[str]) -> None:
         "hexer": hexer.main
     }
 
+    ls_args = []
+    d_kwargs = {}
+
+    for argument in args:
+
+        if "=" not in argument:
+            ls_args.append(argument)
+            continue
+
+        ls_pair = argument.split("=")
+
+        if len(ls_pair) > 2:
+            raise ValueError("Multiple '=' in keyword argument: {}".format(argument))
+
+        d_kwargs[ls_pair[0]] = ls_pair[1]
+
     if command in d_commands:
-        d_commands[command](args)
+        d_commands[command](args, d_kwargs)
 
 
 if __name__ == "__main__":

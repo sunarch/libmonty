@@ -11,7 +11,7 @@ from typing import Callable, Generator
 from libmonty.hexer import hexer_lib
 
 
-def main(args: list[str]) -> None:
+def main(args: list[str], kwargs: dict) -> None:
 
     i_bytes_per_line = None
     i_sleep = 0.01
