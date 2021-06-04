@@ -67,7 +67,12 @@ def process_command(command: str, args: list[str]) -> str:
     if command not in d_commands:
         raise ValueError("Unknown command: {}".format(command))
 
-    return d_commands[command](ls_args, d_kwargs)
+    try:
+        s_return = d_commands[command](ls_args, d_kwargs)
+    except ValueError:
+        raise
+
+    return s_return
 
 
 def exit_interactive(args: list[str], kwargs: dict) -> str:

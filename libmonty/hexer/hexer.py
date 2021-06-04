@@ -14,21 +14,55 @@ from libmonty.formatting import number_str
 
 def main(args: list[str], kwargs: dict) -> None:
 
+    try:
+        stream = _arg_stream(kwargs, args, 0)
+    except ValueError:
+        raise
+
+    try:
+        i_bytes_per_line = _arg_bytes_per_line(kwargs, args, 1)
+    except ValueError:
+        raise
+
+    try:
+        i_sleep = _arg_sleep(kwargs, args, 2)
+    except ValueError:
+        raise
+
+    try:
+        index_converter = _arg_index_converter(kwargs, args, 3)
+    except ValueError:
+        raise
+
+    try:
+        run(stream, i_bytes_per_line, i_sleep, index_converter)
+    except ValueError:
+        raise
+
+
+def _arg_stream(kwargs: dict, args: list[str], args_index: int) -> Callable:
+
     stream = stream_gen_random  # default
 
     try:
         stream = kwargs['stream']
 
     except KeyError:
-        if len(args) > 0:
-            if args[0] == "random":
+        if len(args) > args_index:
+            s_stream = args[args_index]
+
+            if s_stream == "random":
                 stream = stream_gen_random
             else:
                 try:
-                    stream = create_stream_file(args[0])
+                    stream = create_stream_file(s_stream)
                 except FileNotFoundError as err:
-                    print(str(err))
-                    return
+                    raise ValueError(str(err))
+
+    return stream
+
+
+def _arg_bytes_per_line(kwargs: dict, args: list[str], args_index: int) -> int:
 
     i_bytes_per_line = None  # default
     s_bytes_per_line = ""
@@ -37,8 +71,8 @@ def main(args: list[str], kwargs: dict) -> None:
     try:
         s_bytes_per_line = kwargs['bytes_per_line']
     except KeyError:
-        if len(args) > 1:
-            s_bytes_per_line = args[1]
+        if len(args) > args_index:
+            s_bytes_per_line = args[args_index]
 
             try:
                 i_bytes_per_line = int(s_bytes_per_line)
@@ -56,7 +90,12 @@ def main(args: list[str], kwargs: dict) -> None:
 
         s_confirm = input("Do you wish to continue with the default [{}] ? (y/n) ".format(s_bytes_per_line))
         if s_confirm.lower() not in ("y", "yes"):
-            return
+            raise ValueError("Bad value for 'byte count per line': '{}'".format(s_bytes_per_line))
+
+    return i_bytes_per_line
+
+
+def _arg_sleep(kwargs: dict, args: list[str], args_index: int) -> float:
 
     i_sleep = 0.01  # default
     s_sleep = ""
@@ -76,8 +115,8 @@ def main(args: list[str], kwargs: dict) -> None:
     try:
         s_sleep = kwargs['sleep']
     except KeyError:
-        if len(args) > 2:
-            s_sleep = args[2]
+        if len(args) > args_index:
+            s_sleep = args[args_index]
 
             if s_sleep in d_speeds:
                 i_sleep = d_speeds[s_sleep]
@@ -94,9 +133,14 @@ def main(args: list[str], kwargs: dict) -> None:
 
             s_confirm = input("Do you wish to continue with the default [{}] ? (y/n) ".format(i_sleep))
             if s_confirm.lower() not in ("y", "yes"):
-                return
+                raise ValueError("Bad value for 'sleep': '{}'".format(s_sleep))
 
-    index_converter = number_str.hexadecimal
+    return i_sleep
+
+
+def _arg_index_converter(kwargs: dict, args: list[str], args_index: int) -> Callable:
+
+    index_converter = number_str.hexadecimal  # default
 
     d_index_formats = {
         "h": number_str.hexadecimal,
@@ -112,21 +156,21 @@ def main(args: list[str], kwargs: dict) -> None:
         index_converter = kwargs['index_converter']
 
     except KeyError:
-        if len(args) > 3:
+        if len(args) > args_index:
+            s_index_converter = args[args_index]
 
             try:
-                index_converter = d_index_formats[args[3]]
+                index_converter = d_index_formats[s_index_converter]
             except KeyError:
-                print("Value for index format not recognized: '{}'".format(args[3]))
+                err = "Value for index format not recognized: '{}'".format(s_index_converter)
+
+                print(err)
 
                 s_confirm = input("Do you wish to continue with the default [hexadecimal] ? (y/n) ")
                 if s_confirm.lower() not in ("y", "yes"):
-                    return
+                    raise ValueError(err)
 
-    try:
-        run(stream, i_bytes_per_line, i_sleep, index_converter)
-    except ValueError:
-        raise
+    return index_converter
 
 
 def create_stream_file(path: str) -> Callable:
@@ -157,7 +201,7 @@ def stream_gen_random(bytes_per_line: int) -> Generator:
         yield random.randbytes(bytes_per_line)
 
 
-def run(stream_gen: Generator = None,
+def run(stream_gen: Callable = None,
         bytes_per_line: int = None,
         sleep: float = 0.1,
         index_converter: Callable = None
