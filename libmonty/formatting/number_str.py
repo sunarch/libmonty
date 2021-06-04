@@ -64,4 +64,25 @@ def octal(value: int, form: str = "8") -> str:
 
     return s_output
 
+
+def binary(value: int, form: str = "2") -> str:
+
+    if value < -1:
+        raise ValueError("Illegal value in number formatting: {}".format(value))
+
+    if value == -1:
+        return "b"
+
+    # "b" in form / default
+    s_output = format(value, 'b')
+
+    i_target_len = len(form.strip("b"))
+    s_output = s_output.zfill(i_target_len)
+
+    if "b" in form:  # '0b11'
+        # format(value, '#x') | hex(value)
+        s_output = "0b" + s_output
+
+    return s_output
+
 # -------------------------------------------------------------------- #
