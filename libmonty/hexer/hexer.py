@@ -14,11 +14,7 @@ from libmonty.formatting import number_str
 
 def main(args: list[str], kwargs: dict) -> None:
 
-    i_bytes_per_line = None
-    i_sleep = 0.01
-
-    if len(args) == 0:
-        stream = stream_gen_random
+    stream = stream_gen_random  # default
 
     if len(args) > 0:
         if args[0] == "random":
@@ -29,6 +25,8 @@ def main(args: list[str], kwargs: dict) -> None:
             except FileNotFoundError as err:
                 print(str(err))
                 return
+
+    i_bytes_per_line = None  # default
 
     if len(args) > 1:
         try:
@@ -43,6 +41,8 @@ def main(args: list[str], kwargs: dict) -> None:
             s_confirm = input("Do you wish to continue with the default [{}] ? (y/n) ".format(s_bytes_per_line))
             if s_confirm.lower() not in ("y", "yes"):
                 return
+
+    i_sleep = 0.01  # default
 
     d_speeds = {
         "f": 0.01,
