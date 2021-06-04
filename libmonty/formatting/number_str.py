@@ -3,34 +3,46 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-def hexadecimal(value: int,
+def _number_str(name: str,
+                base: str,
+                value: int,
                 pad_to: int = 0,
                 prefix: str = None,
-                form: str = "f"
                 ) -> str:
 
     if value < -1:
         raise ValueError("Negative value in number formatting: {}".format(value))
 
     if value == -1:
-        return "h"
+        return name
 
-    # form == "f" / default
-    s_output = format(value, 'x')  # 'ff'
-
-    if form == "F":
-        s_output = format(value, 'X')  # 'FF'
+    s_output = format(value, base)
 
     s_output = s_output.zfill(pad_to)
 
     if prefix is not None:
-        if prefix in ("", "x", "0x"):  # '0xff'
-            # format(value, '#x') | hex(value)
-            s_output = "0x" + s_output
+        if prefix in ("", base, f"0{base}"):
+            s_output = f"0{base}" + s_output
         else:
             s_output = prefix + s_output
 
     return s_output
+
+
+def hexadecimal(value: int,
+                pad_to: int = 0,
+                prefix: str = None,
+                ) -> str:
+
+    return _number_str("h", "x", value, pad_to, prefix)
+
+
+def hexadecimal_upper(value: int,
+                pad_to: int = 0,
+                prefix: str = None,
+                ) -> str:
+
+    return _number_str("h", "X", value, pad_to, prefix)
 
 
 def decimal(value: int,
@@ -38,20 +50,7 @@ def decimal(value: int,
             prefix: str = None
             ) -> str:
 
-    if value < -1:
-        raise ValueError("Negative value in number formatting: {}".format(value))
-
-    if value == -1:
-        return "d"
-
-    s_output = str(value)
-
-    s_output = s_output.zfill(pad_to)
-
-    if prefix is not None:
-        s_output = prefix + s_output
-
-    return s_output
+    return _number_str("d", "d", value, pad_to, prefix)
 
 
 def octal(value: int,
@@ -59,23 +58,7 @@ def octal(value: int,
           prefix: str = None
           ) -> str:
 
-    if value < -1:
-        raise ValueError("Negative value in number formatting: {}".format(value))
-
-    if value == -1:
-        return "o"
-
-    s_output = format(value, 'o')
-
-    s_output = s_output.zfill(pad_to)
-
-    if prefix is not None:
-        if prefix in ("", "o", "0o"):  # '0o77'
-            s_output = "0o" + s_output
-        else:
-            s_output = prefix + s_output
-
-    return s_output
+    return _number_str("o", "o", value, pad_to, prefix)
 
 
 def binary(value: int,
@@ -83,22 +66,6 @@ def binary(value: int,
            prefix: str = None
            ) -> str:
 
-    if value < -1:
-        raise ValueError("Negative value in number formatting: {}".format(value))
-
-    if value == -1:
-        return "b"
-
-    s_output = format(value, 'b')
-
-    s_output = s_output.zfill(pad_to)
-
-    if prefix is not None:
-        if prefix in ("", "b", "0b"):  # '0b11'
-            s_output = "0b" + s_output
-        else:
-            s_output = prefix + s_output
-
-    return s_output
+    return _number_str("b", "b", value, pad_to, prefix)
 
 # -------------------------------------------------------------------- #
