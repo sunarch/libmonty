@@ -8,8 +8,11 @@ import os.path
 
 from typing import Callable, Generator
 
-from libmonty.hexer import hexer_lib
 from libmonty.formatting import number_str
+
+from libmonty.hexer import lines
+from libmonty.hexer import lib
+from libmonty.hexer import output_terminal
 
 
 def main(args: list[str], kwargs: dict) -> None:
@@ -204,23 +207,23 @@ def run(stream_gen: Callable = None,
     print("")
 
     if bytes_per_line <= 0:
-        i_cols = hexer_lib.get_terminal_cols()
+        i_cols = output_terminal.get_terminal_cols()
 
         full_width = False
         if bytes_per_line <= -1:
             full_width = True
 
-        bytes_per_line = hexer_lib.determine_count_per_line(i_cols, full_width)
+        bytes_per_line = lib.determine_count_per_line(i_cols, full_width)
 
     i_offset = 0
 
-    hexer_lib.print_header(bytes_per_line, index_converter)
+    lines.print_header(bytes_per_line, index_converter)
     print("")
 
     for b_unit in stream_gen(bytes_per_line):
 
         try:
-            hexer_lib.print_line(b_unit, bytes_per_line, i_offset, index_converter)
+            lines.print_data(b_unit, bytes_per_line, i_offset, index_converter)
             time.sleep(sleep)
 
             i_offset += bytes_per_line
