@@ -32,7 +32,8 @@ def main(args: list[str]) -> None:
         try:
             s_next = process_command(command, ls_args)
         except ValueError as err:
-            print(err)
+            if str(err) != "":
+                print(err)
         else:
             if s_next is not None:
                 break

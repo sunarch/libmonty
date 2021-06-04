@@ -52,15 +52,15 @@ def _arg_stream(kwargs: dict, args: list[str], args_index: int) -> Callable:
 
 def _arg_bytes_per_line(kwargs: dict, args: list[str], args_index: int) -> int:
 
-    i_bytes_per_line = None  # default
+    i_bytes_per_line = 0  # default
     s_bytes_per_line = ""
     b_process_bytes_per_line = False
 
     try:
-        s_bytes_per_line = kwargs['bytes_per_line']
+        s_bytes_per_line = str(kwargs['bytes_per_line'])
     except KeyError:
         if len(args) > args_index:
-            s_bytes_per_line = args[args_index]
+            s_bytes_per_line = str(args[args_index])
 
             try:
                 i_bytes_per_line = int(s_bytes_per_line)
@@ -69,16 +69,16 @@ def _arg_bytes_per_line(kwargs: dict, args: list[str], args_index: int) -> int:
     else:
         b_process_bytes_per_line = True
 
+    if s_bytes_per_line.lower() in ("0", "none"):
+        return 0
+
     if b_process_bytes_per_line:
         print("Bad value for 'byte count per line': '{}'".format(s_bytes_per_line))
 
-        s_bytes_per_line = str(i_bytes_per_line)
-        if i_bytes_per_line is None:
-            s_bytes_per_line = "full width"
-
-        s_confirm = input("Do you wish to continue with the default [{}] ? (y/n) ".format(s_bytes_per_line))
+        s_input_tpl = "Do you wish to continue with the default [{}] ? (y/n) "
+        s_confirm = input(s_input_tpl.format(i_bytes_per_line))
         if s_confirm.lower() not in ("y", "yes"):
-            raise ValueError("Bad value for 'byte count per line': '{}'".format(s_bytes_per_line))
+            raise ValueError("")
 
     return i_bytes_per_line
 
@@ -190,7 +190,7 @@ def stream_gen_random(bytes_per_line: int) -> Generator:
 
 
 def run(stream_gen: Callable = None,
-        bytes_per_line: int = None,
+        bytes_per_line: int = 0,
         sleep: float = 0.1,
         index_converter: Callable = None
         ) -> None:
@@ -203,9 +203,14 @@ def run(stream_gen: Callable = None,
 
     print("")
 
-    if bytes_per_line is None:
+    if bytes_per_line <= 0:
         i_cols = hexer_lib.get_terminal_cols()
-        bytes_per_line = hexer_lib.determine_count_per_line(i_cols, full=True)
+
+        full_width = False
+        if bytes_per_line <= -1:
+            full_width = True
+
+        bytes_per_line = hexer_lib.determine_count_per_line(i_cols, full_width)
 
     i_offset = 0
 

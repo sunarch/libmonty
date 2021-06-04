@@ -98,10 +98,10 @@ def _min_line_length(bytes_per_line: int) -> int:
 
 
 def determine_count_per_line(cols: int = 80,
-                             full: bool = False
+                             full_width: bool = False
                              ) -> int:
 
-    if full:
+    if full_width:
         for count in range(1, cols):
             if _min_line_length(count) > cols:
                 return count - 1
