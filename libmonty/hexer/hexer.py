@@ -16,20 +16,8 @@ def main(args: list[str], kwargs: dict) -> None:
 
     try:
         stream = _arg_stream(kwargs, args, 0)
-    except ValueError:
-        raise
-
-    try:
         i_bytes_per_line = _arg_bytes_per_line(kwargs, args, 1)
-    except ValueError:
-        raise
-
-    try:
         i_sleep = _arg_sleep(kwargs, args, 2)
-    except ValueError:
-        raise
-
-    try:
         index_converter = _arg_index_converter(kwargs, args, 3)
     except ValueError:
         raise
