@@ -38,9 +38,9 @@ def hexadecimal(value: int,
 
 
 def hexadecimal_upper(value: int,
-                pad_to: int = 0,
-                prefix: str = None,
-                ) -> str:
+                      pad_to: int = 0,
+                      prefix: str = None,
+                      ) -> str:
 
     return _number_str("h", "X", value, pad_to, prefix)
 
