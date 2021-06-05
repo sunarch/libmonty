@@ -11,9 +11,9 @@ from libmonty.formatting import char_str
 
 from libmonty.environment import terminal
 
-from libmonty.hexer import stream_gen
+from libmonty.hexer import streams
 from libmonty.hexer import lines
-from libmonty.hexer import lib
+from libmonty.hexer import width
 
 
 def main(args: list[str], kwargs: dict) -> None:
@@ -35,7 +35,7 @@ def main(args: list[str], kwargs: dict) -> None:
 def _arg_stream(kwargs: dict, args: list[str], args_index: int) -> Tuple[Callable, Callable]:
 
     # defaults
-    stream = stream_gen.random_data
+    stream = streams.random_data
     char_converter = char_str.byte_to_compact_printable_with_dots
 
     try:
@@ -46,12 +46,12 @@ def _arg_stream(kwargs: dict, args: list[str], args_index: int) -> Tuple[Callabl
             s_stream_name = args[args_index]
 
             if s_stream_name == "random":
-                stream = stream_gen.random_data
+                stream = streams.random_data
                 char_converter = char_str.byte_to_compact_printable_with_dots
 
             else:
                 try:
-                    stream = stream_gen.create_from_file(s_stream_name)
+                    stream = streams.create_from_file(s_stream_name)
                 except FileNotFoundError as err:
                     raise ValueError(str(err))
 
@@ -198,10 +198,10 @@ def run(stream: Callable = None,
         if bytes_per_line <= -1:
             full_width = True
 
-        bytes_per_line = lib.determine_count_per_line(i_cols, full_width)
+        bytes_per_line = width.determine_count_per_line(i_cols, full_width)
 
         if full_width:
-            i_extra_width = i_cols - lib.min_line_length(bytes_per_line)
+            i_extra_width = i_cols - width.min_line_length(bytes_per_line)
 
     i_offset = 0
 
