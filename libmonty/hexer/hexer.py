@@ -177,6 +177,8 @@ def run(stream: Callable = None,
 
     print("")
 
+    i_extra_width = 0
+
     if bytes_per_line <= 0:
         i_cols = output_terminal.get_terminal_cols()
 
@@ -186,15 +188,18 @@ def run(stream: Callable = None,
 
         bytes_per_line = lib.determine_count_per_line(i_cols, full_width)
 
+        if full_width:
+            i_extra_width = i_cols - lib.min_line_length(bytes_per_line)
+
     i_offset = 0
 
-    lines.print_header(bytes_per_line, index_converter)
+    lines.print_header(bytes_per_line, index_converter, i_extra_width)
     print("")
 
     for b_unit in stream(bytes_per_line):
 
         try:
-            lines.print_data(b_unit, bytes_per_line, i_offset, index_converter)
+            lines.print_data(b_unit, bytes_per_line, i_offset, index_converter, i_extra_width)
             time.sleep(sleep)
 
             i_offset += bytes_per_line
