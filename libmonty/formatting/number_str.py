@@ -3,6 +3,14 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+def pseudo(value: int,
+           pad_to: int = 0,
+           prefix: str = "",
+           ) -> str:
+
+    return prefix + str(value).zfill(pad_to)
+
+
 def _number_str(name: str,
                 base: str,
                 value: int,

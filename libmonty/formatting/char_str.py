@@ -5,6 +5,11 @@
 import string
 
 
+def pseudo(value: int = ord('.')) -> str:
+
+    return chr(value)
+
+
 def _byte_to_printable_non_ws_or_space(value: int,
                                        default: str = '.',
                                        space: str = ' ',
