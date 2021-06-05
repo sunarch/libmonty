@@ -2,10 +2,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import string
 from typing import Callable
 
 from libmonty.formatting import number_str
+from libmonty.formatting import char_str
 
 
 def print_header(bytes_per_line: int,
@@ -64,24 +64,10 @@ def part_chars(b_unit: bytes,
     s_chars = ""
 
     for i_byte in b_unit:
-        s_chars += get_char_output(i_byte)
+        s_chars += char_str.byte_to_printable_or_space_or_dot(i_byte)
 
     s_format = "{:<" + str(bytes_per_line) + "} "
 
     return s_format.format(s_chars)
-
-
-def get_char_output(value: int) -> str:
-
-    s_char = chr(value)
-
-    if s_char in string.printable:
-
-        if s_char in string.whitespace and s_char != ' ':
-            return "."
-
-        return s_char
-
-    return "."
 
 # -------------------------------------------------------------------- #
