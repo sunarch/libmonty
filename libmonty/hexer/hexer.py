@@ -2,14 +2,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import random
 import time
-import os.path
 
-from typing import Callable, Generator
+from typing import Callable
 
 from libmonty.formatting import number_str
 
+from libmonty.hexer import stream_gen
 from libmonty.hexer import lines
 from libmonty.hexer import lib
 from libmonty.hexer import output_terminal
@@ -33,20 +32,20 @@ def main(args: list[str], kwargs: dict) -> None:
 
 def _arg_stream(kwargs: dict, args: list[str], args_index: int) -> Callable:
 
-    stream = stream_gen_random  # default
+    stream = stream_gen.random_data  # default
 
     try:
         stream = kwargs['stream']
 
     except KeyError:
         if len(args) > args_index:
-            s_stream = args[args_index]
+            s_stream_name = args[args_index]
 
-            if s_stream == "random":
-                stream = stream_gen_random
+            if s_stream_name == "random":
+                stream = stream_gen.random_data
             else:
                 try:
-                    stream = create_stream_file(s_stream)
+                    stream = stream_gen.create_from_file(s_stream_name)
                 except FileNotFoundError as err:
                     raise ValueError(str(err))
 
@@ -162,34 +161,6 @@ def _arg_index_converter(kwargs: dict, args: list[str], args_index: int) -> Call
                     raise ValueError(err)
 
     return index_converter
-
-
-def create_stream_file(path: str) -> Callable:
-
-    if not os.path.isfile(path):
-        raise FileNotFoundError("File not found: '{}'".format(path))
-
-    def stream_gen_file(bytes_per_line: int) -> Generator:
-        with open(path, "rb") as f_stream:
-
-            while True:
-                try:
-                    data = f_stream.read(bytes_per_line)
-                except KeyboardInterrupt:
-                    break
-
-                if not data:
-                    break
-
-                yield data
-
-    return stream_gen_file
-
-
-def stream_gen_random(bytes_per_line: int) -> Generator:
-
-    while True:
-        yield random.randbytes(bytes_per_line)
 
 
 def run(stream_gen: Callable = None,
