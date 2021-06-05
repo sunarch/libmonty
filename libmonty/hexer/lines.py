@@ -48,12 +48,10 @@ def part_bytes(b_unit: bytes,
                number_converter: Callable
                ) -> str:
 
-    s_bytes = ""
+    s_bytes = " ".join(map(lambda b: number_converter(b, 2), b_unit))
 
-    for i_byte in b_unit:
-        s_bytes += number_converter(i_byte, 2) + " "
-
-    s_format = "{:<" + str(bytes_per_line * 3) + "} "
+    s_format = "{:<" + str(bytes_per_line * 3) + "}  "
+    
     return s_format.format(s_bytes)
 
 
@@ -61,10 +59,7 @@ def part_chars(b_unit: bytes,
                bytes_per_line: int
                ) -> str:
 
-    s_chars = ""
-
-    for i_byte in b_unit:
-        s_chars += char_str.byte_to_printable_or_space_or_dot(i_byte)
+    s_chars = "".join(map(char_str.byte_to_printable_or_space_or_dot, b_unit))
 
     s_format = "{:<" + str(bytes_per_line) + "} "
 
