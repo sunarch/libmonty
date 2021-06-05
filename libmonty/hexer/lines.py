@@ -61,7 +61,7 @@ def part_bytes(b_unit: bytes,
 
     s_bytes = " ".join(map(lambda b: number_converter(b, 2), b_unit))
 
-    s_format = "{:<" + str(bytes_per_line * 3) + "}  "
+    s_format = "{:<" + str(bytes_per_line * 3) + "} "
 
     return s_format.format(s_bytes)
 
