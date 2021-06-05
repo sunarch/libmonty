@@ -34,6 +34,14 @@ def hexadecimal(value: int,
                 prefix: str = None,
                 ) -> str:
 
+    return hexadecimal_lower(value, pad_to, prefix)
+
+
+def hexadecimal_lower(value: int,
+                      pad_to: int = 0,
+                      prefix: str = None,
+                      ) -> str:
+
     return _number_str("h", "x", value, pad_to, prefix)
 
 
