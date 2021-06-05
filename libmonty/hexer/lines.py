@@ -8,13 +8,16 @@ from libmonty.formatting import number_str
 from libmonty.formatting import char_str
 
 
+COUNTER_DIGITS = 10
+
+
 def print_header(bytes_per_line: int,
                  index_converter: Callable,
                  extra_width: int
                  ) -> None:
 
     s_counter = f"Offset ({index_converter(-1)})"
-    s_line = f" {s_counter:^{10 + extra_width}}  "
+    s_line = f" {s_counter:^{COUNTER_DIGITS + extra_width}}  "
 
     b_unit = bytes(range(bytes_per_line))
     s_line += part_bytes(b_unit, bytes_per_line, index_converter)
@@ -32,16 +35,20 @@ def print_data(b_unit: bytes,
                ) -> None:
 
     s_line = ""
-    s_line += part_counter(offset, 10 + extra_width, index_converter)
+    s_line += part_counter(offset, COUNTER_DIGITS + extra_width, index_converter)
     s_line += part_bytes(b_unit, bytes_per_line, number_str.hexadecimal)
     s_line += part_chars(b_unit, bytes_per_line)
 
     print(s_line, flush=True)
 
 
-def part_counter(offset: int,
-                 digits: int,
-                 index_formatter: Callable
+def _pseudo_converter(x, y):
+    return str(x).zfill(y)
+
+
+def part_counter(offset: int = 0,
+                 digits: int = COUNTER_DIGITS,
+                 index_formatter: Callable = _pseudo_converter,
                  ) -> str:
 
     return " " + index_formatter(offset, digits) + "  "
@@ -49,7 +56,7 @@ def part_counter(offset: int,
 
 def part_bytes(b_unit: bytes,
                bytes_per_line: int,
-               number_converter: Callable
+               number_converter: Callable = _pseudo_converter
                ) -> str:
 
     s_bytes = " ".join(map(lambda b: number_converter(b, 2), b_unit))

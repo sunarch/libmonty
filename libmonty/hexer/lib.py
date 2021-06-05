@@ -28,11 +28,8 @@ def determine_count_per_line(cols: int = 80,
 
 def min_line_length(bytes_per_line: int) -> int:
 
-    def pseudo_converter(x, y):
-        return str(x).zfill(y)
-
-    part_counter = len(lines.part_counter(0, 10, pseudo_converter))
-    part_bytes = len(lines.part_bytes(bytes(bytes_per_line), bytes_per_line, pseudo_converter))
+    part_counter = len(lines.part_counter())
+    part_bytes = len(lines.part_bytes(bytes(bytes_per_line), bytes_per_line))
     part_chars = len(lines.part_chars(bytes(bytes_per_line), bytes_per_line))
     line_end = 1
 
