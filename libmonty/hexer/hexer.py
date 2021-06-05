@@ -163,13 +163,13 @@ def _arg_index_converter(kwargs: dict, args: list[str], args_index: int) -> Call
     return index_converter
 
 
-def run(stream_gen: Callable = None,
+def run(stream: Callable = None,
         bytes_per_line: int = 0,
         sleep: float = 0.1,
         index_converter: Callable = None
         ) -> None:
 
-    if stream_gen is None:
+    if stream is None:
         raise ValueError("No input stream specified!")
 
     if index_converter is None:
@@ -191,7 +191,7 @@ def run(stream_gen: Callable = None,
     lines.print_header(bytes_per_line, index_converter)
     print("")
 
-    for b_unit in stream_gen(bytes_per_line):
+    for b_unit in stream(bytes_per_line):
 
         try:
             lines.print_data(b_unit, bytes_per_line, i_offset, index_converter)
