@@ -24,16 +24,16 @@ def main(args: list[str], kwargs: dict) -> None:
         raise
 
     try:
-        run(stream, i_bytes_per_line, i_sleep, index_converter, char_converter)
+        run(stream, index_converter, char_converter, i_bytes_per_line, i_sleep)
     except ValueError:
         raise
 
 
 def run(stream: Callable = None,
-        bytes_per_line: int = 0,
-        sleep: float = 0.1,
         index_converter: Callable = None,
-        char_converter: Callable = None
+        char_converter: Callable = None,
+        bytes_per_line: int = 0,
+        sleep: float = 0.1
         ) -> None:
 
     if stream is None:
