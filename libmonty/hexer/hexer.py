@@ -9,10 +9,11 @@ from typing import Callable, Tuple
 from libmonty.formatting import number_str
 from libmonty.formatting import char_str
 
+from libmonty.environment import terminal
+
 from libmonty.hexer import stream_gen
 from libmonty.hexer import lines
 from libmonty.hexer import lib
-from libmonty.hexer import output_terminal
 
 
 def main(args: list[str], kwargs: dict) -> None:
@@ -191,7 +192,7 @@ def run(stream: Callable = None,
     i_extra_width = 0
 
     if bytes_per_line <= 0:
-        i_cols = output_terminal.get_terminal_cols()
+        i_cols = terminal.get_cols()
 
         full_width = False
         if bytes_per_line <= -1:

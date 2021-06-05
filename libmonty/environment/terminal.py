@@ -5,16 +5,15 @@
 import os
 
 
-def get_terminal_cols() -> int:
-
-    i_cols = 80
+def get_cols() -> int:
 
     try:
         o_size = os.get_terminal_size()
         i_cols = o_size.columns
         # i_lines = o_size.lines
     except OSError:
-        pass
+        i_cols = 80
+        # i_lines = 20
 
     return i_cols
 
