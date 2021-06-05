@@ -5,17 +5,38 @@
 import string
 
 
-def byte_to_printable_or_space_or_dot(value: int) -> str:
+def _byte_to_printable_non_ws_or_space(value: int,
+                                       default: str = '.',
+                                       space: str = ' ',
+                                       ) -> str:
 
     s_char = chr(value)
 
-    if s_char in string.printable:
+    if s_char in ('\r', '\n'):
+        return chr(0x21B5)  # ↵ Downwards Arrow with Corner Leftwards
 
-        if s_char in string.whitespace and s_char != ' ':
-            return "."
+    if s_char == ' ':
+        return space
 
+    if s_char in string.printable and s_char not in string.whitespace:
         return s_char
 
-    return "."
+    return default
+
+
+def byte_to_compact_printable_with_dots(value: int) -> str:
+
+    s_default = '.'
+    s_space = chr(0x22C5)  # ⋅ Dot Operator
+
+    return _byte_to_printable_non_ws_or_space(value, s_default, s_space)
+
+
+def byte_to_compact_printable_with_frames(value: int) -> str:
+
+    s_default = chr(0x2395)  # ⎕ Apl Functional Symbol Quad
+    s_space = chr(0x02FD)  # ⋅˽ Modifier Letter Shelf
+
+    return _byte_to_printable_non_ws_or_space (value, s_default, s_space)
 
 # -------------------------------------------------------------------- #

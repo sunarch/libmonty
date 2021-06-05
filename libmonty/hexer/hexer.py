@@ -4,9 +4,10 @@
 
 import time
 
-from typing import Callable
+from typing import Callable, Tuple
 
 from libmonty.formatting import number_str
+from libmonty.formatting import char_str
 
 from libmonty.hexer import stream_gen
 from libmonty.hexer import lines
@@ -17,7 +18,7 @@ from libmonty.hexer import output_terminal
 def main(args: list[str], kwargs: dict) -> None:
 
     try:
-        stream = _arg_stream(kwargs, args, 0)
+        stream, char_converter = _arg_stream(kwargs, args, 0)
         i_bytes_per_line = _arg_bytes_per_line(kwargs, args, 1)
         i_sleep = _arg_sleep(kwargs, args, 2)
         index_converter = _arg_index_converter(kwargs, args, 3)
@@ -25,14 +26,16 @@ def main(args: list[str], kwargs: dict) -> None:
         raise
 
     try:
-        run(stream, i_bytes_per_line, i_sleep, index_converter)
+        run(stream, i_bytes_per_line, i_sleep, index_converter, char_converter)
     except ValueError:
         raise
 
 
-def _arg_stream(kwargs: dict, args: list[str], args_index: int) -> Callable:
+def _arg_stream(kwargs: dict, args: list[str], args_index: int) -> Tuple[Callable, Callable]:
 
-    stream = stream_gen.random_data  # default
+    # defaults
+    stream = stream_gen.random_data
+    char_converter = char_str.byte_to_compact_printable_with_dots
 
     try:
         stream = kwargs['stream']
@@ -43,13 +46,17 @@ def _arg_stream(kwargs: dict, args: list[str], args_index: int) -> Callable:
 
             if s_stream_name == "random":
                 stream = stream_gen.random_data
+                char_converter = char_str.byte_to_compact_printable_with_dots
+
             else:
                 try:
                     stream = stream_gen.create_from_file(s_stream_name)
                 except FileNotFoundError as err:
                     raise ValueError(str(err))
 
-    return stream
+                char_converter = char_str.byte_to_compact_printable_with_frames
+
+    return stream, char_converter
 
 
 def _arg_bytes_per_line(kwargs: dict, args: list[str], args_index: int) -> int:
@@ -166,7 +173,8 @@ def _arg_index_converter(kwargs: dict, args: list[str], args_index: int) -> Call
 def run(stream: Callable = None,
         bytes_per_line: int = 0,
         sleep: float = 0.1,
-        index_converter: Callable = None
+        index_converter: Callable = None,
+        char_converter: Callable = None
         ) -> None:
 
     if stream is None:
@@ -174,6 +182,9 @@ def run(stream: Callable = None,
 
     if index_converter is None:
         raise ValueError("No index formatting method specified!")
+
+    if char_converter is None:
+        raise ValueError("No char conversion method specified!")
 
     print("")
 
@@ -199,7 +210,12 @@ def run(stream: Callable = None,
     for b_unit in stream(bytes_per_line):
 
         try:
-            lines.print_data(b_unit, bytes_per_line, i_offset, index_converter, i_extra_width)
+            lines.print_data(b_unit,
+                             bytes_per_line,
+                             i_offset,
+                             index_converter,
+                             char_converter,
+                             i_extra_width)
             time.sleep(sleep)
 
             i_offset += bytes_per_line
