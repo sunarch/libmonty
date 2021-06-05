@@ -50,13 +50,13 @@ def construct(b_unit: bytes,
               extra_width: int = 0
               ) -> str:
 
-    s_line = _part_counter(offset, COUNTER_DIGITS + extra_width, index_converter)
+    s_counter = _part_counter(offset, COUNTER_DIGITS + extra_width, index_converter)
 
-    s_line += _part_bytes(b_unit, bytes_per_line, number_str.hexadecimal)
+    s_bytes = _part_bytes(b_unit, bytes_per_line, number_str.hexadecimal)
 
-    s_line += _part_chars(b_unit)
+    s_chars = _part_chars(b_unit)
 
-    return s_line
+    return s_counter + s_bytes + s_chars
 
 
 def _part_counter(offset: int = 0,
@@ -74,9 +74,11 @@ def _part_bytes(b_unit: bytes,
 
     s_bytes = " ".join(map(lambda b: number_converter(b, 2), b_unit))
 
-    s_format = "{:<" + str(bytes_per_line * 3) + "} "
+    if len(b_unit) < bytes_per_line:
+        s_format = "{:<" + str((bytes_per_line * 3) - 1) + "}"
+        s_bytes = s_format.format(s_bytes)
 
-    return s_format.format(s_bytes)
+    return s_bytes + "  "
 
 
 def _part_chars(b_unit: bytes) -> str:
