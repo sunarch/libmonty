@@ -14,7 +14,9 @@ print("\x1b[8;" + str(target_row_count) + ";" + str(target_col_count) + "t")
 import curses
 import os
 
-rows, columns = os.popen('stty size', 'r').read().split()
+terminal_size = os.get_terminal_size()
+columns = terminal_size.columns
+rows = terminal_size.lines
 
 def setchar(stdscr, y, x, char):
     if len(char) != 1:
