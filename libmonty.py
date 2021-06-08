@@ -5,6 +5,7 @@
 import sys
 
 from libmonty.hexer import hexer
+from libmonty.pixels import pixels
 
 
 def main(args: list[str]) -> None:
@@ -45,7 +46,8 @@ def process_command(command: str, args: list[str]) -> str:
 
     d_commands = {
         "exit": exit_interactive,
-        "hexer": hexer.main
+        "hexer": hexer.main,
+        "pixels": pixels.main
 
     }
 
