@@ -2,6 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import queue
+import threading
+
 from libmonty.images import convert_from_stream as img_convert
 
 from libmonty.pixels import config
@@ -14,7 +17,25 @@ from libmonty.pixels import api_get_size
 from libmonty.pixels import api_set_pixel
 
 
+NEXT_EXIT = "exit"
+NEXT_FINISH = "finish"
+NEXT_ABORT = "abort"
+
+
 def main(args: list[str], kwargs: dict) -> None:
+
+    task_queue = queue.Queue()
+
+    abort = threading.Event()
+    finish = threading.Event()
+
+    task_worker = threading.Thread(target=task_queue_worker,
+                                   daemon=True,
+                                   args=[task_queue],
+                                   kwargs={'abort': abort,
+                                           'finish': finish}
+                                   )
+    task_worker.start()
 
     b_no_interactive = False
     if args:
@@ -36,6 +57,7 @@ def main(args: list[str], kwargs: dict) -> None:
         if not args:
             try:
                 s_input = input("pixels $ ")
+                output.to_console(output.form_separator())
             except KeyboardInterrupt:
                 print("")  # input command empty => linebreak
                 print("Type 'exit' to exit to main shell.")
@@ -50,26 +72,80 @@ def main(args: list[str], kwargs: dict) -> None:
         ls_args = args[1:]
 
         try:
-            s_next = process_command(command, ls_args, s_timestamp)
+            s_next = process_command(command, ls_args, s_timestamp, False,
+                                     task_queue=task_queue)
         except ValueError as err:
+            s_next = "error"
             if str(err) != "":
                 print(err)
+                output.to_console(output.form_separator())
         else:
-            if s_next is not None:
-                break
+            task_queue.put((command, ls_args, s_timestamp))
 
-        if b_no_interactive:
+        if s_next == NEXT_FINISH:
+            finish.set()
+            task_worker.join()
+            break
+
+        if s_next == NEXT_ABORT:
+            abort.set()
+            task_worker.join()
+            break
+
+        if b_no_interactive or s_next == NEXT_EXIT:
+            task_queue.join()
+            finish.set()
+            task_worker.join()
             break
 
         args = []
 
 
-def process_command(command: str, args: list[str], timestamp: str) -> str:
+def task_queue_worker(task_queue, **kwargs):
 
-    output.to_console(output.form_separator())
+    abort = kwargs['abort']
+    finish = kwargs['finish']
+
+    while True:
+
+        if abort.is_set():
+            output.to_console("Processing aborted.")
+            output.to_console(output.form_separator())
+            break
+
+        try:
+            command, ls_args, s_timestamp = task_queue.get_nowait()
+        except queue.Empty:
+            if finish.is_set():
+                output.to_console("Queue finished.")
+                output.to_console(output.form_separator())
+                break
+            else:
+                # output.to_console("Queue empty. Waiting for tasks.")
+                # output.to_console(output.form_separator())
+                continue
+
+        try:
+            process_command(command, ls_args, s_timestamp, True)
+        except ValueError as err:
+            if str(err) != "":
+                print(err)
+                output.to_console(output.form_separator())
+
+        task_queue.task_done()
+
+
+def process_command(command: str,
+                    args: list[str],
+                    timestamp: str,
+                    execute: bool,
+                    **kwargs) -> str:
 
     d_commands = {
-        "exit": exit_interactive,
+        "exit": finish_all_and_exit,
+        "finish": finish_queue_and_exit,
+        "abort": abort_queue_and_exit,
+        "queue": show_queue_size,
         "get": cmd_get,
         "img": cmd_image,
         "image": cmd_image,
@@ -97,36 +173,71 @@ def process_command(command: str, args: list[str], timestamp: str) -> str:
         raise ValueError("Unknown command: {}".format(command))
 
     try:
-        s_return = d_commands[command](ls_args, d_kwargs, timestamp)
+        task_queue = kwargs['task_queue']
+    except KeyError:
+        task_queue = None
+
+    try:
+        s_return = d_commands[command](ls_args, d_kwargs, timestamp, execute,
+                                       task_queue=task_queue)
     except ValueError:
         raise
 
     return s_return
 
 
-def exit_interactive(args: list[str], kwargs: dict, timestamp: str) -> str:
-    return "break"
+def finish_all_and_exit(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kwargs2) -> str:
+    return NEXT_EXIT
 
 
-def cmd_get(args: list[str], kwargs: dict, timestamp: str) -> None:
+def finish_queue_and_exit(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kwargs2) -> str:
+    return NEXT_FINISH
+
+
+def abort_queue_and_exit(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kwargs2) -> str:
+    return NEXT_ABORT
+
+
+def show_queue_size(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kwargs2) -> None:
+
+    try:
+        output.to_console(f"Items in queue: {kwargs2['task_queue'].qsize()}")
+        output.to_console(output.form_separator())
+    except AttributeError:
+        pass
+
+
+def cmd_get(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kwargs2) -> None:
 
     if len(args) == 1 and args[0] == "head":
-        result = api_get_pixel.headers()
-        output.log_result(timestamp, result)
+        if execute:
+            result = api_get_pixel.headers()
+            output.log_result(timestamp, result)
+        return
 
     if len(args) == 2:
-        result = api_get_pixel.execute(int(args[0]), int(args[1]))
-        output.log_result(timestamp, result)
+        if execute:
+            result = api_get_pixel.execute(int(args[0]), int(args[1]))
+            output.log_result(timestamp, result)
+        return
+
+    raise ValueError("Invalid arguments.")
 
 
-def cmd_image(args: list[str], kwargs: dict, timestamp: str) -> None:
+def cmd_image(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kwargs2) -> None:
 
     if len(args) == 1 and args[0] == "head":
-        result = api_get_pixels.headers()
-        output.log_result(timestamp, result)
+        if execute:
+            result = api_get_pixels.headers()
+            output.log_result(timestamp, result)
+        return
 
     if len(args) == 0 and not kwargs:
-        subcmd_image(timestamp)
+        if execute:
+            subcmd_image(timestamp)
+        return
+
+    raise ValueError("Invalid arguents.")
 
 
 def subcmd_image(timestamp: str) -> None:
@@ -147,21 +258,31 @@ def subcmd_image(timestamp: str) -> None:
         pass
 
 
-def cmd_size(args: list[str], kwargs: dict, timestamp: str) -> None:
+def cmd_size(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kwargs2) -> None:
 
     if len(args) == 0 and not kwargs:
-        result = api_get_size.execute()
-        output.log_result(timestamp, result)
+        if execute:
+            result = api_get_size.execute()
+            output.log_result(timestamp, result)
+        return
+
+    raise ValueError("Invalid arguents.")
 
 
-def cmd_set(args: list[str], kwargs: dict, timestamp: str) -> None:
+def cmd_set(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kwargs2) -> None:
 
     if len(args) == 1 and args[0] == "head":
-        result = api_set_pixel.headers()
-        output.log_result(timestamp, result)
+        if execute:
+            result = api_set_pixel.headers()
+            output.log_result(timestamp, result)
+        return
 
     if len(args) == 3:
-        result = api_set_pixel.execute(int(args[0]), int(args[1]), args[2])
-        output.log_result(timestamp, result)
+        if execute:
+            result = api_set_pixel.execute(int(args[0]), int(args[1]), args[2])
+            output.log_result(timestamp, result)
+        return
+
+    raise ValueError("Invalid arguents.")
 
 # -------------------------------------------------------------------- #

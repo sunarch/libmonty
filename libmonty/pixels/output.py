@@ -26,21 +26,31 @@ def form_separator() -> str:
     return "-" * 72
 
 
+def form_request_input(name: str, arguments: dict) -> str:
+
+    s_request = f'"{name}"'
+
+    for s_key in arguments:
+        s_request += f" <{s_key}: {arguments[s_key]}>"
+
+    return f"API request: {s_request}"
+
+
 def log_result(timestamp: str, result: dict) -> None:
 
     with open(files.log_path(timestamp), "at", encoding="utf-8") as f_log:
 
         if result is None:
-            to_all(f"Result is None.", f_log)
+            to_log(f"Result is None.", f_log)
             return
 
-        s_request = f'"{result["request_name"]}"'
         try:
-            for s_key in result['request_arguments']:
-                s_request += f" <{s_key}: {result['request_arguments'][s_key]}>"
+            d_arguments = result['request_arguments']
         except KeyError:
-            pass
-        to_all(f"API request: {s_request}", f_log)
+            d_arguments = {}
+
+        s_request = form_request_input(result["request_name"], d_arguments)
+        to_log(s_request, f_log)
 
         response = result['response']
 
@@ -48,7 +58,7 @@ def log_result(timestamp: str, result: dict) -> None:
         s_status_title = responses.get(i_status)['title']
         s_status = f"{i_status} - {s_status_title}"
 
-        to_all(f"Response:    {s_status}", f_log)
+        to_log(f"Response:    {s_status}", f_log)
 
         if result['data']:
 
@@ -56,7 +66,7 @@ def log_result(timestamp: str, result: dict) -> None:
             s_enc = result['data_encoding']
             s_data = result['data']
 
-            to_all(f'Data:        ({s_type}/{s_enc}) "{s_data}"', f_log)
+            to_log(f'Data:        ({s_type}/{s_enc}) "{s_data}"', f_log)
 
         if result['rate_limits']:
 
@@ -68,13 +78,13 @@ def log_result(timestamp: str, result: dict) -> None:
             s_period = result['rate_limits'][api_headers.RATE_LIMIT_TIME_PERIOD]
             s_time = f"{s_reset:>3} / {s_period:>3} s"
 
-            to_all(f"Rate limits: {s_count} ({s_time})", f_log)
+            to_log(f"Rate limits: {s_count} ({s_time})", f_log)
 
         if result['cooldown']:
 
-            to_all(f"Cooldown:    {result['cooldown']}", f_log)
+            to_log(f"Cooldown:    {result['cooldown']}", f_log)
 
-        to_all(form_separator(), f_log)
+        to_log(form_separator(), f_log)
 
         try:
             regular_response_headers_to_log(result['headers'], f_log)
