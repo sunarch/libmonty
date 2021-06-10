@@ -2,26 +2,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import time
-import shutil
-import os
+from libmonty.network import responses
 
-
-FOLDER_LOGS = "libmonty/pixels/logs"
-FOLDER_LOGS_ARCHIVE = "libmonty/pixels/logs/archive"
-
-FOLDER_IMG = "libmonty/pixels/canvas"
-FOLDER_IMG_ARCHIVE = "libmonty/pixels/canvas/archive"
-
-
-def log_path(timecode: str) -> str:
-
-    return f"{FOLDER_LOGS}/{timecode}.txt"
-
-
-def log_filename() -> str:
-
-    return time.strftime("%Y-%m-%d-t-%H-%M-%S-z", time.gmtime())
+from libmonty.pixels import files
+from libmonty.pixels import api_headers
 
 
 def to_console(content: str) -> None:
@@ -32,7 +16,7 @@ def to_log(content: str, f_log) -> None:
     f_log.write(f"{content}" + "\n")
 
 
-def output(content: str, f_log) -> None:
+def to_all(content: str, f_log) -> None:
     to_log(content, f_log)
     to_console(content)
 
@@ -42,24 +26,60 @@ def form_separator() -> str:
     return "-" * 72
 
 
-def archive_old_files():
+def log_result(timestamp: str, result: dict) -> None:
 
-    ls_groups = [
-        (FOLDER_LOGS, FOLDER_LOGS_ARCHIVE, ".txt"),
-        (FOLDER_IMG, FOLDER_IMG_ARCHIVE, ".png")
-    ]
+    with open(files.log_path(timestamp), "at", encoding="utf-8") as f_log:
 
-    for t_group in ls_groups:
+        if result is None:
+            to_all(f"Result is None.", f_log)
+            return
 
-        ls_files = os.listdir(t_group[0])
+        s_request = f'"{result["request_name"]}"'
+        try:
+            for s_key in result['request_arguments']:
+                s_request += f" <{s_key}: {result['request_arguments'][s_key]}>"
+        except KeyError:
+            pass
+        to_all(f"API request: {s_request}", f_log)
 
-        for s_file in ls_files:
-            s_path_old = f"{t_group[0]}/{s_file}"
-            s_path_new = f"{t_group[1]}/{s_file}"
+        response = result['response']
 
-            if os.path.isfile(s_path_old):
-                if t_group[2] in s_file:
-                    shutil.move(s_path_old, s_path_new)
+        i_status = response.status_code
+        s_status_title = responses.get(i_status)['title']
+        s_status = f"{i_status} - {s_status_title}"
+
+        to_all(f"Response:    {s_status}", f_log)
+
+        if result['data']:
+
+            s_type = result['data_type']
+            s_enc = result['data_encoding']
+            s_data = result['data']
+
+            to_all(f'Data:        ({s_type}/{s_enc}) "{s_data}"', f_log)
+
+        if result['rate_limits']:
+
+            s_remaining = result['rate_limits'][api_headers.RATE_LIMIT_COUNT_REMAINING]
+            s_limit = result['rate_limits'][api_headers.RATE_LIMIT_COUNT_LIMIT]
+            s_count = f"{s_remaining} / {s_limit}"
+
+            s_reset = result['rate_limits'][api_headers.RATE_LIMIT_TIME_RESET]
+            s_period = result['rate_limits'][api_headers.RATE_LIMIT_TIME_PERIOD]
+            s_time = f"{s_reset:>3} / {s_period:>3} s"
+
+            to_all(f"Rate limits: {s_count} ({s_time})", f_log)
+
+        if result['cooldown']:
+
+            to_all(f"Cooldown:    {result['cooldown']}", f_log)
+
+        try:
+            regular_response_headers_to_log(result['headers'], f_log)
+        except KeyError:
+            raise
+
+        to_all(form_separator(), f_log)
 
 
 def regular_response_headers_to_log(headers: dict, f_log) -> None:
