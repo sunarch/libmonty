@@ -5,21 +5,10 @@
 import queue
 import threading
 
-from libmonty.images import convert_from_stream as img_convert
-
 from libmonty.pixels import config
 from libmonty.pixels import output
 from libmonty.pixels import files
-
-from libmonty.pixels import api_get_pixel
-from libmonty.pixels import api_get_pixels
-from libmonty.pixels import api_get_size
-from libmonty.pixels import api_set_pixel
-
-
-NEXT_EXIT = "exit"
-NEXT_FINISH = "finish"
-NEXT_ABORT = "abort"
+from libmonty.pixels import commands
 
 
 def main(args: list[str], kwargs: dict) -> None:
@@ -82,17 +71,17 @@ def main(args: list[str], kwargs: dict) -> None:
         else:
             task_queue.put((command, ls_args, s_timestamp))
 
-        if s_next == NEXT_FINISH:
+        if s_next == commands.NEXT_FINISH:
             finish.set()
             task_worker.join()
             break
 
-        if s_next == NEXT_ABORT:
+        if s_next == commands.NEXT_ABORT:
             abort.set()
             task_worker.join()
             break
 
-        if b_no_interactive or s_next == NEXT_EXIT:
+        if b_no_interactive or s_next == commands.NEXT_EXIT:
             task_queue.join()
             finish.set()
             task_worker.join()
@@ -142,15 +131,15 @@ def process_command(command: str,
                     **kwargs) -> str:
 
     d_commands = {
-        "exit": finish_all_and_exit,
-        "finish": finish_queue_and_exit,
-        "abort": abort_queue_and_exit,
-        "queue": show_queue_size,
-        "get": cmd_get,
-        "img": cmd_image,
-        "image": cmd_image,
-        "size": cmd_size,
-        "set": cmd_set
+        "exit": commands.finish_all_and_exit,
+        "finish": commands.finish_queue_and_exit,
+        "abort": commands.abort_queue_and_exit,
+        "queue": commands.show_queue_size,
+        "get": commands.cmd_get,
+        "img": commands.cmd_image,
+        "image": commands.cmd_image,
+        "size": commands.cmd_size,
+        "set": commands.cmd_set
     }
 
     ls_args = []
@@ -186,135 +175,5 @@ def process_command(command: str,
         raise
 
     return s_return
-
-
-def finish_all_and_exit(timestamp: str, execute: bool, **kwargs) -> str:
-    return NEXT_EXIT
-
-
-def finish_queue_and_exit(timestamp: str, execute: bool, **kwargs) -> str:
-    return NEXT_FINISH
-
-
-def abort_queue_and_exit(timestamp: str, execute: bool, **kwargs) -> str:
-    return NEXT_ABORT
-
-
-def show_queue_size(timestamp: str, execute: bool, **kwargs) -> None:
-
-    try:
-        output.to_console(f"Items in queue: {kwargs['task_queue'].qsize()}")
-        output.to_console(output.form_separator())
-    except AttributeError:
-        pass
-
-
-def cmd_get(timestamp: str, execute: bool, **kwargs) -> None:
-
-    if len(kwargs['args']) == 1 and kwargs['args'][0] == "head":
-        if execute:
-            result = api_get_pixel.headers()
-            output.log_result(timestamp, result)
-        else:
-            s_request = output.form_request_input(api_set_pixel.API_NAME_HEAD, {})
-            output.to_console(f"Queued: {s_request}")
-            output.to_console(output.form_separator())
-        return
-
-    if len(kwargs['args']) == 2:
-        if execute:
-            result = api_get_pixel.execute(int(kwargs['args'][0]), int(kwargs['args'][1]))
-            output.log_result(timestamp, result)
-        else:
-            d_args = dict(zip(["x", "y"], kwargs['args']))
-            s_request = output.form_request_input(api_get_pixel.API_NAME_GET, d_args)
-            output.to_console(f"Queued: {s_request}")
-            output.to_console(output.form_separator())
-        return
-
-    raise ValueError("Invalid arguments.")
-
-
-def cmd_image(timestamp: str, execute: bool, **kwargs) -> None:
-
-    if len(kwargs['args']) == 1 and kwargs['args'][0] == "head":
-        if execute:
-            result = api_get_pixels.headers()
-            output.log_result(timestamp, result)
-        else:
-            s_request = output.form_request_input(api_get_pixels.API_NAME_HEAD, {})
-            output.to_console(f"Queued: {s_request}")
-            output.to_console(output.form_separator())
-        return
-
-    if len(kwargs['args']) == 0 and not kwargs['kwargs']:
-        if execute:
-            subcmd_image(timestamp)
-        else:
-            s_request = output.form_request_input(api_get_pixels.API_NAME_GET, {})
-            output.to_console(f"Queued: {s_request}")
-            output.to_console(output.form_separator())
-        return
-
-    raise ValueError("Invalid arguents.")
-
-
-def subcmd_image(timestamp: str) -> None:
-
-    result_s = api_get_size.execute()
-    output.log_result(timestamp, result_s)
-
-    result_p = api_get_pixels.execute()
-    output.log_result(timestamp, result_p)
-
-    try:
-        img_convert.rgb(files.FOLDER_IMG,
-                        timestamp,
-                        result_p['bytes'],
-                        (result_s['width'], result_s['height']),
-                        scale=8)
-    except KeyError:
-        pass
-
-
-def cmd_size(timestamp: str, execute: bool, **kwargs) -> None:
-
-    if len(kwargs['args']) == 0 and not kwargs['kwargs']:
-        if execute:
-            result = api_get_size.execute()
-            output.log_result(timestamp, result)
-        else:
-            s_request = output.form_request_input(api_get_size.API_NAME_GET, {})
-            output.to_console(f"Queued: {s_request}")
-            output.to_console(output.form_separator())
-        return
-
-    raise ValueError("Invalid arguents.")
-
-
-def cmd_set(timestamp: str, execute: bool, **kwargs) -> None:
-
-    if len(kwargs['args']) == 1 and kwargs['args'][0] == "head":
-        if execute:
-            result = api_set_pixel.headers()
-            output.log_result(timestamp, result)
-        else:
-            s_request = output.form_request_input(api_set_pixel.API_NAME_HEAD, {})
-            output.to_console(f"Queued: {s_request}")
-            output.to_console(output.form_separator())
-        return
-
-    if len(kwargs['args']) == 3:
-        if execute:
-            result = api_set_pixel.execute(int(kwargs['args'][0]), int(kwargs['args'][1]), kwargs['args'][2])
-            output.log_result(timestamp, result)
-        else:
-            d_args = dict(zip(["x", "y", "rgb"], kwargs['args']))
-            s_request = output.form_request_input(api_set_pixel.API_NAME_POST, d_args)
-            output.to_console(f"Queued: {s_request}")
-            output.to_console(output.form_separator())
-        return
-
-    raise ValueError("Invalid arguents.")
 
 # -------------------------------------------------------------------- #
