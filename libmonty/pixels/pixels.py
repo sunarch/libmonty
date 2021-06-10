@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import json
-
 from libmonty.network import responses
 from libmonty.images import convert_from_stream as img_convert
 
@@ -15,8 +13,6 @@ from libmonty.pixels import api_get_pixels
 from libmonty.pixels import api_get_size
 from libmonty.pixels import api_set_pixel
 from libmonty.pixels import api_headers
-
-MAX_CONSOLE_LOG_LENGTH = 110
 
 
 def main(args: list[str], kwargs: dict) -> None:

@@ -6,8 +6,6 @@ import time
 import shutil
 import os
 
-from libmonty.pixels import config
-
 
 FOLDER_LOGS = "libmonty/pixels/logs"
 FOLDER_LOGS_ARCHIVE = "libmonty/pixels/logs/archive"
