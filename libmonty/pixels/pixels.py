@@ -27,8 +27,6 @@ def main(args: list[str], kwargs: dict) -> None:
         output.to_all(f"Pixels log: {s_timestamp}", f_log)
         output.to_all(output.form_separator(), f_log)
 
-    d_struct = None
-
     # api_get_pixel ----------------------------------------------------
 
     if len(args) == 2 and args[0] == "get" and args[1] == "head":
@@ -48,21 +46,7 @@ def main(args: list[str], kwargs: dict) -> None:
         output.log_result(s_timestamp, result)
 
     if len(args) == 1 and args[0] in image_commands:
-
-        result_s = api_get_size.execute()
-        output.log_result(s_timestamp, result_s)
-
-        result_p = api_get_pixels.execute()
-        output.log_result(s_timestamp, result_p)
-
-        try:
-            img_convert.rgb(files.FOLDER_IMG,
-                            s_timestamp,
-                            result_p['bytes'],
-                            (result_s['width'],  result_s['height']),
-                            scale=8)
-        except KeyError:
-            pass
+        cmd_image(s_timestamp)
 
     # api_get_size -----------------------------------------------------
 
@@ -79,5 +63,23 @@ def main(args: list[str], kwargs: dict) -> None:
     if len(args) == 4 and args[0] == "set":
         result = api_set_pixel.execute(int(args[1]), int(args[2]), args[3])
         output.log_result(s_timestamp, result)
+
+
+def cmd_image(timestamp: str):
+
+    result_s = api_get_size.execute()
+    output.log_result(timestamp, result_s)
+
+    result_p = api_get_pixels.execute()
+    output.log_result(timestamp, result_p)
+
+    try:
+        img_convert.rgb(files.FOLDER_IMG,
+                        timestamp,
+                        result_p['bytes'],
+                        (result_s['width'], result_s['height']),
+                        scale=8)
+    except KeyError:
+        pass
 
 # -------------------------------------------------------------------- #
