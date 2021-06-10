@@ -66,6 +66,8 @@ def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> di
         "message": message
     }
 
+    d_result.update(api_headers.sort_by_type(response.headers))
+
     return d_result
 
 

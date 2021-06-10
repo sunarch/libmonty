@@ -31,6 +31,8 @@ def execute() -> dict:
         "bytes": response.content
     }
 
+    d_result.update(api_headers.sort_by_type(response.headers))
+
     return d_result
 
 

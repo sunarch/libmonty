@@ -5,6 +5,7 @@
 import requests
 import json
 
+from libmonty.pixels import api_headers
 
 # Get Size
 
@@ -44,6 +45,8 @@ def execute() -> dict:
         "width": width,
         "height": height
     }
+
+    d_result.update(api_headers.sort_by_type(response.headers))
 
     return d_result
 

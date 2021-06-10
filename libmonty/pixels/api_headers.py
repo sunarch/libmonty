@@ -24,6 +24,8 @@ def request(api_url: str, request_name: str) -> dict:
         "data_encoding": response.encoding
     }
 
+    d_result.update(sort_by_type(response.headers))
+
     return d_result
 
 
@@ -51,7 +53,7 @@ RATE_LIMIT_HEADER_LABELS = [
 ]
 
 
-def sort_by_type(headers: dict) -> tuple[dict, str, dict]:
+def sort_by_type(headers: CaseInsensitiveDict) -> dict:
 
     d_rate_limit_info = {}
     s_rate_limit_cooldown = ""
@@ -65,6 +67,10 @@ def sort_by_type(headers: dict) -> tuple[dict, str, dict]:
         else:
             d_regular_headers[s_header_tag] = headers[s_header_tag]
 
-    return d_rate_limit_info, s_rate_limit_cooldown, d_regular_headers
+    return {
+        "rate_limits": d_rate_limit_info,
+        "cooldown": s_rate_limit_cooldown,
+        "headers": d_regular_headers
+    }
 
 # -------------------------------------------------------------------- #

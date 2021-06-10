@@ -118,25 +118,26 @@ def log_result(timestamp: str, result: dict) -> None:
 
                 output.output(f'Data:        ({s_type}/{s_enc}) "{s_data}"', f_log)
 
-            d_rate_limits, s_cooldown, d_headers = api_headers.sort_by_type(response.headers)
+            if result['rate_limits']:
 
-            if d_rate_limits:
-
-                s_remaining = d_rate_limits[api_headers.RATE_LIMIT_COUNT_REMAINING]
-                s_limit = d_rate_limits[api_headers.RATE_LIMIT_COUNT_LIMIT]
+                s_remaining = result['rate_limits'][api_headers.RATE_LIMIT_COUNT_REMAINING]
+                s_limit = result['rate_limits'][api_headers.RATE_LIMIT_COUNT_LIMIT]
                 s_count = f"{s_remaining} / {s_limit}"
 
-                s_reset = d_rate_limits[api_headers.RATE_LIMIT_TIME_RESET]
-                s_period = d_rate_limits[api_headers.RATE_LIMIT_TIME_PERIOD]
+                s_reset = result['rate_limits'][api_headers.RATE_LIMIT_TIME_RESET]
+                s_period = result['rate_limits'][api_headers.RATE_LIMIT_TIME_PERIOD]
                 s_time = f"{s_reset:>3} / {s_period:>3} s"
 
                 output.output(f"Rate limits: {s_count} ({s_time})", f_log)
 
-            if s_cooldown:
+            if result['cooldown']:
 
-                output.output(f"Cooldown:    {s_cooldown}", f_log)
+                output.output(f"Cooldown:    {result['cooldown']}", f_log)
 
-            output.regular_response_headers_to_log(d_headers, f_log)
+            try:
+                output.regular_response_headers_to_log(result['headers'], f_log)
+            except KeyError:
+                raise
 
             output.output(output.form_separator(), f_log)
 
