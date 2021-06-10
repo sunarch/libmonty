@@ -64,19 +64,9 @@ def archive_old_files():
                     shutil.move(s_path_old, s_path_new)
 
 
-def section_response_headers(headers, f_log):
-
-    d_rate_limit_headers = config.parse_headers(headers)
-
-    s_heading = "Response headers:"
+def regular_response_headers_to_log(headers: dict, f_log) -> None:
 
     to_log(form_separator(), f_log)
-    to_log(s_heading, f_log)
-    to_log("", f_log)
-    if len(d_rate_limit_headers) > 0:
-        to_console(form_separator())
-        to_console(s_heading)
-        to_console("")
 
     i_longest_tag = 1
     for s_header in headers:
@@ -88,8 +78,5 @@ def section_response_headers(headers, f_log):
         s_title = f"{s_tag:<{i_longest_tag + 2}}"
         s_content = f"'{headers[s_header]}'"
         to_log(f"{s_title} : {s_content}", f_log)
-
-        if s_header in config.RATE_LIMIT_HEADER_LABELS:
-            to_console(f"{s_title} : {s_content}")
 
 # -------------------------------------------------------------------- #

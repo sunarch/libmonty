@@ -4,6 +4,8 @@
 
 import requests
 
+from requests.structures import CaseInsensitiveDict
+
 from libmonty.pixels import config
 
 
@@ -22,8 +24,47 @@ def request(api_url: str, request_name: str) -> dict:
         "data_encoding": response.encoding
     }
 
-    d_result.update(config.parse_headers(response.headers))
-
     return d_result
+
+
+RATE_LIMIT_COUNT_REMAINING = "Requests-Remaining"  # (int)
+# How many requests you are still allowed to do before waiting.
+
+RATE_LIMIT_COUNT_LIMIT = "Requests-Limit"  # (int)
+# How many requests you can do during a period.
+
+RATE_LIMIT_TIME_RESET = "Requests-Reset"  # (float)
+# How many seconds you must wait without sending a request
+# before getting all your requests back.
+# `0` if you still have all your requests.
+
+RATE_LIMIT_TIME_PERIOD = "Requests-Period"  # (int)
+# Duration, in seconds, of the ratelimit period.
+
+RATE_LIMIT_COOLDOWN = "Cooldown-Reset"
+
+RATE_LIMIT_HEADER_LABELS = [
+    RATE_LIMIT_COUNT_REMAINING,
+    RATE_LIMIT_COUNT_LIMIT,
+    RATE_LIMIT_TIME_RESET,
+    RATE_LIMIT_TIME_PERIOD
+]
+
+
+def sort_by_type(headers: dict) -> tuple[dict, str, dict]:
+
+    d_rate_limit_info = {}
+    s_rate_limit_cooldown = ""
+    d_regular_headers = {}
+
+    for s_header_tag in headers:
+        if s_header_tag in RATE_LIMIT_HEADER_LABELS:
+            d_rate_limit_info[s_header_tag] = headers[s_header_tag]
+        elif s_header_tag == RATE_LIMIT_COOLDOWN:
+            s_rate_limit_cooldown = headers[s_header_tag]
+        else:
+            d_regular_headers[s_header_tag] = headers[s_header_tag]
+
+    return d_rate_limit_info, s_rate_limit_cooldown, d_regular_headers
 
 # -------------------------------------------------------------------- #

@@ -14,6 +14,7 @@ from libmonty.pixels import api_get_pixel
 from libmonty.pixels import api_get_pixels
 from libmonty.pixels import api_get_size
 from libmonty.pixels import api_set_pixel
+from libmonty.pixels import api_headers
 
 MAX_CONSOLE_LOG_LENGTH = 110
 
@@ -109,14 +110,33 @@ def log_result(timestamp: str, result: dict) -> None:
 
             output.output(f"Response:    {s_status}", f_log)
 
-            s_type = result['data_type']
-            s_enc = result['data_encoding']
-            s_data = result['data']
+            if result['data']:
 
-            output.output(f'Data:        ({s_type}/{s_enc}) "{s_data}"', f_log)
+                s_type = result['data_type']
+                s_enc = result['data_encoding']
+                s_data = result['data']
 
-            if len(config.parse_headers(response.headers)) > 0:
-                output.section_response_headers(response.headers, f_log)
+                output.output(f'Data:        ({s_type}/{s_enc}) "{s_data}"', f_log)
+
+            d_rate_limits, s_cooldown, d_headers = api_headers.sort_by_type(response.headers)
+
+            if d_rate_limits:
+
+                s_remaining = d_rate_limits[api_headers.RATE_LIMIT_COUNT_REMAINING]
+                s_limit = d_rate_limits[api_headers.RATE_LIMIT_COUNT_LIMIT]
+                s_count = f"{s_remaining} / {s_limit}"
+
+                s_reset = d_rate_limits[api_headers.RATE_LIMIT_TIME_RESET]
+                s_period = d_rate_limits[api_headers.RATE_LIMIT_TIME_PERIOD]
+                s_time = f"{s_reset:>3} / {s_period:>3} s"
+
+                output.output(f"Rate limits: {s_count} ({s_time})", f_log)
+
+            if s_cooldown:
+
+                output.output(f"Cooldown:    {s_cooldown}", f_log)
+
+            output.regular_response_headers_to_log(d_headers, f_log)
 
             output.output(output.form_separator(), f_log)
 
