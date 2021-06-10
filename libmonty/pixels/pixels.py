@@ -27,8 +27,9 @@ def main(args: list[str], kwargs: dict) -> None:
     s_timestamp = output.log_filename()
 
     with open(output.log_path(s_timestamp), "wt", encoding="utf-8") as f_log:
-        s_heading = output.construct_heading(f"Pixels log: {s_timestamp}")
-        output.output(s_heading, f_log)
+        output.output(output.form_separator(), f_log)
+        output.output(f"Pixels log: {s_timestamp}", f_log)
+        output.output(output.form_separator(), f_log)
 
     d_struct = None
 
@@ -61,7 +62,7 @@ def main(args: list[str], kwargs: dict) -> None:
         try:
             img_convert.rgb(output.FOLDER_IMG,
                             s_timestamp,
-                            result_p['data'],
+                            result_p['bytes'],
                             (result_s['width'],  result_s['height']),
                             scale=8)
         except KeyError:
@@ -88,7 +89,7 @@ def log_result(timestamp: str, result: dict) -> None:
 
     with open(output.log_path(timestamp), "at", encoding="utf-8") as f_log:
 
-        s_request = f"'{result['request_name']}'"
+        s_request = f'"{result["request_name"]}"'
         try:
             for s_key in result['request_arguments']:
                 s_request += f" <{s_key}: {result['request_arguments'][s_key]}>"
@@ -96,65 +97,27 @@ def log_result(timestamp: str, result: dict) -> None:
             pass
         output.output(f"API request: {s_request}", f_log)
 
-        output.output(output.construct_heading("Data:"), f_log)
-
-        i_longest_tag = 1
-        for s_field in result:
-            if s_field != "response":
-                if len(s_field) > i_longest_tag:
-                    i_longest_tag = len(s_field)
-
-        for s_field in result:
-            if s_field != "response":
-
-                s_tag = f"'{s_field}'"
-                s_title = f"{s_tag:<{i_longest_tag + 2}}"
-
-                try:
-                    s_content = f"'{result[s_field]}'"
-
-                    try:
-                        if len(result[s_field]) < MAX_CONSOLE_LOG_LENGTH:
-                            output.output(f"{s_title} : {s_content}", f_log)
-                        else:
-                            output.to_log(f"{s_title} : {s_content}", f_log)
-                            output.to_console(f"{s_title} : <data | length: {len(result[s_field])}>")
-                    except TypeError:
-                        output.output(f"{s_title} : {s_content}", f_log)
-
-                except AttributeError:
-                    output.output(f"{s_title} : AttributeError", f_log)
-
     if result is not None:
 
         response = result['response']
 
         with open(output.log_path(timestamp), "at", encoding="utf-8") as f_log:
 
-            output.output(output.construct_heading("Response:"), f_log)
-
             i_status = response.status_code
             s_status_title = responses.get(i_status)['title']
+            s_status = f"{i_status} - {s_status_title}"
 
-            output.output(f"Status code: '{i_status}' - {s_status_title}", f_log)
-            output.output(f"Encoding:    '{response.encoding}'", f_log)
+            output.output(f"Response:    {s_status}", f_log)
 
-            if len(response.text) < MAX_CONSOLE_LOG_LENGTH:
-                output.output(f"Text:        '{response.text}'", f_log)
-            else:
-                output.to_log(f"Text:        '{response.text}'", f_log)
-                output.to_console(f"Text:        <data | length: {len(response.text)}>")
+            s_type = result['data_type']
+            s_enc = result['data_encoding']
+            s_data = result['data']
 
-            try:
-                s_json = f"'{response.json()}'"
-            except json.JSONDecodeError:
-                s_json = "Invalid JSON data."
-
-            output.output(f"JSON:        {s_json}", f_log)
+            output.output(f'Data:        ({s_type}/{s_enc}) "{s_data}"', f_log)
 
             if len(config.parse_headers(response.headers)) > 0:
                 output.section_response_headers(response.headers, f_log)
 
-            output.output(output.construct_heading(""), f_log)
+            output.output(output.form_separator(), f_log)
 
 # -------------------------------------------------------------------- #

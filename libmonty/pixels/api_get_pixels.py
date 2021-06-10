@@ -21,12 +21,13 @@ def execute() -> dict:
         headers=config.get_auth_headers()
     )
 
-    data = response.content
-
     d_result = {
         "request_name": "GET /get_pixels",
         "response": response,
-        "data": data
+        "data": f"#length: {len(response.content)}",
+        "data_type": "octet-stream",
+        "data_encoding": "raw",
+        "bytes": response.content
     }
 
     return d_result
@@ -42,6 +43,9 @@ def headers() -> dict:
     d_result = {
         "request_name": "HEAD /get_pixels",
         "response": response,
+        "data": response.text,
+        "data_type": "none",
+        "data_encoding": response.encoding
     }
 
     d_result.update(config.parse_headers(response.headers))

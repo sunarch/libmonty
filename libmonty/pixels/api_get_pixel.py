@@ -42,8 +42,12 @@ def execute(x: int = None, y: int = None, **kwargs: dict) -> dict:
 
     try:
         payload = response.json()
+        data = response.json()
+        data_type = "json"
     except json.JSONDecodeError:
-        payload = {"rgb": ""}
+        payload = {}
+        data = response.text
+        data_type = "text"
 
     try:
         rgb = payload["rgb"]
@@ -54,6 +58,9 @@ def execute(x: int = None, y: int = None, **kwargs: dict) -> dict:
         "request_name": "GET /get_pixel",
         "request_arguments": d_arguments,
         "response": response,
+        "data": data,
+        "data_type": data_type,
+        "data_encoding": response.encoding,
         "rgb": rgb
     }
 
@@ -70,6 +77,9 @@ def headers() -> dict:
     d_result = {
         "request_name": "HEAD /get_pixel",
         "response": response,
+        "data": response.text,
+        "data_type": "none",
+        "data_encoding": "none"
     }
 
     d_result.update(config.parse_headers(response.headers))

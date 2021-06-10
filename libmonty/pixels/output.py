@@ -39,9 +39,9 @@ def output(content: str, f_log) -> None:
     to_console(content)
 
 
-def construct_heading(content: str) -> str:
+def form_separator() -> str:
 
-    return ("-" * 72) + "\n" + content + "\n"
+    return "-" * 72
 
 
 def archive_old_files():
@@ -68,10 +68,15 @@ def section_response_headers(headers, f_log):
 
     d_rate_limit_headers = config.parse_headers(headers)
 
-    s_heading = construct_heading("Response headers:")
+    s_heading = "Response headers:"
+
+    to_log(form_separator(), f_log)
     to_log(s_heading, f_log)
+    to_log("", f_log)
     if len(d_rate_limit_headers) > 0:
+        to_console(form_separator())
         to_console(s_heading)
+        to_console("")
 
     i_longest_tag = 1
     for s_header in headers:

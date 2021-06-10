@@ -42,8 +42,12 @@ def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> di
 
     try:
         payload = response.json()
+        data = response.json()
+        data_type = "json"
     except json.JSONDecodeError:
-        payload = {"message": ""}
+        payload = {}
+        data = response.text
+        data_type = "text"
 
     # e.g. "added pixel at x=123,y=12 of color 87CEEB"
     try:
@@ -55,6 +59,9 @@ def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> di
         "request_name": "POST /set_pixel",
         "request_arguments": d_arguments,
         "response": response,
+        "data": data,
+        "data_type": data_type,
+        "data_encoding": response.encoding,
         "message": message
     }
 
@@ -71,6 +78,9 @@ def headers() -> dict:
     d_result = {
         "request_name": "HEAD /set_pixel",
         "response": response,
+        "data": response.text,
+        "data_type": "none",
+        "data_encoding": response.encoding
     }
 
     d_result.update(config.parse_headers(response.headers))

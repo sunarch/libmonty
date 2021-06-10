@@ -21,14 +21,28 @@ def execute() -> dict:
 
     try:
         payload = response.json()
+        data = response.json()
+        data_type = "json"
     except json.JSONDecodeError:
-        payload = {"width": "", "height": ""}
+        payload = {}
+        data = response.text
+        data_type = "text"
+
+    try:
+        width = payload["width"]
+        height = payload["height"]
+    except KeyError:
+        width = None
+        height = None
 
     d_result = {
         "request_name": "GET /get_size",
         "response": response,
-        "width": payload["width"],
-        "height": payload["height"]
+        "data": data,
+        "data_type": data_type,
+        "data_encoding": response.encoding,
+        "width": width,
+        "height": height
     }
 
     return d_result
