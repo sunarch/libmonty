@@ -61,15 +61,14 @@ def main(args: list[str], kwargs: dict) -> None:
         ls_args = args[1:]
 
         try:
-            s_next = process_command(command, ls_args, s_timestamp, False,
+            s_next = process_command(command, ls_args, s_timestamp,
+                                     execute=False,
                                      task_queue=task_queue)
         except ValueError as err:
             s_next = "error"
             if str(err) != "":
                 print(err)
                 output.to_console(output.form_separator())
-        else:
-            task_queue.put((command, ls_args, s_timestamp))
 
         if s_next == commands.NEXT_FINISH:
             finish.set()
@@ -115,7 +114,7 @@ def task_queue_worker(task_queue, **kwargs):
                 continue
 
         try:
-            process_command(command, ls_args, s_timestamp, True)
+            process_command(command, ls_args, s_timestamp, execute=True)
         except ValueError as err:
             if str(err) != "":
                 print(err)
@@ -127,7 +126,7 @@ def task_queue_worker(task_queue, **kwargs):
 def process_command(command: str,
                     args: list[str],
                     timestamp: str,
-                    execute: bool,
+                    execute: bool = False,
                     **kwargs) -> str:
 
     d_commands = {
@@ -167,10 +166,9 @@ def process_command(command: str,
         task_queue = None
 
     try:
-        s_return = d_commands[command](timestamp, execute,
+        s_return = d_commands[command](execute, timestamp, task_queue,
                                        args=ls_args,
-                                       kwargs=d_kwargs,
-                                       task_queue=task_queue)
+                                       kwargs=d_kwargs)
     except ValueError:
         raise
 

@@ -18,34 +18,35 @@ NEXT_FINISH = "finish"
 NEXT_ABORT = "abort"
 
 
-def finish_all_and_exit(timestamp: str, execute: bool, **kwargs) -> str:
+def finish_all_and_exit(execute: bool, timestamp: str, task_queue, **kwargs) -> str:
     return NEXT_EXIT
 
 
-def finish_queue_and_exit(timestamp: str, execute: bool, **kwargs) -> str:
+def finish_queue_and_exit(execute: bool, timestamp: str, task_queue, **kwargs) -> str:
     return NEXT_FINISH
 
 
-def abort_queue_and_exit(timestamp: str, execute: bool, **kwargs) -> str:
+def abort_queue_and_exit(execute: bool, timestamp: str, task_queue, **kwargs) -> str:
     return NEXT_ABORT
 
 
-def show_queue_size(timestamp: str, execute: bool, **kwargs) -> None:
+def show_queue_size(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
     try:
-        output.to_console(f"Items in queue: {kwargs['task_queue'].qsize()}")
+        output.to_console(f"Items in queue: {task_queue.qsize()}")
         output.to_console(output.form_separator())
     except AttributeError:
         pass
 
 
-def cmd_get(timestamp: str, execute: bool, **kwargs) -> None:
+def cmd_get(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
     if len(kwargs['args']) == 1 and kwargs['args'][0] == "head":
         if execute:
             result = api_get_pixel.headers()
             output.log_result(timestamp, result)
         else:
+            task_queue.put(("get", kwargs['args'], timestamp))
             s_request = output.form_request_input(api_set_pixel.API_NAME_HEAD, {})
             output.to_console(f"Queued: {s_request}")
             output.to_console(output.form_separator())
@@ -56,6 +57,7 @@ def cmd_get(timestamp: str, execute: bool, **kwargs) -> None:
             result = api_get_pixel.execute(int(kwargs['args'][0]), int(kwargs['args'][1]))
             output.log_result(timestamp, result)
         else:
+            task_queue.put(("get", kwargs['args'], timestamp))
             d_args = dict(zip(["x", "y"], kwargs['args']))
             s_request = output.form_request_input(api_get_pixel.API_NAME_GET, d_args)
             output.to_console(f"Queued: {s_request}")
@@ -65,13 +67,14 @@ def cmd_get(timestamp: str, execute: bool, **kwargs) -> None:
     raise ValueError("Invalid arguments.")
 
 
-def cmd_image(timestamp: str, execute: bool, **kwargs) -> None:
+def cmd_image(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
     if len(kwargs['args']) == 1 and kwargs['args'][0] == "head":
         if execute:
             result = api_get_pixels.headers()
             output.log_result(timestamp, result)
         else:
+            task_queue.put(("image", kwargs['args'], timestamp))
             s_request = output.form_request_input(api_get_pixels.API_NAME_HEAD, {})
             output.to_console(f"Queued: {s_request}")
             output.to_console(output.form_separator())
@@ -81,6 +84,7 @@ def cmd_image(timestamp: str, execute: bool, **kwargs) -> None:
         if execute:
             subcmd_image(timestamp)
         else:
+            task_queue.put(("image", kwargs['args'], timestamp))
             s_request = output.form_request_input(api_get_pixels.API_NAME_GET, {})
             output.to_console(f"Queued: {s_request}")
             output.to_console(output.form_separator())
@@ -107,13 +111,14 @@ def subcmd_image(timestamp: str) -> None:
         pass
 
 
-def cmd_size(timestamp: str, execute: bool, **kwargs) -> None:
+def cmd_size(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
     if len(kwargs['args']) == 0 and not kwargs['kwargs']:
         if execute:
             result = api_get_size.execute()
             output.log_result(timestamp, result)
         else:
+            task_queue.put(("size", kwargs['args'], timestamp))
             s_request = output.form_request_input(api_get_size.API_NAME_GET, {})
             output.to_console(f"Queued: {s_request}")
             output.to_console(output.form_separator())
@@ -122,13 +127,14 @@ def cmd_size(timestamp: str, execute: bool, **kwargs) -> None:
     raise ValueError("Invalid arguents.")
 
 
-def cmd_set(timestamp: str, execute: bool, **kwargs) -> None:
+def cmd_set(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
     if len(kwargs['args']) == 1 and kwargs['args'][0] == "head":
         if execute:
             result = api_set_pixel.headers()
             output.log_result(timestamp, result)
         else:
+            task_queue.put(("set", kwargs['args'], timestamp))
             s_request = output.form_request_input(api_set_pixel.API_NAME_HEAD, {})
             output.to_console(f"Queued: {s_request}")
             output.to_console(output.form_separator())
@@ -139,6 +145,7 @@ def cmd_set(timestamp: str, execute: bool, **kwargs) -> None:
             result = api_set_pixel.execute(int(kwargs['args'][0]), int(kwargs['args'][1]), kwargs['args'][2])
             output.log_result(timestamp, result)
         else:
+            task_queue.put(("set", kwargs['args'], timestamp))
             d_args = dict(zip(["x", "y", "rgb"], kwargs['args']))
             s_request = output.form_request_input(api_set_pixel.API_NAME_POST, d_args)
             output.to_console(f"Queued: {s_request}")
