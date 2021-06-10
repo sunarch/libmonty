@@ -17,7 +17,7 @@ API_URL = "https://pixels.pythondiscord.com/set_pixel"
 
 def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> dict:
 
-    data = {
+    d_arguments = {
         "x": x,  # 80
         "y": y,  # 45
         "rgb": rgb  # "00FF00"
@@ -26,9 +26,9 @@ def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> di
     if None in (x, y, rgb):
 
         if kwargs is not None and "x" in kwargs and "y" in kwargs and "rgb" in kwargs:
-            data['x'] = kwargs['x']
-            data['y'] = kwargs['y']
-            data['rgb'] = kwargs['rgb']
+            d_arguments['x'] = kwargs['x']
+            d_arguments['y'] = kwargs['y']
+            d_arguments['rgb'] = kwargs['rgb']
 
         else:
             raise ValueError("Missing parameter!")
@@ -36,7 +36,7 @@ def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> di
     # Note: POST method, not a GET method
     response = requests.post(
         API_URL,
-        json=data,
+        json=d_arguments,
         headers=config.get_auth_headers(),
     )
 
@@ -53,6 +53,7 @@ def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> di
 
     d_result = {
         "request_name": "POST /set_pixel",
+        "request_arguments": d_arguments,
         "response": response,
         "message": message
     }

@@ -88,7 +88,13 @@ def log_result(timestamp: str, result: dict) -> None:
 
     with open(output.log_path(timestamp), "at", encoding="utf-8") as f_log:
 
-        output.output(f"API request: '{result['request_name']}'", f_log)
+        s_request = f"'{result['request_name']}'"
+        try:
+            for s_key in result['request_arguments']:
+                s_request += f" <{s_key}: {result['request_arguments'][s_key]}>"
+        except KeyError:
+            pass
+        output.output(f"API request: {s_request}", f_log)
 
         output.output(output.construct_heading("Data:"), f_log)
 

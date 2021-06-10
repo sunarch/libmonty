@@ -17,11 +17,16 @@ API_URL = "https://pixels.pythondiscord.com/get_pixel"
 
 def execute(x: int = None, y: int = None, **kwargs: dict) -> dict:
 
+    d_arguments = {
+        "x": x,
+        "y": y
+    }
+
     if None in (x, y):
 
         if kwargs is not None and "x" in kwargs and "y" in kwargs:
-            x = kwargs['x']
-            y = kwargs['y']
+            d_arguments['x'] = kwargs['x']
+            d_arguments['y'] = kwargs['y']
 
         else:
             raise ValueError("Missing parameter!")
@@ -32,10 +37,7 @@ def execute(x: int = None, y: int = None, **kwargs: dict) -> dict:
 
         # Note: coordinates as query string parameters,
         #       not in the JSON body
-        params={
-            "x": x,
-            "y": y
-        }
+        params=d_arguments
     )
 
     try:
@@ -50,6 +52,7 @@ def execute(x: int = None, y: int = None, **kwargs: dict) -> dict:
 
     d_result = {
         "request_name": "GET /get_pixel",
+        "request_arguments": d_arguments,
         "response": response,
         "rgb": rgb
     }
