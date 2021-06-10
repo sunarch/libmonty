@@ -27,8 +27,8 @@ def main(args: list[str], kwargs: dict) -> None:
     s_timestamp = output.log_filename()
 
     with open(output.log_path(s_timestamp), "wt", encoding="utf-8") as f_log:
-        output.output(output.construct_heading("Pixels log:"), f_log)
-        output.output(f"Timestamp:   '{s_timestamp}'", f_log)
+        s_heading = output.construct_heading(f"Pixels log: {s_timestamp}")
+        output.output(s_heading, f_log)
 
     d_struct = None
 
