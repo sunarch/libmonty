@@ -5,6 +5,7 @@
 import requests
 
 from libmonty.pixels import config
+from libmonty.pixels import api_headers
 
 # Get Pixels
 
@@ -35,22 +36,7 @@ def execute() -> dict:
 
 def headers() -> dict:
 
-    response = requests.head(
-        API_URL,
-        headers=config.get_auth_headers()
-    )
-
-    d_result = {
-        "request_name": "HEAD /get_pixels",
-        "response": response,
-        "data": response.text,
-        "data_type": "none",
-        "data_encoding": response.encoding
-    }
-
-    d_result.update(config.parse_headers(response.headers))
-
-    return d_result
+    return api_headers.generic(API_URL, "HEAD /get_pixels")
 
 # -------------------------------------------------------------------- #
 # Response: 200 - Successful Response
