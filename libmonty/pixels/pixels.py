@@ -20,7 +20,7 @@ MAX_CONSOLE_LOG_LENGTH = 110
 
 def main(args: list[str], kwargs: dict) -> None:
 
-    config.load_token_once()
+    config.load_token_env()
 
     output.archive_old_files()
 

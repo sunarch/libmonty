@@ -8,19 +8,14 @@ import os
 from requests.structures import CaseInsensitiveDict
 
 
-def load_token_once() -> None:
+def load_token_env() -> None:
 
     dotenv.load_dotenv(f"libmonty/pixels/.env")
 
 
-def get_token() -> str:
-
-    return os.getenv("TOKEN")
-
-
 def get_auth_headers() -> dict:
 
-    token = get_token()
+    token = os.getenv("TOKEN")
 
     headers = {
         "Authorization": f"Bearer {token}"
