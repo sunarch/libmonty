@@ -74,17 +74,15 @@ def log_result(timestamp: str, result: dict) -> None:
 
             to_all(f"Cooldown:    {result['cooldown']}", f_log)
 
+        to_all(form_separator(), f_log)
+
         try:
             regular_response_headers_to_log(result['headers'], f_log)
         except KeyError:
             raise
 
-        to_all(form_separator(), f_log)
-
 
 def regular_response_headers_to_log(headers: dict, f_log) -> None:
-
-    to_log(form_separator(), f_log)
 
     i_longest_tag = 1
     for s_header in headers:
@@ -96,5 +94,7 @@ def regular_response_headers_to_log(headers: dict, f_log) -> None:
         s_title = f"{s_tag:<{i_longest_tag + 2}}"
         s_content = f"'{headers[s_header]}'"
         to_log(f"{s_title} : {s_content}", f_log)
+
+    to_log(form_separator(), f_log)
 
 # -------------------------------------------------------------------- #

@@ -16,6 +16,10 @@ from libmonty.pixels import api_set_pixel
 
 def main(args: list[str], kwargs: dict) -> None:
 
+    b_no_interactive = False
+    if args:
+        b_no_interactive = True
+
     config.load_token_env()
 
     files.archive_old_files()
@@ -27,45 +31,105 @@ def main(args: list[str], kwargs: dict) -> None:
         output.to_all(f"Pixels log: {s_timestamp}", f_log)
         output.to_all(output.form_separator(), f_log)
 
-    # api_get_pixel ----------------------------------------------------
+    while True:
 
-    if len(args) == 2 and args[0] == "get" and args[1] == "head":
+        if not args:
+            try:
+                s_input = input("pixels $ ")
+            except KeyboardInterrupt:
+                print("")  # input command empty => linebreak
+                print("Type 'exit' to exit to main shell.")
+                continue
+
+            args = s_input.split(" ")
+
+        if not args:
+            continue
+
+        command = args[0]
+        ls_args = args[1:]
+
+        try:
+            s_next = process_command(command, ls_args, s_timestamp)
+        except ValueError as err:
+            if str(err) != "":
+                print(err)
+        else:
+            if s_next is not None:
+                break
+
+        if b_no_interactive:
+            break
+
+        args = []
+
+
+def process_command(command: str, args: list[str], timestamp: str) -> str:
+
+    output.to_console(output.form_separator())
+
+    d_commands = {
+        "exit": exit_interactive,
+        "get": cmd_get,
+        "img": cmd_image,
+        "image": cmd_image,
+        "size": cmd_size,
+        "set": cmd_set
+    }
+
+    ls_args = []
+    d_kwargs = {}
+
+    for argument in args:
+
+        if "=" not in argument:
+            ls_args.append(argument)
+            continue
+
+        ls_pair = argument.split("=")
+
+        if len(ls_pair) > 2:
+            raise ValueError("Multiple '=' in keyword argument: {}".format(argument))
+
+        d_kwargs[ls_pair[0]] = ls_pair[1]
+
+    if command not in d_commands:
+        raise ValueError("Unknown command: {}".format(command))
+
+    try:
+        s_return = d_commands[command](ls_args, d_kwargs, timestamp)
+    except ValueError:
+        raise
+
+    return s_return
+
+
+def exit_interactive(args: list[str], kwargs: dict, timestamp: str) -> str:
+    return "break"
+
+
+def cmd_get(args: list[str], kwargs: dict, timestamp: str) -> None:
+
+    if len(args) == 1 and args[0] == "head":
         result = api_get_pixel.headers()
-        output.log_result(s_timestamp, result)
+        output.log_result(timestamp, result)
 
-    if len(args) == 3 and args[0] == "get":
-        result = api_get_pixel.execute(int(args[1]), int(args[2]))
-        output.log_result(s_timestamp, result)
+    if len(args) == 2:
+        result = api_get_pixel.execute(int(args[0]), int(args[1]))
+        output.log_result(timestamp, result)
 
-    # api_get_pixels ---------------------------------------------------
 
-    image_commands = ("img", "image")
+def cmd_image(args: list[str], kwargs: dict, timestamp: str) -> None:
 
-    if len(args) == 2 and args[0] in image_commands and args[1] == "head":
+    if len(args) == 1 and args[0] == "head":
         result = api_get_pixels.headers()
-        output.log_result(s_timestamp, result)
+        output.log_result(timestamp, result)
 
-    if len(args) == 1 and args[0] in image_commands:
-        cmd_image(s_timestamp)
-
-    # api_get_size -----------------------------------------------------
-
-    if len(args) == 1 and args[0] == "size":
-        result = api_get_size.execute()
-        output.log_result(s_timestamp, result)
-
-    # api_set_pixel ----------------------------------------------------
-
-    if len(args) == 2 and args[0] == "set" and args[1] == "head":
-        result = api_set_pixel.headers()
-        output.log_result(s_timestamp, result)
-
-    if len(args) == 4 and args[0] == "set":
-        result = api_set_pixel.execute(int(args[1]), int(args[2]), args[3])
-        output.log_result(s_timestamp, result)
+    if len(args) == 0 and not kwargs:
+        subcmd_image(timestamp)
 
 
-def cmd_image(timestamp: str):
+def subcmd_image(timestamp: str) -> None:
 
     result_s = api_get_size.execute()
     output.log_result(timestamp, result_s)
@@ -81,5 +145,23 @@ def cmd_image(timestamp: str):
                         scale=8)
     except KeyError:
         pass
+
+
+def cmd_size(args: list[str], kwargs: dict, timestamp: str) -> None:
+
+    if len(args) == 0 and not kwargs:
+        result = api_get_size.execute()
+        output.log_result(timestamp, result)
+
+
+def cmd_set(args: list[str], kwargs: dict, timestamp: str) -> None:
+
+    if len(args) == 1 and args[0] == "head":
+        result = api_set_pixel.headers()
+        output.log_result(timestamp, result)
+
+    if len(args) == 3:
+        result = api_set_pixel.execute(int(args[0]), int(args[1]), args[2])
+        output.log_result(timestamp, result)
 
 # -------------------------------------------------------------------- #
