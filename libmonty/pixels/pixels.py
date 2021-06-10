@@ -213,12 +213,21 @@ def cmd_get(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kwar
         if execute:
             result = api_get_pixel.headers()
             output.log_result(timestamp, result)
+        else:
+            s_request = output.form_request_input(api_set_pixel.API_NAME_HEAD, {})
+            output.to_console(f"Queued: {s_request}")
+            output.to_console(output.form_separator())
         return
 
     if len(args) == 2:
         if execute:
             result = api_get_pixel.execute(int(args[0]), int(args[1]))
             output.log_result(timestamp, result)
+        else:
+            d_args = dict(zip(["x", "y"], args))
+            s_request = output.form_request_input(api_get_pixel.API_NAME_GET, d_args)
+            output.to_console(f"Queued: {s_request}")
+            output.to_console(output.form_separator())
         return
 
     raise ValueError("Invalid arguments.")
@@ -230,11 +239,19 @@ def cmd_image(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kw
         if execute:
             result = api_get_pixels.headers()
             output.log_result(timestamp, result)
+        else:
+            s_request = output.form_request_input(api_get_pixels.API_NAME_HEAD, {})
+            output.to_console(f"Queued: {s_request}")
+            output.to_console(output.form_separator())
         return
 
     if len(args) == 0 and not kwargs:
         if execute:
             subcmd_image(timestamp)
+        else:
+            s_request = output.form_request_input(api_get_pixels.API_NAME_GET, {})
+            output.to_console(f"Queued: {s_request}")
+            output.to_console(output.form_separator())
         return
 
     raise ValueError("Invalid arguents.")
@@ -264,6 +281,10 @@ def cmd_size(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kwa
         if execute:
             result = api_get_size.execute()
             output.log_result(timestamp, result)
+        else:
+            s_request = output.form_request_input(api_get_size.API_NAME_GET, {})
+            output.to_console(f"Queued: {s_request}")
+            output.to_console(output.form_separator())
         return
 
     raise ValueError("Invalid arguents.")
@@ -275,12 +296,21 @@ def cmd_set(args: list[str], kwargs: dict, timestamp: str, execute: bool, **kwar
         if execute:
             result = api_set_pixel.headers()
             output.log_result(timestamp, result)
+        else:
+            s_request = output.form_request_input(api_set_pixel.API_NAME_HEAD, {})
+            output.to_console(f"Queued: {s_request}")
+            output.to_console(output.form_separator())
         return
 
     if len(args) == 3:
         if execute:
             result = api_set_pixel.execute(int(args[0]), int(args[1]), args[2])
             output.log_result(timestamp, result)
+        else:
+            d_args = dict(zip(["x", "y", "rgb"], args))
+            s_request = output.form_request_input(api_set_pixel.API_NAME_POST, d_args)
+            output.to_console(f"Queued: {s_request}")
+            output.to_console(output.form_separator())
         return
 
     raise ValueError("Invalid arguents.")

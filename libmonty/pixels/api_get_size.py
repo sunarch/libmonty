@@ -15,6 +15,8 @@ from libmonty.pixels import api_headers
 
 API_URL = "https://pixels.pythondiscord.com/get_size"
 
+API_NAME_GET = "GET /get_size"
+
 
 def execute() -> dict:
 
@@ -37,7 +39,7 @@ def execute() -> dict:
         height = None
 
     d_result = {
-        "request_name": "GET /get_size",
+        "request_name": API_NAME_GET,
         "response": response,
         "data": data,
         "data_type": data_type,

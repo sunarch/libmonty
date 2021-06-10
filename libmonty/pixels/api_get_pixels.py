@@ -14,6 +14,9 @@ from libmonty.pixels import api_headers
 
 API_URL = "https://pixels.pythondiscord.com/get_pixels"
 
+API_NAME_GET = "GET /get_pixels"
+API_NAME_HEAD = "HEAD /get_pixels"
+
 
 def execute() -> dict:
 
@@ -23,7 +26,7 @@ def execute() -> dict:
     )
 
     d_result = {
-        "request_name": "GET /get_pixels",
+        "request_name": API_NAME_GET,
         "response": response,
         "data": f"#length: {len(response.content)}",
         "data_type": "octet-stream",
@@ -38,7 +41,7 @@ def execute() -> dict:
 
 def headers() -> dict:
 
-    return api_headers.request(API_URL, "HEAD /get_pixels")
+    return api_headers.request(API_URL, API_NAME_HEAD)
 
 # -------------------------------------------------------------------- #
 # Response: 200 - Successful Response
