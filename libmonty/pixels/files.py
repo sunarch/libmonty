@@ -7,6 +7,8 @@ import shutil
 import time
 
 
+FOLDER_DATA = "libmonty/pixels/data"
+
 FOLDER_LOGS = "libmonty/pixels/logs"
 FOLDER_LOGS_ARCHIVE = "libmonty/pixels/logs/archive"
 

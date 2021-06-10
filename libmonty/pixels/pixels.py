@@ -15,6 +15,8 @@ from libmonty.pixels import api_get_pixels
 from libmonty.pixels import api_get_size
 from libmonty.pixels import api_set_pixel
 
+from libmonty.pixels.projects import poetry as project_poetry
+
 
 def main(args: list[str], kwargs: dict) -> None:
 
@@ -143,7 +145,8 @@ def process_command(command: str,
         api_get_pixels.COMMAND: commands.cmd_image,
         "img": commands.cmd_image,
         api_get_size.COMMAND: commands.cmd_size,
-        api_set_pixel.COMMAND: commands.cmd_set
+        api_set_pixel.COMMAND: commands.cmd_set,
+        project_poetry.COMMAND: project_poetry.command
     }
 
     ls_args = []
