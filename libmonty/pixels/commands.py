@@ -107,6 +107,10 @@ def subcmd_image(timestamp: str) -> None:
                         result_p['bytes'],
                         (result_s['width'], result_s['height']),
                         scale=8)
+
+        with open(f"{files.FOLDER_IMG}/{timestamp}.bin", "wb") as f_bin:
+            f_bin.write(result_p['bytes'])
+
     except KeyError:
         pass
 

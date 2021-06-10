@@ -28,7 +28,8 @@ def archive_old_files():
 
     ls_groups = [
         (FOLDER_LOGS, FOLDER_LOGS_ARCHIVE, ".txt"),
-        (FOLDER_IMG, FOLDER_IMG_ARCHIVE, ".png")
+        (FOLDER_IMG, FOLDER_IMG_ARCHIVE, ".png"),
+        (FOLDER_IMG, FOLDER_IMG_ARCHIVE, ".bin")
     ]
 
     for t_group in ls_groups:
