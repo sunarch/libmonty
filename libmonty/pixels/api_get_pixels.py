@@ -36,7 +36,7 @@ def execute() -> dict:
 
 def headers() -> dict:
 
-    return api_headers.generic(API_URL, "HEAD /get_pixels")
+    return api_headers.request(API_URL, "HEAD /get_pixels")
 
 # -------------------------------------------------------------------- #
 # Response: 200 - Successful Response

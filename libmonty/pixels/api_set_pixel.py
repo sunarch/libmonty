@@ -71,7 +71,7 @@ def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> di
 
 def headers() -> dict:
 
-    return api_headers.generic(API_URL, "HEAD /set_pixel")
+    return api_headers.request(API_URL, "HEAD /set_pixel")
 
 # -------------------------------------------------------------------- #
 # Request

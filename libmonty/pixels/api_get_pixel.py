@@ -70,7 +70,7 @@ def execute(x: int = None, y: int = None, **kwargs: dict) -> dict:
 
 def headers() -> dict:
 
-    return api_headers.generic(API_URL, "HEAD /get_pixel")
+    return api_headers.request(API_URL, "HEAD /get_pixel")
 
 # -------------------------------------------------------------------- #
 # Response: 200 - Successful Response

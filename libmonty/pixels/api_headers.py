@@ -7,7 +7,7 @@ import requests
 from libmonty.pixels import config
 
 
-def generic(api_url: str, request_name: str) -> dict:
+def request(api_url: str, request_name: str) -> dict:
 
     response = requests.head(
         api_url,
