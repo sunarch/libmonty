@@ -64,7 +64,7 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
         for i_row, ls_single_line in enumerate(ls_lines):
 
             for i_col, rgb in enumerate(ls_single_line):
-                ls_args = [i_col, i_row + 1, rgb]
+                ls_args = [str(i_col), str(i_row + 1), rgb]
 
                 # task_queue.put((api_set_pixel.COMMAND, ls_args, timestamp))
                 d_args = dict(zip(["x", "y", "rgb"], ls_args))
