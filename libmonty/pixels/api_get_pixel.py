@@ -15,7 +15,7 @@ from libmonty.pixels import config
 API_URL = "https://pixels.pythondiscord.com/get_pixel"
 
 
-def execute(x: int = None, y: int = None, **kwargs: dict) -> tuple[str, dict]:
+def execute(x: int = None, y: int = None, **kwargs: dict) -> dict:
 
     if None in (x, y):
 
@@ -46,30 +46,32 @@ def execute(x: int = None, y: int = None, **kwargs: dict) -> tuple[str, dict]:
     try:
         rgb = payload["rgb"]
     except KeyError:
-        rgb = ""
+        rgb = None
 
-    d_return = {
+    d_result = {
+        "request_name": "GET /get_pixel",
         "response": response,
         "rgb": rgb
     }
 
-    return "GET /get_pixel", d_return
+    return d_result
 
 
-def headers() -> tuple[str, dict]:
+def headers() -> dict:
 
     response = requests.head(
         API_URL,
         headers=config.get_auth_headers()
     )
 
-    d_return = {
+    d_result = {
+        "request_name": "HEAD /get_pixel",
         "response": response,
     }
 
-    d_return.update(config.parse_headers(response.headers))
+    d_result.update(config.parse_headers(response.headers))
 
-    return "HEAD /get_pixel", d_return
+    return d_result
 
 # -------------------------------------------------------------------- #
 # Response: 200 - Successful Response

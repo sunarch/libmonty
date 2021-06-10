@@ -15,7 +15,7 @@ import json
 API_URL = "https://pixels.pythondiscord.com/get_size"
 
 
-def execute():
+def execute() -> dict:
 
     response = requests.get(API_URL)
 
@@ -24,13 +24,14 @@ def execute():
     except json.JSONDecodeError:
         payload = {"width": "", "height": ""}
 
-    d_return = {
+    d_result = {
+        "request_name": "GET /get_size",
         "response": response,
         "width": payload["width"],
         "height": payload["height"]
     }
 
-    return "GET /get_size", d_return
+    return d_result
 
 # -------------------------------------------------------------------- #
 # Response: 200 - Successful Response

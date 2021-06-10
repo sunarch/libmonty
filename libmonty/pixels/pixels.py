@@ -35,28 +35,28 @@ def main(args: list[str], kwargs: dict) -> None:
     # api_get_pixel ----------------------------------------------------
 
     if len(args) == 2 and args[0] == "get" and args[1] == "head":
-        s_api_request_name, result = api_get_pixel.headers()
-        log_result(s_timestamp, s_api_request_name, result)
+        result = api_get_pixel.headers()
+        log_result(s_timestamp, result)
 
     if len(args) == 3 and args[0] == "get":
-        s_api_request_name, result = api_get_pixel.execute(int(args[1]), int(args[2]))
-        log_result(s_timestamp, s_api_request_name, result)
+        result = api_get_pixel.execute(int(args[1]), int(args[2]))
+        log_result(s_timestamp, result)
 
     # api_get_pixels ---------------------------------------------------
 
     image_commands = ("img", "image")
 
     if len(args) == 2 and args[0] in image_commands and args[1] == "head":
-        s_api_request_name, result = api_get_pixels.headers()
-        log_result(s_timestamp, s_api_request_name, result)
+        result = api_get_pixels.headers()
+        log_result(s_timestamp, result)
 
     if len(args) == 1 and args[0] in image_commands:
 
-        s_api_request_name_s, result_s = api_get_size.execute()
-        log_result(s_timestamp, s_api_request_name_s, result_s)
+        result_s = api_get_size.execute()
+        log_result(s_timestamp, result_s)
 
-        s_api_request_name_p, result_p = api_get_pixels.execute()
-        log_result(s_timestamp, s_api_request_name_p, result_p)
+        result_p = api_get_pixels.execute()
+        log_result(s_timestamp, result_p)
 
         try:
             img_convert.rgb(output.FOLDER_IMG,
@@ -70,25 +70,25 @@ def main(args: list[str], kwargs: dict) -> None:
     # api_get_size -----------------------------------------------------
 
     if len(args) == 1 and args[0] == "size":
-        s_api_request_name, result = api_get_size.execute()
-        log_result(s_timestamp, s_api_request_name, result)
+        result = api_get_size.execute()
+        log_result(s_timestamp, result)
 
     # api_set_pixel ----------------------------------------------------
 
     if len(args) == 2 and args[0] == "set" and args[1] == "head":
-        s_api_request_name, result = api_set_pixel.headers()
-        log_result(s_timestamp, s_api_request_name, result)
+        result = api_set_pixel.headers()
+        log_result(s_timestamp, result)
 
     if len(args) == 4 and args[0] == "set":
-        s_api_request_name, result = api_set_pixel.execute(int(args[1]), int(args[2]), args[3])
-        log_result(s_timestamp, s_api_request_name, result)
+        result = api_set_pixel.execute(int(args[1]), int(args[2]), args[3])
+        log_result(s_timestamp, result)
 
 
-def log_result(timestamp: str, api_request_name: str, result: dict) -> None:
+def log_result(timestamp: str, result: dict) -> None:
 
     with open(output.log_path(timestamp), "at", encoding="utf-8") as f_log:
 
-        output.output(f"API request: '{api_request_name}'", f_log)
+        output.output(f"API request: '{result['request_name']}'", f_log)
 
         output.output(output.construct_heading("Data:"), f_log)
 

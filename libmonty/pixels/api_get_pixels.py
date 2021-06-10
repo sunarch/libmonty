@@ -14,7 +14,7 @@ from libmonty.pixels import config
 API_URL = "https://pixels.pythondiscord.com/get_pixels"
 
 
-def execute() -> tuple[str, dict]:
+def execute() -> dict:
 
     response = requests.get(
         API_URL,
@@ -23,28 +23,30 @@ def execute() -> tuple[str, dict]:
 
     data = response.content
 
-    d_return = {
+    d_result = {
+        "request_name": "GET /get_pixels",
         "response": response,
         "data": data
     }
 
-    return "GET /get_pixels", d_return
+    return d_result
 
 
-def headers() -> tuple[str, dict]:
+def headers() -> dict:
 
     response = requests.head(
         API_URL,
         headers=config.get_auth_headers()
     )
 
-    d_return = {
+    d_result = {
+        "request_name": "HEAD /get_pixels",
         "response": response,
     }
 
-    d_return.update(config.parse_headers(response.headers))
+    d_result.update(config.parse_headers(response.headers))
 
-    return "HEAD /get_pixels", d_return
+    return d_result
 
 # -------------------------------------------------------------------- #
 # Response: 200 - Successful Response
