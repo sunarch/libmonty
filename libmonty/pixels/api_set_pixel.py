@@ -15,7 +15,7 @@ from libmonty.pixels import config
 API_URL = "https://pixels.pythondiscord.com/set_pixel"
 
 
-def execute(x: int = None, y: int = None, rgb: str = None, struct: dict = None) -> tuple[str, dict]:
+def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> tuple[str, dict]:
 
     data = {
         "x": x,  # 80
@@ -25,18 +25,31 @@ def execute(x: int = None, y: int = None, rgb: str = None, struct: dict = None) 
 
     if None in (x, y, rgb):
 
-        if struct is not None and "x" in struct and "y" in struct and "rgb" in struct:
-            data['x'] = struct['x']
-            data['x'] = struct['y']
-            data['x'] = struct['rgb']
-
-            response, message = _request_get(data)
+        if kwargs is not None and "x" in kwargs and "y" in kwargs and "rgb" in kwargs:
+            data['x'] = kwargs['x']
+            data['y'] = kwargs['y']
+            data['rgb'] = kwargs['rgb']
 
         else:
             raise ValueError("Missing parameter!")
 
-    else:
-        response, message = _request_get(data)
+    # Note: POST method, not a GET method
+    response = requests.post(
+        API_URL,
+        json=data,
+        headers=config.get_auth_headers(),
+    )
+
+    try:
+        payload = response.json()
+    except json.JSONDecodeError:
+        payload = {"message": ""}
+
+    # e.g. "added pixel at x=123,y=12 of color 87CEEB"
+    try:
+        message = payload["message"]
+    except KeyError:
+        message = ""
 
     d_return = {
         "response": response,
@@ -60,36 +73,6 @@ def headers() -> tuple[str, dict]:
     d_return.update(config.parse_headers(response.headers))
 
     return "HEAD /set_pixel", d_return
-
-
-def _request_get(data: dict):
-
-    # remember, this is a POST method not a GET method.
-    response = requests.post(
-        API_URL,
-        json=data,
-        headers=config.get_auth_headers(),
-    )
-
-    message = _parse(response)
-    # added pixel at x=123,y=12 of color 87CEEB
-
-    return response, message
-
-
-def _parse(response):
-
-    try:
-        payload = response.json()
-    except json.JSONDecodeError:
-        payload = {"message": ""}
-
-    try:
-        s_return = payload["message"]
-    except KeyError:
-        s_return = ""
-
-    return s_return
 
 # -------------------------------------------------------------------- #
 # Request

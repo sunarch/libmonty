@@ -19,25 +19,18 @@ def execute():
 
     response = requests.get(API_URL)
 
-    width, height = _parse(response)
-
-    d_return = {
-        "response": response,
-        "width": width,
-        "height": height
-    }
-
-    return "GET /get_size", d_return
-
-
-def _parse(response) -> tuple[str, str]:
-
     try:
         payload = response.json()
     except json.JSONDecodeError:
         payload = {"width": "", "height": ""}
 
-    return payload["width"], payload["height"]
+    d_return = {
+        "response": response,
+        "width": payload["width"],
+        "height": payload["height"]
+    }
+
+    return "GET /get_size", d_return
 
 # -------------------------------------------------------------------- #
 # Response: 200 - Successful Response

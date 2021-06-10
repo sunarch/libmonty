@@ -15,21 +15,38 @@ from libmonty.pixels import config
 API_URL = "https://pixels.pythondiscord.com/get_pixel"
 
 
-def execute(x: int = None, y: int = None, struct: dict = None) -> tuple[str, dict]:
+def execute(x: int = None, y: int = None, **kwargs: dict) -> tuple[str, dict]:
 
     if None in (x, y):
 
-        if struct is not None and "x" in struct and "y" in struct:
-            x = struct['x']
-            y = struct['y']
-
-            response, rgb = _request_get(x, y)
+        if kwargs is not None and "x" in kwargs and "y" in kwargs:
+            x = kwargs['x']
+            y = kwargs['y']
 
         else:
             raise ValueError("Missing parameter!")
 
-    else:
-        response, rgb = _request_get(x, y)
+    response = requests.get(
+        API_URL,
+        headers=config.get_auth_headers(),
+
+        # Note: coordinates as query string parameters,
+        #       not in the JSON body
+        params={
+            "x": x,
+            "y": y
+        }
+    )
+
+    try:
+        payload = response.json()
+    except json.JSONDecodeError:
+        payload = {"rgb": ""}
+
+    try:
+        rgb = payload["rgb"]
+    except KeyError:
+        rgb = ""
 
     d_return = {
         "response": response,
@@ -53,39 +70,6 @@ def headers() -> tuple[str, dict]:
     d_return.update(config.parse_headers(response.headers))
 
     return "HEAD /get_pixel", d_return
-
-
-def _request_get(x: int = None, y: int = None):
-
-    response = requests.get(
-        API_URL,
-        headers=config.get_auth_headers(),
-
-        # Note: we're using query string parameters to define the coordinates, not the JSON body.
-        params={
-            "x": x,
-            "y": y
-        }
-    )
-
-    rgb = _parse(response)
-
-    return response, rgb
-
-
-def _parse(response):
-
-    try:
-        payload = response.json()
-    except json.JSONDecodeError:
-        payload = {"rgb": ""}
-
-    try:
-        s_return = payload["rgb"]
-    except KeyError:
-        s_return = ""
-
-    return s_return
 
 # -------------------------------------------------------------------- #
 # Response: 200 - Successful Response
