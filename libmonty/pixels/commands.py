@@ -13,21 +13,21 @@ from libmonty.pixels import api_get_size
 from libmonty.pixels import api_set_pixel
 
 
-NEXT_EXIT = "exit"
-NEXT_FINISH = "finish"
-NEXT_ABORT = "abort"
+COMMAND_EXIT = "exit"
+COMMAND_FINISH = "finish"
+COMMAND_ABORT = "abort"
 
 
 def finish_all_and_exit(execute: bool, timestamp: str, task_queue, **kwargs) -> str:
-    return NEXT_EXIT
+    return COMMAND_EXIT
 
 
 def finish_queue_and_exit(execute: bool, timestamp: str, task_queue, **kwargs) -> str:
-    return NEXT_FINISH
+    return COMMAND_FINISH
 
 
 def abort_queue_and_exit(execute: bool, timestamp: str, task_queue, **kwargs) -> str:
-    return NEXT_ABORT
+    return COMMAND_ABORT
 
 
 def show_queue_size(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
@@ -46,8 +46,8 @@ def cmd_get(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
             result = api_get_pixel.headers()
             output.log_result(timestamp, result)
         else:
-            task_queue.put(("get", kwargs['args'], timestamp))
-            s_request = output.form_request_input(api_set_pixel.API_NAME_HEAD, {})
+            task_queue.put((api_get_pixel.COMMAND, kwargs['args'], timestamp))
+            s_request = output.form_request_input(api_get_pixel.API_NAME_HEAD, {})
             output.to_console(f"Queued: {s_request}")
             output.to_console(output.form_separator())
         return
@@ -57,7 +57,7 @@ def cmd_get(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
             result = api_get_pixel.execute(int(kwargs['args'][0]), int(kwargs['args'][1]))
             output.log_result(timestamp, result)
         else:
-            task_queue.put(("get", kwargs['args'], timestamp))
+            task_queue.put((api_get_pixel.COMMAND, kwargs['args'], timestamp))
             d_args = dict(zip(["x", "y"], kwargs['args']))
             s_request = output.form_request_input(api_get_pixel.API_NAME_GET, d_args)
             output.to_console(f"Queued: {s_request}")
@@ -74,7 +74,7 @@ def cmd_image(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
             result = api_get_pixels.headers()
             output.log_result(timestamp, result)
         else:
-            task_queue.put(("image", kwargs['args'], timestamp))
+            task_queue.put((api_get_pixels.COMMAND, kwargs['args'], timestamp))
             s_request = output.form_request_input(api_get_pixels.API_NAME_HEAD, {})
             output.to_console(f"Queued: {s_request}")
             output.to_console(output.form_separator())
@@ -84,7 +84,7 @@ def cmd_image(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
         if execute:
             subcmd_image(timestamp)
         else:
-            task_queue.put(("image", kwargs['args'], timestamp))
+            task_queue.put((api_get_pixels.COMMAND, kwargs['args'], timestamp))
             s_request = output.form_request_input(api_get_pixels.API_NAME_GET, {})
             output.to_console(f"Queued: {s_request}")
             output.to_console(output.form_separator())
@@ -118,7 +118,7 @@ def cmd_size(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
             result = api_get_size.execute()
             output.log_result(timestamp, result)
         else:
-            task_queue.put(("size", kwargs['args'], timestamp))
+            task_queue.put((api_get_size.COMMAND, kwargs['args'], timestamp))
             s_request = output.form_request_input(api_get_size.API_NAME_GET, {})
             output.to_console(f"Queued: {s_request}")
             output.to_console(output.form_separator())
@@ -134,7 +134,7 @@ def cmd_set(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
             result = api_set_pixel.headers()
             output.log_result(timestamp, result)
         else:
-            task_queue.put(("set", kwargs['args'], timestamp))
+            task_queue.put((api_set_pixel.COMMAND, kwargs['args'], timestamp))
             s_request = output.form_request_input(api_set_pixel.API_NAME_HEAD, {})
             output.to_console(f"Queued: {s_request}")
             output.to_console(output.form_separator())
@@ -145,7 +145,7 @@ def cmd_set(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
             result = api_set_pixel.execute(int(kwargs['args'][0]), int(kwargs['args'][1]), kwargs['args'][2])
             output.log_result(timestamp, result)
         else:
-            task_queue.put(("set", kwargs['args'], timestamp))
+            task_queue.put((api_set_pixel.COMMAND, kwargs['args'], timestamp))
             d_args = dict(zip(["x", "y", "rgb"], kwargs['args']))
             s_request = output.form_request_input(api_set_pixel.API_NAME_POST, d_args)
             output.to_console(f"Queued: {s_request}")

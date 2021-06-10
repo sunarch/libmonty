@@ -17,6 +17,8 @@ API_URL = "https://pixels.pythondiscord.com/get_size"
 
 API_NAME_GET = "GET /get_size"
 
+COMMAND = "size"
+
 
 def execute() -> dict:
 

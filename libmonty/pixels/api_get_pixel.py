@@ -18,6 +18,8 @@ API_URL = "https://pixels.pythondiscord.com/get_pixel"
 API_NAME_GET = "GET /get_pixel"
 API_NAME_HEAD = "HEAD /get_pixel"
 
+COMMAND = "get"
+
 
 def execute(x: int = None, y: int = None, **kwargs: dict) -> dict:
 

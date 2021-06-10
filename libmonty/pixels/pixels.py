@@ -10,6 +10,11 @@ from libmonty.pixels import output
 from libmonty.pixels import files
 from libmonty.pixels import commands
 
+from libmonty.pixels import api_get_pixel
+from libmonty.pixels import api_get_pixels
+from libmonty.pixels import api_get_size
+from libmonty.pixels import api_set_pixel
+
 
 def main(args: list[str], kwargs: dict) -> None:
 
@@ -70,17 +75,17 @@ def main(args: list[str], kwargs: dict) -> None:
                 print(err)
                 output.to_console(output.form_separator())
 
-        if s_next == commands.NEXT_FINISH:
+        if s_next == commands.COMMAND_FINISH:
             finish.set()
             task_worker.join()
             break
 
-        if s_next == commands.NEXT_ABORT:
+        if s_next == commands.COMMAND_ABORT:
             abort.set()
             task_worker.join()
             break
 
-        if b_no_interactive or s_next == commands.NEXT_EXIT:
+        if b_no_interactive or s_next == commands.COMMAND_EXIT:
             task_queue.join()
             finish.set()
             task_worker.join()
@@ -130,15 +135,15 @@ def process_command(command: str,
                     **kwargs) -> str:
 
     d_commands = {
-        "exit": commands.finish_all_and_exit,
-        "finish": commands.finish_queue_and_exit,
-        "abort": commands.abort_queue_and_exit,
+        commands.COMMAND_EXIT: commands.finish_all_and_exit,
+        commands.COMMAND_FINISH: commands.finish_queue_and_exit,
+        commands.COMMAND_ABORT: commands.abort_queue_and_exit,
         "queue": commands.show_queue_size,
-        "get": commands.cmd_get,
+        api_get_pixel.COMMAND: commands.cmd_get,
+        api_get_pixels.COMMAND: commands.cmd_image,
         "img": commands.cmd_image,
-        "image": commands.cmd_image,
-        "size": commands.cmd_size,
-        "set": commands.cmd_set
+        api_get_size.COMMAND: commands.cmd_size,
+        api_set_pixel.COMMAND: commands.cmd_set
     }
 
     ls_args = []

@@ -18,6 +18,8 @@ API_URL = "https://pixels.pythondiscord.com/set_pixel"
 API_NAME_POST = "POST /set_pixel"
 API_NAME_HEAD = "HEAD /set_pixel"
 
+COMMAND = "set"
+
 
 def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> dict:
 
