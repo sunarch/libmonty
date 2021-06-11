@@ -121,10 +121,8 @@ def line_to_adjusted_list_text_triplets(line: str, length: int, padder: str = ' 
         line += ' ' * (3 - (len(line) % 3))
 
     for i_char in range(len(line) + 1):
-        print(f"'{s_triplet}'")
 
         try:
-            print(f"'{line[i_char]}'")
             s_triplet += f'{format(ord(line[i_char]), "X"):0>2}'
         except IndexError:
             pass
