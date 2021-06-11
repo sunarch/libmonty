@@ -18,6 +18,9 @@ COMMAND = "poetry"
 
 def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
+    vertical_start = 2
+    horizontal_start = 0
+
     if execute:
         pass
 
@@ -68,24 +71,24 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
         except KeyError:
             raise ValueError("Invalid size.")
 
-        if width < i_horizontal:
-            raise ValueError(f"Canvas not wide enough: {width} < {i_horizontal}")
+        if width < i_horizontal + horizontal_start:
+            raise ValueError(f"Canvas not wide enough: {width} < {i_horizontal + horizontal_start}")
 
-        if height < i_vertical + 1:
-            raise ValueError(f"Canvas not tall enough: {height} < {i_vertical + 1}")
+        if height < i_vertical + vertical_start:
+            raise ValueError(f"Canvas not tall enough: {height} < {i_vertical + vertical_start}")
 
         for i_row, ls_single_line in enumerate(ls_lines):
 
             for i_col, rgb in enumerate(ls_single_line):
 
                 if b_test:
-                    ls_args = [str(i_col), str(i_row + 1)]
+                    ls_args = [str(i_col + horizontal_start), str(i_row + vertical_start)]
                     task_queue.put((api_get_pixel.COMMAND, ls_args, timestamp))
                     d_args = dict(zip(["x", "y"], ls_args))
                     s_request = output.form_request_input(api_get_pixel.API_NAME_GET, d_args)
 
                 else:
-                    ls_args = [str(i_col), str(i_row + 1), rgb]
+                    ls_args = [str(i_col + horizontal_start), str(i_row + vertical_start), rgb]
                     task_queue.put((api_set_pixel.COMMAND, ls_args, timestamp))
                     d_args = dict(zip(["x", "y", "rgb"], ls_args))
                     s_request = output.form_request_input(api_set_pixel.API_NAME_POST, d_args)
