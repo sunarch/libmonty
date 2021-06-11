@@ -23,12 +23,14 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
     if len(kwargs['args']) in (1, 2):
 
+        s_title_line = '"The Colors of Poetry" by @sunarch '
+
         b_test = False
         if len(kwargs['args']) == 2:
             b_test = True
 
-        ls_lines = ['"The Colors of Poetry" by @sunarch']
-        i_longest = len(ls_lines[0])
+        ls_lines = []
+        i_longest = len(s_title_line)
 
         with open(f"{files.FOLDER_DATA}/{kwargs['args'][0]}.txt", "rt") as f_data:
 
@@ -44,11 +46,16 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
         ls_lines = list(map(lambda x: list_char_to_rgb(x), ls_lines))
 
+        ls_lines = list(map(lambda x: list_char_add_vertical(x), ls_lines))
+
         i_horizontal = i_longest + 2
 
-        ls_top_bottom = [horizontal() for x in range(i_horizontal + 1)]
-        ls_lines.insert(0, ls_top_bottom)
-        ls_lines.append(ls_top_bottom)
+        ls_top = line_to_adjusted_list_text_triplets(s_title_line, i_longest, '/')
+        ls_top = list_char_add_vertical(ls_top)
+        ls_lines.insert(0, ls_top)
+
+        ls_bottom = [horizontal() for x in range(i_horizontal)]
+        ls_lines.append(ls_bottom)
 
         i_vertical = len(ls_lines)
 
@@ -97,19 +104,41 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
     raise ValueError("Invalid arguents.")
 
 
-def line_to_adjusted_list_char(line: str, length: int) -> list[str]:
+def line_to_adjusted_list_char(line: str, length: int, padder: str = ' ') -> list[str]:
 
-    return list(f"{line:<{length}}")
+    return list(f"{line:{padder}<{length}}")
+
+
+def line_to_adjusted_list_text_triplets(line: str, length: int, padder: str = ' ') -> list[str]:
+
+    s_triplet = ""
+    ls_result = []
+
+    if len(line) % 3 != 0:
+        line += ' ' * (3 - (len(line) % 3))
+
+    for i_char in range(len(line) + 1):
+        print(f"'{s_triplet}'")
+
+        try:
+            print(f"'{line[i_char]}'")
+            s_triplet += f'{format(ord(line[i_char]), "X"):0>2}'
+        except IndexError:
+            pass
+
+        if len(s_triplet) == 6:
+            ls_result.append(s_triplet)
+            s_triplet = ""
+
+    while len(ls_result) < length:
+        ls_result.append(format(ord(padder), "X") * 3)
+
+    return ls_result
 
 
 def list_char_to_rgb(line: list[str]) -> list[str]:
 
-    ls_rgb = [char_to_color(char) for char in line]
-
-    ls_rgb.insert(0, vertical())
-    ls_rgb.append(vertical())
-
-    return ls_rgb
+    return [char_to_color(char) for char in line]
 
 
 def char_to_color(char: str) -> str:
@@ -120,6 +149,14 @@ def char_to_color(char: str) -> str:
     i_char = ord(char) % i_colors
 
     return ls_colors[i_char]
+
+
+def list_char_add_vertical(line: list[str]) -> list[str]:
+
+    line.insert(0, vertical())
+    line.append(vertical())
+
+    return line
 
 
 def vertical() -> str:
