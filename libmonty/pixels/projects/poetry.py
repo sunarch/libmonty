@@ -26,21 +26,26 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
     if len(kwargs['args']) in (1, 2):
 
-        s_title_line = '"The Colors of Poetry" by @sunarch '
+        s_creator_line = '"The Colors of Poetry" by @sunarch '
 
         b_test = False
         if len(kwargs['args']) == 2:
             b_test = True
 
+        s_title_line = ""
         ls_lines = []
-        i_longest = len(s_title_line)
+        i_longest = len(s_creator_line)
 
         with open(f"{files.FOLDER_DATA}/{kwargs['args'][0]}.txt", "rt") as f_data:
 
             for line in f_data:
 
                 s_line = line.strip()
-                ls_lines.append(s_line)
+
+                if s_title_line == "":
+                    s_title_line = s_line
+                else:
+                    ls_lines.append(s_line)
 
                 if len(s_line) > i_longest:
                     i_longest = len(s_line)
@@ -53,7 +58,11 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
         i_horizontal = i_longest + 2
 
-        ls_top = line_to_adjusted_list_text_triplets(s_title_line, i_longest, '/')
+        ls_title = line_to_adjusted_list_text_triplets(s_title_line, i_longest, ' ')
+        ls_title = list_char_add_vertical(ls_title)
+        ls_lines.insert(0, ls_title)
+
+        ls_top = line_to_adjusted_list_text_triplets(s_creator_line, i_longest, '/')
         ls_top = list_char_add_vertical(ls_top)
         ls_lines.insert(0, ls_top)
 
