@@ -19,7 +19,16 @@ def print_header(bytes_per_line: int,
     s_counter = f"Offset ({index_converter(-1)})"
     s_line = f" {s_counter:^{COUNTER_DIGITS + extra_width}}  "
 
-    b_unit = bytes(range(bytes_per_line))
+    try:
+        b_unit = bytes(range(bytes_per_line))
+    except ValueError:
+        if bytes_per_line > 256:
+            full = bytes(range(256)) * (bytes_per_line // 256)
+            fraction = bytes(range(bytes_per_line % 256))
+            b_unit = full + fraction
+        else:
+            raise
+
     s_line += _part_bytes(b_unit, bytes_per_line, index_converter)
 
     s_line += "Decoded text"
