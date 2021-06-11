@@ -3,6 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import sys
+import traceback
 
 from libmonty.hexer import hexer
 from libmonty.pixels import pixels
@@ -10,6 +11,7 @@ from libmonty.pixels import pixels
 
 def main(args: list[str]) -> None:
 
+    b_debug = False
     ls_input = args[1:]
 
     while True:
@@ -35,8 +37,18 @@ def main(args: list[str]) -> None:
         except ValueError as err:
             if str(err) != "":
                 print(err)
+            if b_debug:
+                traceback.print_exc()
         else:
-            if s_next is not None:
+            if s_next == "debug":
+                if b_debug:
+                    b_debug = False
+                    print("Debug disabled.")
+                else:
+                    b_debug = True
+                    print("Debug enabled.")
+
+            elif s_next is not None:
                 break
 
         ls_input = []
@@ -46,9 +58,9 @@ def process_command(command: str, args: list[str]) -> str:
 
     d_commands = {
         "exit": exit_interactive,
+        "debug": toggle_debug,
         "hexer": hexer.main,
         "pixels": pixels.main
-
     }
 
     ls_args = []
@@ -80,6 +92,10 @@ def process_command(command: str, args: list[str]) -> str:
 
 def exit_interactive(args: list[str], kwargs: dict) -> str:
     return "break"
+
+
+def toggle_debug(args: list[str], kwargs: dict) -> str:
+    return "debug"
 
 
 if __name__ == "__main__":
