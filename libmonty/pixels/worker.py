@@ -46,13 +46,13 @@ def task_queue_worker(task_queue, **kwargs):
                 # output.to_console(output.form_separator())
                 continue
 
-        if command == api_get_pixel.COMMAND:
+        if command == api_get_pixel.COMMAND and "head" not in ls_args:
             i_remaining_get = ratelimit_if_needed(api_get_pixel, i_remaining_get, s_timestamp)
 
-        elif command == api_get_pixels.COMMAND:
+        elif command == api_get_pixels.COMMAND and "head" not in ls_args:
             i_remaining_img = ratelimit_if_needed(api_get_pixels, i_remaining_img, s_timestamp)
 
-        elif command == api_set_pixel.COMMAND:
+        elif command == api_set_pixel.COMMAND and "head" not in ls_args:
             i_remaining_set = ratelimit_if_needed(api_set_pixel, i_remaining_set, s_timestamp)
 
         try:
@@ -62,11 +62,11 @@ def task_queue_worker(task_queue, **kwargs):
                 print(err)
                 output.to_console(output.form_separator())
 
-        if command == api_get_pixel.COMMAND:
+        if command == api_get_pixel.COMMAND and "head" not in ls_args:
             i_remaining_get -= 1
-        elif command == api_get_pixels.COMMAND:
+        elif command == api_get_pixels.COMMAND and "head" not in ls_args:
             i_remaining_img -= 1
-        elif command == api_set_pixel.COMMAND:
+        elif command == api_set_pixel.COMMAND and "head" not in ls_args:
             i_remaining_set -= 1
 
         task_queue.task_done()
