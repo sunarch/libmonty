@@ -1,6 +1,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+import random
+import string
 
 from libmonty.images import colors_named
 
@@ -153,12 +155,18 @@ def list_char_to_rgb(line: list[str]) -> list[str]:
 
 def char_to_color(char: str) -> str:
 
-    i_colors = len(colors_named.COLORS)
+    if char in string.printable:
+        i_char = string.printable.index(char)
+    else:
+        i_char = random.randrange(len(string.printable))
+
+    fl_char = i_char / len(string.printable)
+
+    i_color = round(fl_char * len(colors_named.COLORS))
+
     ls_colors = list(colors_named.COLORS)
 
-    i_char = ord(char) % i_colors
-
-    return ls_colors[i_char]
+    return ls_colors[i_color]
 
 
 def list_char_add_vertical(line: list[str]) -> list[str]:
