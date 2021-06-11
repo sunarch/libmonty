@@ -56,7 +56,7 @@ RATE_LIMIT_HEADER_LABELS = [
 def sort_by_type(headers: CaseInsensitiveDict) -> dict:
 
     d_rate_limit_info = {}
-    s_rate_limit_cooldown = ""
+    s_rate_limit_cooldown = None
     d_regular_headers = {}
 
     for s_header_tag in headers:

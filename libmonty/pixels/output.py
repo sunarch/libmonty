@@ -41,7 +41,7 @@ def log_result(timestamp: str, result: dict) -> None:
     with open(files.log_path(timestamp), "at", encoding="utf-8") as f_log:
 
         if result is None:
-            to_log(f"Result is None.", f_log)
+            to_all(f"Result is None.", f_log)
             return
 
         try:
@@ -50,7 +50,7 @@ def log_result(timestamp: str, result: dict) -> None:
             d_arguments = {}
 
         s_request = form_request_input(result["request_name"], d_arguments)
-        to_log(s_request, f_log)
+        to_all(s_request, f_log)
 
         response = result['response']
 
@@ -58,7 +58,7 @@ def log_result(timestamp: str, result: dict) -> None:
         s_status_title = responses.get(i_status)['title']
         s_status = f"{i_status} - {s_status_title}"
 
-        to_log(f"Response:    {s_status}", f_log)
+        to_all(f"Response:    {s_status}", f_log)
 
         if result['data']:
 
@@ -66,7 +66,7 @@ def log_result(timestamp: str, result: dict) -> None:
             s_enc = result['data_encoding']
             s_data = result['data']
 
-            to_log(f'Data:        ({s_type}/{s_enc}) "{s_data}"', f_log)
+            to_all(f'Data:        ({s_type}/{s_enc}) "{s_data}"', f_log)
 
         if result['rate_limits']:
 
@@ -78,13 +78,13 @@ def log_result(timestamp: str, result: dict) -> None:
             s_period = result['rate_limits'][api_headers.RATE_LIMIT_TIME_PERIOD]
             s_time = f"{s_reset:>3} / {s_period:>3} s"
 
-            to_log(f"Rate limits: {s_count} ({s_time})", f_log)
+            to_all(f"Rate limits: {s_count} ({s_time})", f_log)
 
         if result['cooldown']:
 
-            to_log(f"Cooldown:    {result['cooldown']}", f_log)
+            to_all(f"Cooldown:    {result['cooldown']}", f_log)
 
-        to_log(form_separator(), f_log)
+        to_all(form_separator(), f_log)
 
         try:
             regular_response_headers_to_log(result['headers'], f_log)

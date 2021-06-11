@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import os.path
+
 from libmonty.images import convert_from_stream as img_convert
 
 from libmonty.pixels import output
@@ -101,14 +103,20 @@ def subcmd_image(timestamp: str) -> None:
     result_p = api_get_pixels.execute()
     output.log_result(timestamp, result_p)
 
+    s_filename = timestamp
+    i_name_extra = 0
+
+    while os.path.isfile(f"{files.FOLDER_IMG}/{s_filename}.png"):
+        s_filename = f"{timestamp}-{i_name_extra:0>3}"
+
     try:
         img_convert.rgb(files.FOLDER_IMG,
-                        timestamp,
+                        s_filename,
                         result_p['bytes'],
                         (result_s['width'], result_s['height']),
                         scale=8)
 
-        with open(f"{files.FOLDER_IMG}/{timestamp}.bin", "wb") as f_bin:
+        with open(f"{files.FOLDER_IMG}/{s_filename}.bin", "wb") as f_bin:
             f_bin.write(result_p['bytes'])
 
     except KeyError:

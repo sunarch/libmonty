@@ -7,6 +7,8 @@ from libmonty.images import colors_named
 from libmonty.pixels import output
 from libmonty.pixels import files
 
+from libmonty.pixels import api_get_pixel
+from libmonty.pixels import api_get_pixels
 from libmonty.pixels import api_get_size
 from libmonty.pixels import api_set_pixel
 
@@ -19,7 +21,11 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
     if execute:
         pass
 
-    if len(kwargs['args']) == 1:
+    if len(kwargs['args']) in (1, 2):
+
+        b_test = False
+        if len(kwargs['args']) == 2:
+            b_test = True
 
         ls_lines = ['"The Colors of Poetry" by @sunarch']
         i_longest = len(ls_lines[0])
@@ -64,11 +70,24 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
         for i_row, ls_single_line in enumerate(ls_lines):
 
             for i_col, rgb in enumerate(ls_single_line):
-                ls_args = [str(i_col), str(i_row + 1), rgb]
 
-                # task_queue.put((api_set_pixel.COMMAND, ls_args, timestamp))
-                d_args = dict(zip(["x", "y", "rgb"], ls_args))
-                s_request = output.form_request_input(api_set_pixel.API_NAME_POST, d_args)
+                if b_test:
+                    ls_args = [str(i_col), str(i_row + 1)]
+                    task_queue.put((api_get_pixel.COMMAND, ls_args, timestamp))
+                    d_args = dict(zip(["x", "y"], ls_args))
+                    s_request = output.form_request_input(api_get_pixel.API_NAME_GET, d_args)
+
+                else:
+                    ls_args = [str(i_col), str(i_row + 1), rgb]
+                    task_queue.put((api_set_pixel.COMMAND, ls_args, timestamp))
+                    d_args = dict(zip(["x", "y", "rgb"], ls_args))
+                    s_request = output.form_request_input(api_set_pixel.API_NAME_POST, d_args)
+
+                output.to_console(f"Queued: {s_request}")
+
+            if not b_test:
+                task_queue.put((api_get_pixels.COMMAND, [], timestamp))
+                s_request = output.form_request_input(api_get_pixels.API_NAME_GET, {})
                 output.to_console(f"Queued: {s_request}")
 
             output.to_console(output.form_separator())
