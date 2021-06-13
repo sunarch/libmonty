@@ -32,15 +32,17 @@ _responses = {
     "101": {
         "title": "Switching Protocol",
         "description": (
-            "This code is sent in response to an Upgrade request header from the client, "
-            "and indicates the protocol the server is switching to."
+            "This code is sent in response to an Upgrade request header "
+            "from the client, and indicates the protocol "
+            "the server is switching to."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/101"
     },
     "102": {
         "title": "Processing (WebDAV)",
         "description": (
-            "This code indicates that the server has received and is processing the request, "
+            "This code indicates that the server has received "
+            "and is processing the request, "
             "but no response is available yet."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Glossary/WebDAV"
@@ -48,8 +50,9 @@ _responses = {
     "103": {
         "title": "Early Hints",
         "description": (
-            "This status code is primarily intended to be used with the Link header, "
-            "letting the user agent start preloading resources while the server prepares a response."
+            "This status code is primarily intended to be used "
+            "with the Link header, letting the user agent start "
+            "preloading resources while the server prepares a response."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103"
     },
@@ -60,23 +63,26 @@ _responses = {
     "200": {
         "title": "OK",
         "description": (
-            "The request has succeeded. The meaning of the success depends on the HTTP method: " 
-            "GET: "
-            "The resource has been fetched and is transmitted in the message body. "
-            "HEAD: "
-            "The representation headers are included in the response without any message body. "
-            "PUT or POST: "
-            "The resource describing the result of the action is transmitted in the message body. "
-            "TRACE: "
-            "The message body contains the request message as received by the server."
+            "The request has succeeded. "
+            "The meaning of the success depends on the HTTP method: " 
+            "GET: The resource has been fetched "
+            "and is transmitted in the message body. "
+            "HEAD: The representation headers are included "
+            "in the response without any message body. "
+            "PUT or POST: The resource describing the result of the action "
+            "is transmitted in the message body. "
+            "TRACE: The message body contains the request message "
+            "as received by the server."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200"
     },
     "201": {
         "title": "Created",
         "description": (
-            "The request has succeeded and a new resource has been created as a result. "
-            "This is typically the response sent after POST requests, or some PUT requests."
+            "The request has succeeded and "
+            "a new resource has been created as a result. "
+            "This is typically the response sent after POST requests, "
+            "or some PUT requests."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201"
     },
@@ -84,10 +90,10 @@ _responses = {
         "title": "Accepted",
         "description": (
             "The request has been received but not yet acted upon. "
-            "It is noncommittal, since there is no way in HTTP "
-            "to later send an asynchronous response indicating the outcome of the request. "
-            "It is intended for cases where another process or server handles the request, "
-            "or for batch processing."
+            "It is noncommittal, since there is no way in HTTP to later send "
+            "an asynchronous response indicating the outcome of the request. "
+            "It is intended for cases where another process or server "
+            "handles the request, or for batch processing."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/202"
     },
@@ -98,7 +104,8 @@ _responses = {
             "is not exactly the same as is available from the origin server, "
             "but is collected from a local or a third-party copy. "
             "This is mostly used for mirrors or backups of another resource. "
-            "Except for that specific case, the \"200 OK\" response is preferred to this status."
+            "Except for that specific case, "
+            "the \"200 OK\" response is preferred to this status."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/203"
     },
@@ -107,13 +114,17 @@ _responses = {
         "description": (
             "There is no content to send for this request, "
             "but the headers may be useful. "
-            "The user-agent may update its cached headers for this resource with the new ones."
+            "The user-agent may update its cached headers "
+            "for this resource with the new ones."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204"
     },
     "205": {
         "title": "Reset Content",
-        "description": "Tells the user-agent to reset the document which sent this request.",
+        "description": (
+            "Tells the user-agent "
+            "to reset the document which sent this request."
+        ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/205"
     },
     "206": {
@@ -159,7 +170,8 @@ _responses = {
         "description": (
             "The server has fulfilled a GET request for the resource, "
             "and the response is a representation of the result "
-            "of one or more instance-manipulations applied to the current instance."
+            "of one or more instance-manipulations "
+            "applied to the current instance."
         ),
         "link": "https://datatracker.ietf.org/doc/html/rfc3229"
     },
@@ -173,7 +185,8 @@ _responses = {
             "The request has more than one possible response. "
             "The user-agent or user should choose one of them. "
             "(There is no standardized way of choosing one of the responses, "
-            "but HTML links to the possibilities are recommended so the user can pick.)"
+            "but HTML links to the possibilities "
+            "are recommended so the user can pick.)"
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/300"
     },
@@ -188,9 +201,11 @@ _responses = {
     "302": {
         "title": "Found",
         "description": (
-            "This response code means that the URI of requested resource has been changed temporarily. "
+            "This response code means that the URI of requested resource "
+            "has been changed temporarily. "
             "Further changes in the URI might be made in the future. "
-            "Therefore, this same URI should be used by the client in future requests."
+            "Therefore, this same URI should be used "
+            "by the client in future requests."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302"
     },
@@ -207,15 +222,16 @@ _responses = {
         "description": (
             "This is used for caching purposes. "
             "It tells the client that the response has not been modified, "
-            "so the client can continue to use the same cached version of the response."
+            "so the client can continue to use "
+            "the same cached version of the response."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/304"
     },
     "305": {
         "title": "Use Proxy",
         "description": (
-            "Defined in a previous version of the HTTP specification to indicate "
-            "that a requested response must be accessed by a proxy. "
+            "Defined in a previous version of the HTTP specification to "
+            "indicate that a requested response must be accessed by a proxy. "
             "It has been deprecated due to security concerns "
             "regarding in-band configuration of a proxy."
         ),
@@ -236,19 +252,24 @@ _responses = {
             "to get the requested resource at another URI "
             "with same method that was used in the prior request. "
             "This has the same semantics as the 302 Found HTTP response code, "
-            "with the exception that the user agent must not change the HTTP method used: "
-            "If a POST was used in the first request, a POST must be used in the second request."
+            "with the exception that the user agent "
+            "must not change the HTTP method used: "
+            "If a POST was used in the first request, "
+            "a POST must be used in the second request."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/307"
     },
     "308": {
         "title": "Permanent Redirect",
         "description": (
-            "This means that the resource is now permanently located at another URI, "
-            "specified by the Location: HTTP Response header. "
-            "This has the same semantics as the 301 Moved Permanently HTTP response code, "
-            "with the exception that the user agent must not change the HTTP method used: "
-            "If a POST was used in the first request, a POST must be used in the second request."
+            "This means that the resource is now permanently located "
+            "at another URI, specified by the Location: HTTP Response header. "
+            "This has the same semantics as "
+            "the 301 Moved Permanently HTTP response code, "
+            "with the exception that the user agent must not change "
+            "the HTTP method used: "
+            "If a POST was used in the first request, "
+            "a POST must be used in the second request."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/308"
     },
@@ -258,7 +279,10 @@ _responses = {
 
     "400": {
         "title": "Bad Request",
-        "description": "The server could not understand the request due to invalid syntax.",
+        "description": (
+            "The server could not understand the request "
+            "due to invalid syntax."
+        ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400"
     },
     "401": {
@@ -266,7 +290,8 @@ _responses = {
         "description": (
             "Although the HTTP standard specifies \"unauthorized\", "
             "semantically this response means \"unauthenticated\". "
-            "That is, the client must authenticate itself to get the requested response."
+            "That is, the client must authenticate itself "
+            "to get the requested response."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"
     },
@@ -274,8 +299,10 @@ _responses = {
         "title": "Payment Required",
         "description": (
             "This response code is reserved for future use. "
-            "The initial aim for creating this code was using it for digital payment systems, "
-            "however this status code is used very rarely and no standard convention exists."
+            "The initial aim for creating this code "
+            "was using it for digital payment systems, "
+            "however this status code is used very rarely "
+            "and no standard convention exists."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
     },
@@ -319,13 +346,17 @@ _responses = {
         "description": (
             "This response is sent when the web server, "
             "after performing server-driven content negotiation, "
-            "doesn't find any content that conforms to the criteria given by the user agent."
+            "doesn't find any content that conforms to "
+            "the criteria given by the user agent."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/406"
     },
     "407": {
         "title": "Proxy Authentication Required",
-        "description": "This is similar to 401 but authentication is needed to be done by a proxy.",
+        "description": (
+            "This is similar to 401 "
+            "but authentication is needed to be done by a proxy."
+        ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/407"
     },
     "408": {
@@ -333,7 +364,8 @@ _responses = {
         "description": (
             "This response is sent on an idle connection by some servers, "
             "even without any previous request by the client. "
-            "It means that the server would like to shut down this unused connection. "
+            "It means that the server would like to "
+            "shut down this unused connection. "
             "This response is used much more since some browsers, "
             "like Chrome, Firefox 27+, or IE9, "
             "use HTTP pre-connection mechanisms to speed up surfing. "
@@ -354,8 +386,10 @@ _responses = {
         "title": "Gone",
         "description": (
             "This response is sent when the requested content "
-            "has been permanently deleted from server, with no forwarding address. "
-            "Clients are expected to remove their caches and links to the resource. "
+            "has been permanently deleted from server, "
+            "with no forwarding address. "
+            "Clients are expected to remove their caches "
+            "and links to the resource. "
             "The HTTP specification intends this status code "
             "to be used for \"limited-time, promotional services\". "
             "APIs should not feel compelled to indicate resources "
@@ -366,8 +400,9 @@ _responses = {
     "411": {
         "title": "Length Required",
         "description": (
-            "Server rejected the request because the Content-Length header field "
-            "is not defined and the server requires it."
+            "Server rejected the request because "
+            "the Content-Length header field is not defined "
+            "and the server requires it."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/411"
     },
@@ -383,7 +418,8 @@ _responses = {
         "title": "Payload Too Large",
         "description": (
             "Request entity is larger than limits defined by server; "
-            "the server might close the connection or return an Retry-After header field."
+            "the server might close the connection "
+            "or return an Retry-After header field."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/413"
     },
@@ -406,8 +442,9 @@ _responses = {
     "416": {
         "title": "Range Not Satisfiable",
         "description": (
-            "The range specified by the Range header field in the request can't be fulfilled; "
-            "it's possible that the range is outside the size of the target URI's data."
+            "The range specified by the Range header field in the request "
+            "can't be fulfilled; it's possible that the range "
+            "is outside the size of the target URI's data."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/416"
     },
@@ -421,25 +458,36 @@ _responses = {
     },
     "418": {
         "title": "I'm a teapot",
-        "description": "The server refuses the attempt to brew coffee with a teapot.",
+        "description": (
+            "The server refuses the attempt "
+            "to brew coffee with a teapot."
+        ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/418"
     },
     "419": {
         "title": "Page Expired (Laravel Framework)",
-        "description": "Used by the Laravel Framework when a CSRF Token is missing or expired.",
+        "description": (
+            "Used by the Laravel Framework "
+            "when a CSRF Token is missing or expired."
+        ),
         "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#419"
     },
     "420": {
         "title": "Method Failure (Spring Framework)",
-        "description": "A deprecated response used by the Spring Framework when a method has failed.",
+        "description": (
+            "A deprecated response used by the Spring Framework "
+            "when a method has failed."
+        ),
         "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#420"
     },
     "421": {
         "title": "Misdirected Request",
         "description": (
-            "The request was directed at a server that is not able to produce a response. "
-            "This can be sent by a server that is not configured to produce responses "
-            "for the combination of scheme and authority that are included in the request URI."
+            "The request was directed at a server "
+            "that is not able to produce a response. "
+            "This can be sent by a server that is not configured "
+            "to produce responses for the combination "
+            "of scheme and authority that are included in the request URI."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"
     },
@@ -453,12 +501,18 @@ _responses = {
     },
     "423": {
         "title": "Locked (WebDAV)",
-        "description": "The resource that is being accessed is locked.",
+        "description": (
+            "The resource that is being accessed "
+            "is locked."
+        ),
         "link": "https://developer.mozilla.org/en-US/docs/Glossary/WebDAV"
     },
     "424": {
         "title": "Failed Dependency (WebDAV)",
-        "description": "The request failed due to failure of a previous request.",
+        "description": (
+            "The request failed "
+            "due to failure of a previous request."
+        ),
         "link": "https://developer.mozilla.org/en-US/docs/Glossary/WebDAV"
     },
     "425": {
@@ -472,8 +526,9 @@ _responses = {
     "426": {
         "title": "Upgrade Required",
         "description": (
-            "The server refuses to perform the request using the current protocol "
-            "but might be willing to do so after the client upgrades to a different protocol. "
+            "The server refuses to perform the request "
+            "using the current protocol but might be willing to do so "
+            "after the client upgrades to a different protocol. "
             "The server sends an Upgrade header in a 426 response "
             "to indicate the required protocol(s)."
         ),
@@ -502,7 +557,8 @@ _responses = {
     "430": {
         "title": "Request Header Fields Too Large (Shopify)",
         "description": (
-            "Used by Shopify, instead of the 429 Too Many Requests response code, "
+            "Used by Shopify, "
+            "instead of the 429 Too Many Requests response code, "
             "when too many URLs are requested within a certain time frame."
         ),
         "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes"
@@ -519,7 +575,10 @@ _responses = {
     },
     "440": {
         "title": "Login Time-out (Microsoft IIS)",
-        "description": "The client's session has expired and must log in again.",
+        "description": (
+            "The client's session has expired "
+            "and must log in again."
+        ),
         "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#440"
     },
     "444": {
@@ -550,7 +609,8 @@ _responses = {
     "451": {
         "title": "Unavailable For Legal Reasons",
         "description": (
-            "The user-agent requested a resource that cannot legally be provided, "
+            "The user-agent requested a resource "
+            "that cannot legally be provided, "
             "such as a web page censored by a government."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451"
@@ -558,8 +618,10 @@ _responses = {
     "460": {
         "title": "(AWS Elastic Load Balancer)",
         "description": (
-            "Client closed the connection with the load balancer before the idle timeout period elapsed. "
-            "Typically when client timeout is sooner than the Elastic Load Balancer's timeout."
+            "Client closed the connection with the load balancer "
+            "before the idle timeout period elapsed. "
+            "Typically when client timeout is sooner "
+            "than the Elastic Load Balancer's timeout."
         ),
         "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#460"
     },
@@ -573,7 +635,10 @@ _responses = {
     },
     "494": {
         "title": "Request header too large (nginx)",
-        "description": "Client sent too large request or too long header line.",
+        "description": (
+            "Client sent too large request "
+            "or too long header line."
+        ),
         "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#494"
     },
     "495": {
@@ -623,13 +688,17 @@ _responses = {
 
     "500": {
         "title": "Internal Server Error",
-        "description": "The server has encountered a situation it doesn't know how to handle.",
+        "description": (
+            "The server has encountered a situation "
+            "it doesn't know how to handle."
+        ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
     },
     "501": {
         "title": "Not Implemented",
         "description": (
-            "The request method is not supported by the server and cannot be handled. "
+            "The request method is not supported by the server "
+            "and cannot be handled. "
             "The only methods that servers are required to support "
             "(and therefore that must not return this code) are GET and HEAD."
         ),
@@ -639,8 +708,8 @@ _responses = {
         "title": "Bad Gateway",
         "description": (
             "This error response means that the server, "
-            "while working as a gateway to get a response needed to handle the request, "
-            "got an invalid response."
+            "while working as a gateway to get a response needed "
+            "to handle the request, got an invalid response."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
     },
@@ -648,29 +717,35 @@ _responses = {
         "title": "Service Unavailable",
         "description": (
             "The server is not ready to handle the request. "
-            "Common causes are a server that is down for maintenance or that is overloaded. "
+            "Common causes are a server that is down for maintenance "
+            "or that is overloaded. "
             "Note that together with this response, "
             "a user-friendly page explaining the problem should be sent. "
             "This responses should be used for temporary conditions "
             "and the Retry-After: HTTP header should, if possible, "
             "contain the estimated time before the recovery of the service. "
-            "The webmaster must also take care about the caching-related headers "
+            "The webmaster must also take care about "
+            "the caching-related headers "
             "that are sent along with this response, "
-            "as these temporary condition responses should usually not be cached."
+            "as these temporary condition responses s"
+            "hould usually not be cached."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
     },
     "504": {
         "title": "Gateway Timeout",
         "description": (
-            "This error response is given when the server is acting as a gateway "
-            "and cannot get a response in time."
+            "This error response is given when the server "
+            "is acting as a gateway and cannot get a response in time."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504"
     },
     "505": {
         "title": "HTTP Version Not Supported",
-        "description": "The HTTP version used in the request is not supported by the server.",
+        "description": (
+            "The HTTP version used in the request "
+            "is not supported by the server."
+        ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/505"
     },
     "506": {
@@ -679,7 +754,8 @@ _responses = {
             "The server has an internal configuration error: "
             "the chosen variant resource is configured "
             "to engage in transparent content negotiation itself, "
-            "and is therefore not a proper end point in the negotiation process."
+            "and is therefore not a proper end point "
+            "in the negotiation process."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/506"
     },
@@ -694,14 +770,19 @@ _responses = {
     },
     "508": {
         "title": "Loop Detected (WebDAV)",
-        "description": "The server detected an infinite loop while processing the request.",
+        "description": (
+            "The server detected an infinite loop "
+            "while processing the request."
+        ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/508"
     },
     "509": {
         "title": "Bandwidth Limit Exceeded (Apache Web Server/cPanel)",
         "description": (
-            "The server has exceeded the bandwidth specified by the server administrator; "
-            "this is often used by shared hosting providers to limit the bandwidth of customers."
+            "The server has exceeded the bandwidth "
+            "specified by the server administrator; "
+            "this is often used by shared hosting providers "
+            "to limit the bandwidth of customers."
         ),
         "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#509"
     },
@@ -732,8 +813,10 @@ _responses = {
     "521": {
         "title": "Web Server Is Down (Cloudflare)",
         "description": (
-            "Error 521 occurs when the origin web server refuses connections from Cloudflare. "
-            "Security solutions at your origin may block legitimate connections "
+            "Error 521 occurs when the origin web server "
+            "refuses connections from Cloudflare. "
+            "Security solutions at your origin "
+            "may block legitimate connections "
             "from certain Cloudflare IP addresses."
         ),
         "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#521"
@@ -757,7 +840,8 @@ _responses = {
     "524": {
         "title": "A Timeout Occurred (Cloudflare)",
         "description": (
-            "Cloudflare was able to complete a TCP connection to the origin server, "
+            "Cloudflare was able to complete a TCP connection "
+            "to the origin server, "
             "but did not receive a timely HTTP response."
         ),
         "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#524"
@@ -773,7 +857,8 @@ _responses = {
     "526": {
         "title": "Invalid SSL Certificate (Cloudflare)",
         "description": (
-            "Cloudflare could not validate the SSL certificate on the origin web server. "
+            "Cloudflare could not validate the SSL certificate "
+            "on the origin web server. "
             "Also used by Cloud Foundry's gorouter."
         ),
         "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#526"
@@ -805,9 +890,11 @@ _responses = {
     "561": {
         "title": "Unauthorized (AWS Elastic Load Balancer)",
         "description": (
-            "An error around authentication returned by a server registered with a load balancer. "
+            "An error around authentication returned by a server "
+            "registered with a load balancer. "
             "You configured a listener rule to authenticate users, "
-            "but the identity provider (IdP) returned an error code when authenticating the user."
+            "but the identity provider (IdP) returned an error code "
+            "when authenticating the user."
         ),
         "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#561"
     },
