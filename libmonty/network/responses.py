@@ -3,6 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+# https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
 
 def get(code: int) -> dict:
 
@@ -139,6 +140,19 @@ _responses = {
             "of multiple bindings to the same collection."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Glossary/WebDAV"
+    },
+    "218": {
+        "title": "This is fine (Apache Web Server)",
+        "description": (
+            "Used as a catch-all error condition for allowing response bodies "
+            "to flow through Apache when ProxyErrorOverride is enabled. "
+            "When ProxyErrorOverride is enabled in Apache, "
+            "response bodies that contain a status code of 4xx or 5xx "
+            "are automatically discarded by Apache in favor of "
+            "a generic response or a custom response specified "
+            "by the ErrorDocument directive."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#218"
     },
     "226": {
         "title": "IM Used (HTTP Delta encoding)",
@@ -410,6 +424,16 @@ _responses = {
         "description": "The server refuses the attempt to brew coffee with a teapot.",
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/418"
     },
+    "419": {
+        "title": "Page Expired (Laravel Framework)",
+        "description": "Used by the Laravel Framework when a CSRF Token is missing or expired.",
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#419"
+    },
+    "420": {
+        "title": "Method Failure (Spring Framework)",
+        "description": "A deprecated response used by the Spring Framework when a method has failed.",
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#420"
+    },
     "421": {
         "title": "Misdirected Request",
         "description": (
@@ -475,6 +499,14 @@ _responses = {
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
     },
+    "430": {
+        "title": "Request Header Fields Too Large (Shopify)",
+        "description": (
+            "Used by Shopify, instead of the 429 Too Many Requests response code, "
+            "when too many URLs are requested within a certain time frame."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes"
+    },
     "431": {
         "title": "Request Header Fields Too Large",
         "description": (
@@ -485,6 +517,36 @@ _responses = {
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/431"
     },
+    "440": {
+        "title": "Login Time-out (Microsoft IIS)",
+        "description": "The client's session has expired and must log in again.",
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#440"
+    },
+    "444": {
+        "title": "No Response (nginx)",
+        "description": (
+            "Used internally to instruct the server to return "
+            "no information to the client and close the connection immediately."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#444"
+    },
+    "449": {
+        "title": "Retry With (Microsoft IIS)",
+        "description": (
+            "The server cannot honour the request "
+            "because the user has not provided the required information."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#449"
+    },
+    "450": {
+        "title": "Blocked by Windows Parental Controls (Microsoft)",
+        "description": (
+            "The Microsoft extension code indicated "
+            "when Windows Parental Controls are turned on and "
+            "are blocking access to the requested webpage."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#450"
+    },
     "451": {
         "title": "Unavailable For Legal Reasons",
         "description": (
@@ -492,6 +554,68 @@ _responses = {
             "such as a web page censored by a government."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451"
+    },
+    "460": {
+        "title": "(AWS Elastic Load Balancer)",
+        "description": (
+            "Client closed the connection with the load balancer before the idle timeout period elapsed. "
+            "Typically when client timeout is sooner than the Elastic Load Balancer's timeout."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#460"
+    },
+    "463": {
+        "title": "(AWS Elastic Load Balancer)",
+        "description": (
+            "The load balancer received an X-Forwarded-For request header "
+            "with more than 30 IP addresses."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#463"
+    },
+    "494": {
+        "title": "Request header too large (nginx)",
+        "description": "Client sent too large request or too long header line.",
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#494"
+    },
+    "495": {
+        "title": "SSL Certificate Error (nginx)",
+        "description": (
+            "An expansion of the 400 Bad Request response code, "
+            "used when the client has provided an invalid client certificate."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#495"
+    },
+    "496": {
+        "title": "SSL Certificate Required (nginx)",
+        "description": (
+            "An expansion of the 400 Bad Request response code, "
+            "used when a client certificate is required but not provided."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#496"
+    },
+    "497": {
+        "title": "HTTP Request Sent to HTTPS Port (nginx)",
+        "description": (
+            "An expansion of the 400 Bad Request response code, "
+            "used when the client has made a HTTP request to a port "
+            "listening for HTTPS requests."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#497"
+    },
+    "498": {
+        "title": "Invalid Token (Esri)",
+        "description": (
+            "Returned by ArcGIS for Server. "
+            "Code 498 indicates an expired or otherwise invalid token."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#498"
+    },
+    "499": {
+        "title": "Token Required (Esri) / Client Closed Request (nginx)",
+        "description": (
+            "Returned by ArcGIS for Server. "
+            "Code 499 indicates that a token is required but was not submitted."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#499"
     },
 
     # ---------------------------------------------------------------- #
@@ -573,6 +697,14 @@ _responses = {
         "description": "The server detected an infinite loop while processing the request.",
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/508"
     },
+    "509": {
+        "title": "Bandwidth Limit Exceeded (Apache Web Server/cPanel)",
+        "description": (
+            "The server has exceeded the bandwidth specified by the server administrator; "
+            "this is often used by shared hosting providers to limit the bandwidth of customers."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#509"
+    },
     "510": {
         "title": "Not Extended",
         "description": (
@@ -588,6 +720,104 @@ _responses = {
             "that the client needs to authenticate to gain network access."
         ),
         "link": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/511"
+    },
+    "520": {
+        "title": "Web Server Returned an Unknown Error (Cloudflare)",
+        "description": (
+            "The origin server returned an empty, unknown, "
+            "or unexplained response to Cloudflare."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#520"
+    },
+    "521": {
+        "title": "Web Server Is Down (Cloudflare)",
+        "description": (
+            "Error 521 occurs when the origin web server refuses connections from Cloudflare. "
+            "Security solutions at your origin may block legitimate connections "
+            "from certain Cloudflare IP addresses."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#521"
+    },
+    "522": {
+        "title": "Connection Timed Out (Cloudflare)",
+        "description": (
+            "Error 522 occurs when Cloudflare times out "
+            "contacting the origin web server."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#522"
+    },
+    "523": {
+        "title": "Origin Is Unreachable (Cloudflare)",
+        "description": (
+            "Cloudflare could not reach the origin server; for example, "
+            "if the DNS records for the origin server are incorrect."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#523"
+    },
+    "524": {
+        "title": "A Timeout Occurred (Cloudflare)",
+        "description": (
+            "Cloudflare was able to complete a TCP connection to the origin server, "
+            "but did not receive a timely HTTP response."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#524"
+    },
+    "525": {
+        "title": "SSL Handshake Failed (Cloudflare)",
+        "description": (
+            "Cloudflare could not negotiate a SSL/TLS handshake "
+            "with the origin server."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#525"
+    },
+    "526": {
+        "title": "Invalid SSL Certificate (Cloudflare)",
+        "description": (
+            "Cloudflare could not validate the SSL certificate on the origin web server. "
+            "Also used by Cloud Foundry's gorouter."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#526"
+    },
+    "527": {
+        "title": "Railgun Error (Cloudflare)",
+        "description": (
+            "Error 527 indicates an interrupted connection between Cloudflare "
+            "and the origin server's Railgun server."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#527"
+    },
+    "529": {
+        "title": "Site is overloaded (Qualys)",
+        "description": (
+            "Used by Qualys in the SSLLabs server testing API "
+            "to signal that the site can't process the request."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#529"
+    },
+    "530": {
+        "title": "Site is frozen (Pantheon) / [along with a 1xxx] (Cloudflare)",
+        "description": (
+            "Used by the Pantheon web platform "
+            "to indicate a site that has been frozen due to inactivity."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#530"
+    },
+    "561": {
+        "title": "Unauthorized (AWS Elastic Load Balancer)",
+        "description": (
+            "An error around authentication returned by a server registered with a load balancer. "
+            "You configured a listener rule to authenticate users, "
+            "but the identity provider (IdP) returned an error code when authenticating the user."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#561"
+    },
+    "598": {
+        "title": "(Informal convention) Network read timeout error",
+        "description": (
+            "Used by some HTTP proxies to signal a network read timeout "
+            "behind the proxy to a client in front of the proxy."
+        ),
+        "link": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#598"
     }
 }
 
