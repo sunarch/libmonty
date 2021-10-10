@@ -20,8 +20,8 @@ COMMAND = "poetry"
 
 def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
-    vertical_start = 2
-    horizontal_start = 0
+    vertical_start = 100
+    horizontal_start = 130
 
     if execute:
         pass
