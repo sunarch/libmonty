@@ -60,7 +60,7 @@ def primary_font_text(arg_function):
 def alternate_font_text(arg_function):
     def new_function(arg_printable, arg_alternate_font_no):
         inserted_no = "1"
-        if int(arg_alternate_font_no) in range(1, 10): # 0 < x < 10 #
+        if int(arg_alternate_font_no) in range(1, 10):  # 0 < x < 10 #
             inserted_no = str(arg_alternate_font_no)
         return '\x1b[1{0}m{1}\x1b[0m'.format(inserted_no, arg_function(arg_printable, arg_alternate_font_no))
     return new_function
