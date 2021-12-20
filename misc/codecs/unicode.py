@@ -7,8 +7,8 @@
 
 
 def encode(arg_object):
-    return arg_object.encode('utf-8')
+    return arg_object.encode('UTF-8')
 
 
 def decode(arg_object):
-    return arg_object.decode('utf-8')
+    return arg_object.decode('UTF-8')

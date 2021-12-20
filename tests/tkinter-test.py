@@ -15,21 +15,22 @@ class Application(tk.Frame):
 
     def createWidgets(self):
         self.hi_there = tk.Button(self)
-        self.hi_there["text"] = "Hello World\n(click me)"
-        self.hi_there["command"] = self.say_hi
-        self.hi_there.pack(side="top")
+        self.hi_there['text'] = 'Hello World\n(click me)'
+        self.hi_there['command'] = self.say_hi
+        self.hi_there.pack(side='top')
 
-        self.QUIT = tk.Button(self, text="QUIT", fg="red",
-                                            command=root.destroy)
-        self.QUIT.pack(side="bottom")
+        self.QUIT = tk.Button(self, text='QUIT', fg='red', command=root.destroy)
+        self.QUIT.pack(side='bottom')
 
     def say_hi(self):
-        print("hi there, everyone!")
+        print('hi there, everyone!')
         self.hi_there2 = tk.Button(self)
-        self.hi_there2["text"] = "Hello World\n(click me)"
-        self.hi_there2["command"] = self.say_hi
-        self.hi_there2.pack(side="bottom")
+        self.hi_there2['text'] = 'Hello World\n(click me)'
+        self.hi_there2['command'] = self.say_hi
+        self.hi_there2.pack(side='bottom')
 
-root = tk.Tk()
-app = Application(master=root)
-app.mainloop()
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    app = Application(master=root)
+    app.mainloop()

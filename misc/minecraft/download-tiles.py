@@ -18,8 +18,8 @@ z_finish = -500
 
 def download_tile(arg_x, arg_z):
     
-    url = "https://dynmap.avalion.hu/tiles/world/flat/-22_-16/{x}_{z}.png".format(x=arg_x, z=arg_z)
-    path = "tiles-download-py/{x}_{z}.png".format(x=arg_x, z=arg_z)
+    url = 'https://dynmap.avalion.hu/tiles/world/flat/-22_-16/{x}_{z}.png'.format(x=arg_x, z=arg_z)
+    path = 'tiles-download-py/{x}_{z}.png'.format(x=arg_x, z=arg_z)
     
     response = requests.get(url, stream=True)
 
@@ -30,11 +30,11 @@ def download_tile(arg_x, arg_z):
 
 
 for iter_x in range(x_start, x_finish + 1):
-    print("------------------------------------------")
-    print("iteration for x = {x}".format(x=iter_x))
+    print('------------------------------------------')
+    print(f'iteration for x = {iter_x}')
     
     for iter_z in range(z_start, z_finish + 1):
-        print("    instance z = {z}".format(z=iter_z))
-        print("        -22_-16/{x}_{z}.png".format(x=iter_x, z=iter_z))
+        print(f'    instance z = {iter_z}')
+        print(f'        -22_-16/{iter_x}_{iter_z}.png')
         
         download_tile(iter_x, iter_z)

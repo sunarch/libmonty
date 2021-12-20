@@ -89,8 +89,8 @@ def double_pixels_1():
                     final_array[i1][i2][i3] = 0
 
     # Debugging new image dimensions
-    print("Final image height: " + str(len(final_array)))
-    print("Final image width: " + str(len(final_array[1])))
+    print('Final image height:', len(final_array))
+    print('Final image width:', len(final_array[1]))
 
 
 # filling functions ############################################################
@@ -191,24 +191,24 @@ def main(argv):
 
     # define command argument possibilities
     try:
-        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+        opts, args = getopt.getopt(argv, 'hi:o:', ['ifile=', 'ofile='])
     except getopt.GetoptError:
-        print('Usage: "./imgel.py -i <inputfile> -o <outputfile>"')
+        print('Usage: \'./imgel.py -i <inputfile> -o <outputfile>\'')
         sys.exit(2)
 
     # define actions based on command argument switches
     for opt, arg in opts:
         if opt == '-h':
-            print('Usage: \"./imgel.py -i <inputfile> -o <outputfile>\"')
+            print('Usage: \'./imgel.py -i <inputfile> -o <outputfile>\'')
             sys.exit()
-        elif opt in ("-i", "--ifile"):
+        elif opt in ('-i', '--ifile'):
             inputfile = arg
-        elif opt in ("-o", "--ofile"):
+        elif opt in ('-o', '--ofile'):
             outputfile = arg
 
     # debug variable values gotten out of arguments
-    print('Input file is "', inputfile)
-    print('Output file is "', outputfile)
+    print('Input file:', inputfile)
+    print('Output file:', outputfile)
 
     # get source file name and target file name from args
     src_file = str(inputfile)
@@ -218,7 +218,7 @@ def main(argv):
     src_image = Image.open(src_file)
 
     # [ORIGINAL:] Attempt to ensure image is RGB
-    src_rgb = src_image.convert(mode="RGB")
+    src_rgb = src_image.convert(mode='RGB')
 
     # [ORIGINAL:] Create array of image using numpy
     src_array = numpy.asarray(src_rgb)
@@ -228,8 +228,8 @@ def main(argv):
     src_image_width = len(src_array[1])
 
     # debug source image dimension values
-    print("Source image height: " + str( src_image_height ) )
-    print("Source image width: " + str( src_image_width ) )
+    print('Source image height:', src_image_height)
+    print('Source image width:', src_image_width)
 
     # [ORIGINAL:] Modify array here
 
@@ -238,7 +238,7 @@ def main(argv):
     two_point_filling_1()
 
     # [ORIGINAL:] Create image from array
-    final_image = Image.fromarray(final_array, "RGB")
+    final_image = Image.fromarray(final_array, 'RGB')
 
     # [ORIGINAL:] Save
     final_image.save(target_file)
@@ -246,7 +246,7 @@ def main(argv):
 
 # start program ################################################################
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main(sys.argv[1:])
 
 # END ##########################################################################

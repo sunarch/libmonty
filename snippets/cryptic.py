@@ -7,10 +7,10 @@
 
 import random
 
-characters = "0123456789"
-characters += "abcdefghijklmnopqrstuvwxyz"
-characters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-characters += "?:~=+-%/|\\#&@$*"
+characters = '0123456789'
+characters += 'abcdefghijklmnopqrstuvwxyz'
+characters += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+characters += '?:~=+-%/|\\#&@$*'
 
 characters_count = len(characters)
 

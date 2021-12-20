@@ -19,8 +19,8 @@ def print_header(bytes_per_line: int,
                  extra_width: int
                  ) -> None:
 
-    s_counter = f"Offset ({index_converter(-1)})"
-    s_line = f" {s_counter:^{COUNTER_DIGITS + extra_width}}  "
+    s_counter = f'Offset ({index_converter(-1)})'
+    s_line = f' {s_counter:^{COUNTER_DIGITS + extra_width}}  '
 
     try:
         b_unit = bytes(range(bytes_per_line))
@@ -34,7 +34,7 @@ def print_header(bytes_per_line: int,
 
     s_line += _part_bytes(b_unit, bytes_per_line, index_converter)
 
-    s_line += "Decoded text"
+    s_line += 'Decoded text'
 
     print(s_line, flush=True)
 
@@ -90,16 +90,16 @@ def _part_bytes(b_unit: bytes,
     s_bytes = " ".join(map(lambda b: number_converter(b, 2), b_unit))
 
     if len(b_unit) < bytes_per_line:
-        s_format = "{:<" + str((bytes_per_line * 3) - 1) + "}"
+        s_format = '{:<' + str((bytes_per_line * 3) - 1) + '}'
         s_bytes = s_format.format(s_bytes)
 
-    return s_bytes + "  "
+    return s_bytes + '  '
 
 
 def _part_chars(b_unit: bytes,
                 char_converter: Callable = char_str.pseudo,
                 ) -> str:
 
-    return "".join(map(char_converter, b_unit))
+    return ''.join(map(char_converter, b_unit))
 
 # -------------------------------------------------------------------- #

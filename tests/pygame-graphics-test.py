@@ -18,9 +18,10 @@
 
 import pygame
 
+
 # Define some colors
 BLACK = (0, 0, 0)
-WHITE = (255, 255, 255) # WHITE = (0xFF, 0xFF, 0xFF)
+WHITE = (255, 255, 255)  # WHITE = (0xFF, 0xFF, 0xFF)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 

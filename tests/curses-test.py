@@ -4,19 +4,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import curses
+import os
+
 
 target_row_count = 40
 target_col_count = 120
 
 # resize terminal window to 40 rows and 120 columns
-print("\x1b[8;" + str(target_row_count) + ";" + str(target_col_count) + "t")
+print('\x1b[8;' + str(target_row_count) + ';' + str(target_col_count) + "t")
 
-import curses
-import os
 
 terminal_size = os.get_terminal_size()
 columns = terminal_size.columns
 rows = terminal_size.lines
+
 
 def setchar(stdscr, y, x, char):
     if len(char) != 1:
@@ -27,6 +29,7 @@ def setchar(stdscr, y, x, char):
         raise ValueError("incorrect argument: column")
 
     stdscr.addch(y, x, char, curses.color_pair(1))
+
 
 def main(stdscr):
 
@@ -46,4 +49,6 @@ def main(stdscr):
     stdscr.refresh()
     stdscr.getkey()
 
-curses.wrapper(main)
+
+if __name__ == '__main__':
+    curses.wrapper(main)

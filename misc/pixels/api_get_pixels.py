@@ -15,12 +15,12 @@ from pixels import api_headers
 # Get the current state of all pixels from the database.
 # This endpoint requires an authentication token. See this page for how to authenticate with the API.
 
-API_URL = "https://pixels.pythondiscord.com/get_pixels"
+API_URL = 'https://pixels.pythondiscord.com/get_pixels'
 
-API_NAME_GET = "GET /get_pixels"
-API_NAME_HEAD = "HEAD /get_pixels"
+API_NAME_GET = 'GET /get_pixels'
+API_NAME_HEAD = 'HEAD /get_pixels'
 
-COMMAND = "image"
+COMMAND = 'image'
 
 
 def execute() -> dict:
@@ -31,12 +31,12 @@ def execute() -> dict:
     )
 
     d_result = {
-        "request_name": API_NAME_GET,
-        "response": response,
-        "data": f"#length: {len(response.content)}",
-        "data_type": "octet-stream",
-        "data_encoding": "raw",
-        "bytes": response.content
+        'request_name': API_NAME_GET,
+        'response': response,
+        'data': f'#length: {len(response.content)}',
+        'data_type': 'octet-stream',
+        'data_encoding': 'raw',
+        'bytes': response.content
     }
 
     d_result.update(api_headers.sort_by_type(response.headers))

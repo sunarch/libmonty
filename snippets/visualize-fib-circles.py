@@ -25,13 +25,13 @@ def main():
     window_size = 1000
     window_width = window_size
     window_height = window_size
-    window_caption = "Visualizer"
+    window_caption = 'Visualizer'
 
     background_color = (0, 0, 0)
 
     title_fontsize = 36
     title_color = (128, 128, 255)
-    title_text = "[ press space to begin ]"
+    title_text = '[ press space to begin ]'
 
     circle_color = (255, 0, 0)
     circle_position_x = int(window_width / 2)

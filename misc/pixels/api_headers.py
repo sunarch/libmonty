@@ -20,11 +20,11 @@ def request(api_url: str, request_name: str) -> dict:
     )
 
     d_result = {
-        "request_name": request_name,
-        "response": response,
-        "data": response.text,
-        "data_type": "none",
-        "data_encoding": response.encoding
+        'request_name': request_name,
+        'response': response,
+        'data': response.text,
+        'data_type': "none",
+        'data_encoding': response.encoding
     }
 
     d_result.update(sort_by_type(response.headers))
@@ -32,21 +32,21 @@ def request(api_url: str, request_name: str) -> dict:
     return d_result
 
 
-RATE_LIMIT_COUNT_REMAINING = "Requests-Remaining"  # (int)
+RATE_LIMIT_COUNT_REMAINING = 'Requests-Remaining'  # (int)
 # How many requests you are still allowed to do before waiting.
 
-RATE_LIMIT_COUNT_LIMIT = "Requests-Limit"  # (int)
+RATE_LIMIT_COUNT_LIMIT = 'Requests-Limit'  # (int)
 # How many requests you can do during a period.
 
-RATE_LIMIT_TIME_RESET = "Requests-Reset"  # (float)
+RATE_LIMIT_TIME_RESET = 'Requests-Reset'  # (float)
 # How many seconds you must wait without sending a request
 # before getting all your requests back.
 # `0` if you still have all your requests.
 
-RATE_LIMIT_TIME_PERIOD = "Requests-Period"  # (int)
+RATE_LIMIT_TIME_PERIOD = 'Requests-Period'  # (int)
 # Duration, in seconds, of the ratelimit period.
 
-RATE_LIMIT_COOLDOWN = "Cooldown-Reset"
+RATE_LIMIT_COOLDOWN = 'Cooldown-Reset'
 
 RATE_LIMIT_HEADER_LABELS = [
     RATE_LIMIT_COUNT_REMAINING,
@@ -71,9 +71,9 @@ def sort_by_type(headers: CaseInsensitiveDict) -> dict:
             d_regular_headers[s_header_tag] = headers[s_header_tag]
 
     return {
-        "rate_limits": d_rate_limit_info,
-        "cooldown": s_rate_limit_cooldown,
-        "headers": d_regular_headers
+        'rate_limits': d_rate_limit_info,
+        'cooldown': s_rate_limit_cooldown,
+        'headers': d_regular_headers
     }
 
 # -------------------------------------------------------------------- #

@@ -17,29 +17,29 @@ import rsa
 
 # side of sender ###############################################################
 
-message = "Hello"
-print("Message: " + str(message))
+message = 'Hello'
+print('Message:', message)
 
-binmessage = message.encode()
-print("Bytes message: " + str(binmessage))
+bin_message = message.encode()
+print('Bytes message:', bin_message)
 
-signature = rsa.sign(binmessage, sender_priv_key, "SHA-512")
-print("Signature: " + str(signature))
+signature = rsa.sign(bin_message, sender_priv_key, 'SHA-512')
+print('Signature:', signature)
 
-crypto = rsa.encrypt(binmessage, receiver_pub_key)
-print("Encrypted message: " + str(crypto))
+crypto = rsa.encrypt(bin_message, receiver_pub_key)
+print('Encrypted message:', crypto)
 
 # side of receiver
 
-bindecrypted = rsa.decrypt(crypto, receiver_priv_key)
-print("Decrypted bytes message: " + str(bindecrypted))
+bin_decrypted = rsa.decrypt(crypto, receiver_priv_key)
+print('Decrypted bytes message:', bin_decrypted)
 
-if rsa.verify(bindecrypted, signature, sender_pub_key):
-    print("Message signature verified.")
+if rsa.verify(bin_decrypted, signature, sender_pub_key):
+    print('Message signature verified.')
 else:
-    print("SIGNATURE VERIFICATION ERROR!")
+    print('SIGNATURE VERIFICATION ERROR!')
 
-decrypted = bindecrypted.decode()
-print("Decrypted message: " + str(decrypted))
+decrypted = bin_decrypted.decode()
+print('Decrypted message:', decrypted)
 
 # END ##########################################################################

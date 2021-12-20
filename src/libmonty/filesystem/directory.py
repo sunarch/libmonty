@@ -86,7 +86,7 @@ def create_dir(name):
 
 
 def create_file(name):
-    newfile = open(name, "x")
+    newfile = open(name, 'x')
     newfile.close()
 
 
@@ -94,19 +94,19 @@ def create_file(name):
 
 def get_int_from_file(arg_path):
 
-    valuefile = open(arg_path, "rt")
+    valuefile = open(arg_path, 'rt')
     return int(valuefile.readlines()[0].splitlines()[0])
 
 
 def get_string_from_file(arg_path):
 
-    valuefile = open(arg_path, "rt")
+    valuefile = open(arg_path, 'rt')
     return valuefile.readlines()[0].splitlines()[0]
 
 
 def get_list_from_file(arg_path):
 
-    valuefile = open(arg_path, "rt")
+    valuefile = open(arg_path, 'rt')
     lines = valuefile.readlines()
     return_list = list()
 
@@ -115,7 +115,7 @@ def get_list_from_file(arg_path):
 
         non_data_content = re.fullmatch('^[.*]?$', line_content)
 
-        if not non_data_content and line_content is not "":
+        if not non_data_content and line_content is not '':
             return_list.append( line.splitlines()[0].strip() )
 
     return return_list
@@ -132,7 +132,7 @@ def get_dict_from_file(arg_path):
 
         non_data_content = re.fullmatch('^[.*]?$', line_content)
 
-        if not non_data_content and line_content is not "" :
+        if not non_data_content and line_content is not '':
 
             new_kv_pair = line_content.split( DATA_FILE_DICT_DELIMITER )
             new_key = new_kv_pair[0].strip()

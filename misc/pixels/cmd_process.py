@@ -25,11 +25,11 @@ def process_command(command: str,
         commands.COMMAND_EXIT: commands.finish_all_and_exit,
         commands.COMMAND_FINISH: commands.finish_queue_and_exit,
         commands.COMMAND_ABORT: commands.abort_queue_and_exit,
-        "queue": commands.show_queue_size,
-        "q": commands.show_queue_size,
+        'queue': commands.show_queue_size,
+        'q': commands.show_queue_size,
         api_get_pixel.COMMAND: commands.cmd_get,
         api_get_pixels.COMMAND: commands.cmd_image,
-        "img": commands.cmd_image,
+        'img': commands.cmd_image,
         api_get_size.COMMAND: commands.cmd_size,
         api_set_pixel.COMMAND: commands.cmd_set,
         project_poetry.COMMAND: project_poetry.command
@@ -40,19 +40,19 @@ def process_command(command: str,
 
     for argument in args:
 
-        if "=" not in argument:
+        if '=' not in argument:
             ls_args.append(argument)
             continue
 
-        ls_pair = argument.split("=")
+        ls_pair = argument.split('=')
 
         if len(ls_pair) > 2:
-            raise ValueError("Multiple '=' in keyword argument: {}".format(argument))
+            raise ValueError(f'Multiple \'=\' in keyword argument: {argument}')
 
         d_kwargs[ls_pair[0]] = ls_pair[1]
 
     if command not in d_commands:
-        raise ValueError("Unknown command: {}".format(command))
+        raise ValueError(f'Unknown command: {command}')
 
     try:
         task_queue = kwargs['task_queue']

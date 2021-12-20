@@ -18,9 +18,9 @@ from pixels import api_get_size
 from pixels import api_set_pixel
 
 
-COMMAND_EXIT = "exit"
-COMMAND_FINISH = "finish"
-COMMAND_ABORT = "abort"
+COMMAND_EXIT = 'exit'
+COMMAND_FINISH = 'finish'
+COMMAND_ABORT = 'abort'
 
 
 def finish_all_and_exit(execute: bool, timestamp: str, task_queue, **kwargs) -> str:
@@ -38,7 +38,7 @@ def abort_queue_and_exit(execute: bool, timestamp: str, task_queue, **kwargs) ->
 def show_queue_size(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
     try:
-        output.to_console(f"Items in queue: {task_queue.qsize()}")
+        output.to_console(f'Items in queue: {task_queue.qsize()}')
         output.to_console(output.form_separator())
     except AttributeError:
         pass
@@ -46,14 +46,14 @@ def show_queue_size(execute: bool, timestamp: str, task_queue, **kwargs) -> None
 
 def cmd_get(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
-    if len(kwargs['args']) == 1 and kwargs['args'][0] == "head":
+    if len(kwargs['args']) == 1 and kwargs['args'][0] == 'head':
         if execute:
             result = api_get_pixel.headers()
             output.log_result(timestamp, result)
         else:
             task_queue.put((api_get_pixel.COMMAND, kwargs['args'], timestamp))
             s_request = output.form_request_input(api_get_pixel.API_NAME_HEAD, {})
-            output.to_console(f"Queued: {s_request}")
+            output.to_console(f'Queued: {s_request}')
             output.to_console(output.form_separator())
         return
 
@@ -63,13 +63,13 @@ def cmd_get(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
             output.log_result(timestamp, result)
         else:
             task_queue.put((api_get_pixel.COMMAND, kwargs['args'], timestamp))
-            d_args = dict(zip(["x", "y"], kwargs['args']))
+            d_args = dict(zip(['x', 'y'], kwargs['args']))
             s_request = output.form_request_input(api_get_pixel.API_NAME_GET, d_args)
-            output.to_console(f"Queued: {s_request}")
+            output.to_console(f'Queued: {s_request}')
             output.to_console(output.form_separator())
         return
 
-    raise ValueError("Invalid arguments.")
+    raise ValueError('Invalid arguments.')
 
 
 def cmd_image(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
@@ -81,7 +81,7 @@ def cmd_image(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
         else:
             task_queue.put((api_get_pixels.COMMAND, kwargs['args'], timestamp))
             s_request = output.form_request_input(api_get_pixels.API_NAME_HEAD, {})
-            output.to_console(f"Queued: {s_request}")
+            output.to_console(f'Queued: {s_request}')
             output.to_console(output.form_separator())
         return
 
@@ -91,11 +91,11 @@ def cmd_image(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
         else:
             task_queue.put((api_get_pixels.COMMAND, kwargs['args'], timestamp))
             s_request = output.form_request_input(api_get_pixels.API_NAME_GET, {})
-            output.to_console(f"Queued: {s_request}")
+            output.to_console(f'Queued: {s_request}')
             output.to_console(output.form_separator())
         return
 
-    raise ValueError("Invalid arguents.")
+    raise ValueError('Invalid arguents.')
 
 
 def subcmd_image(timestamp: str) -> None:
@@ -109,8 +109,8 @@ def subcmd_image(timestamp: str) -> None:
     s_filename = timestamp
     i_name_extra = 0
 
-    while os.path.isfile(f"{files.FOLDER_IMG}/{s_filename}.png"):
-        s_filename = f"{timestamp}-{i_name_extra:0>3}"
+    while os.path.isfile(f'{files.FOLDER_IMG}/{s_filename}.png'):
+        s_filename = f'{timestamp}-{i_name_extra:0>3}'
 
     try:
         img_convert.rgb(files.FOLDER_IMG,
@@ -119,7 +119,7 @@ def subcmd_image(timestamp: str) -> None:
                         (result_s['width'], result_s['height']),
                         scale=8)
 
-        with open(f"{files.FOLDER_IMG}/{s_filename}.bin", "wb") as f_bin:
+        with open(f'{files.FOLDER_IMG}/{s_filename}.bin', 'wb') as f_bin:
             f_bin.write(result_p['bytes'])
 
     except KeyError:
@@ -135,23 +135,23 @@ def cmd_size(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
         else:
             task_queue.put((api_get_size.COMMAND, kwargs['args'], timestamp))
             s_request = output.form_request_input(api_get_size.API_NAME_GET, {})
-            output.to_console(f"Queued: {s_request}")
+            output.to_console(f'Queued: {s_request}')
             output.to_console(output.form_separator())
         return
 
-    raise ValueError("Invalid arguents.")
+    raise ValueError('Invalid arguents.')
 
 
 def cmd_set(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
 
-    if len(kwargs['args']) == 1 and kwargs['args'][0] == "head":
+    if len(kwargs['args']) == 1 and kwargs['args'][0] == 'head':
         if execute:
             result = api_set_pixel.headers()
             output.log_result(timestamp, result)
         else:
             task_queue.put((api_set_pixel.COMMAND, kwargs['args'], timestamp))
             s_request = output.form_request_input(api_set_pixel.API_NAME_HEAD, {})
-            output.to_console(f"Queued: {s_request}")
+            output.to_console(f'Queued: {s_request}')
             output.to_console(output.form_separator())
         return
 
@@ -161,12 +161,12 @@ def cmd_set(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
             output.log_result(timestamp, result)
         else:
             task_queue.put((api_set_pixel.COMMAND, kwargs['args'], timestamp))
-            d_args = dict(zip(["x", "y", "rgb"], kwargs['args']))
+            d_args = dict(zip(['x', 'y', 'rgb'], kwargs['args']))
             s_request = output.form_request_input(api_set_pixel.API_NAME_POST, d_args)
-            output.to_console(f"Queued: {s_request}")
+            output.to_console(f'Queued: {s_request}')
             output.to_console(output.form_separator())
         return
 
-    raise ValueError("Invalid arguents.")
+    raise ValueError('Invalid arguents.')
 
 # -------------------------------------------------------------------- #

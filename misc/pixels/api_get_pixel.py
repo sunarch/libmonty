@@ -16,29 +16,29 @@ from pixels import api_headers
 # Get a single pixel given the x and y coordinates.
 # This endpoint requires an authentication token. See this page for how to authenticate with the API.
 
-API_URL = "https://pixels.pythondiscord.com/get_pixel"
+API_URL = 'https://pixels.pythondiscord.com/get_pixel'
 
-API_NAME_GET = "GET /get_pixel"
-API_NAME_HEAD = "HEAD /get_pixel"
+API_NAME_GET = 'GET /get_pixel'
+API_NAME_HEAD = 'HEAD /get_pixel'
 
-COMMAND = "get"
+COMMAND = 'get'
 
 
 def execute(x: int = None, y: int = None, **kwargs: dict) -> dict:
 
     d_arguments = {
-        "x": x,
-        "y": y
+        'x': x,
+        'y': y
     }
 
     if None in (x, y):
 
-        if kwargs is not None and "x" in kwargs and "y" in kwargs:
+        if kwargs is not None and 'x' in kwargs and 'y' in kwargs:
             d_arguments['x'] = kwargs['x']
             d_arguments['y'] = kwargs['y']
 
         else:
-            raise ValueError("Missing parameter!")
+            raise ValueError('Missing parameter!')
 
     response = requests.get(
         API_URL,
@@ -52,25 +52,25 @@ def execute(x: int = None, y: int = None, **kwargs: dict) -> dict:
     try:
         payload = response.json()
         data = response.json()
-        data_type = "json"
+        data_type = 'json'
     except json.JSONDecodeError:
         payload = {}
         data = response.text
-        data_type = "text"
+        data_type = 'text'
 
     try:
-        rgb = payload["rgb"]
+        rgb = payload['rgb']
     except KeyError:
         rgb = None
 
     d_result = {
-        "request_name": API_NAME_GET,
-        "request_arguments": d_arguments,
-        "response": response,
-        "data": data,
-        "data_type": data_type,
-        "data_encoding": response.encoding,
-        "rgb": rgb
+        'request_name': API_NAME_GET,
+        'request_arguments': d_arguments,
+        'response': response,
+        'data': data,
+        'data_type': data_type,
+        'data_encoding': response.encoding,
+        'rgb': rgb
     }
 
     d_result.update(api_headers.sort_by_type(response.headers))

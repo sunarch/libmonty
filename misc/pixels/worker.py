@@ -33,7 +33,7 @@ def task_queue_worker(task_queue, **kwargs):
     while True:
 
         if abort.is_set():
-            output.to_console("Processing aborted.")
+            output.to_console('Processing aborted.')
             output.to_console(output.form_separator())
             break
 
@@ -41,7 +41,7 @@ def task_queue_worker(task_queue, **kwargs):
             command, ls_args, s_timestamp = task_queue.get_nowait()
         except queue.Empty:
             if finish.is_set():
-                output.to_console("Queue finished.")
+                output.to_console('Queue finished.')
                 output.to_console(output.form_separator())
                 break
             else:
@@ -49,13 +49,13 @@ def task_queue_worker(task_queue, **kwargs):
                 # output.to_console(output.form_separator())
                 continue
 
-        if command == api_get_pixel.COMMAND and "head" not in ls_args:
+        if command == api_get_pixel.COMMAND and 'head' not in ls_args:
             i_remaining_get = ratelimit_if_needed(api_get_pixel, i_remaining_get, s_timestamp)
 
-        elif command == api_get_pixels.COMMAND and "head" not in ls_args:
+        elif command == api_get_pixels.COMMAND and 'head' not in ls_args:
             i_remaining_img = ratelimit_if_needed(api_get_pixels, i_remaining_img, s_timestamp)
 
-        elif command == api_set_pixel.COMMAND and "head" not in ls_args:
+        elif command == api_set_pixel.COMMAND and 'head' not in ls_args:
             i_remaining_set = ratelimit_if_needed(api_set_pixel, i_remaining_set, s_timestamp)
 
         try:
@@ -65,17 +65,17 @@ def task_queue_worker(task_queue, **kwargs):
                 print(err)
                 output.to_console(output.form_separator())
 
-        if command == api_get_pixel.COMMAND and "head" not in ls_args:
+        if command == api_get_pixel.COMMAND and 'head' not in ls_args:
             i_remaining_get -= 1
-        elif command == api_get_pixels.COMMAND and "head" not in ls_args:
+        elif command == api_get_pixels.COMMAND and 'head' not in ls_args:
             i_remaining_img -= 1
-        elif command == api_set_pixel.COMMAND and "head" not in ls_args:
+        elif command == api_set_pixel.COMMAND and 'head' not in ls_args:
             i_remaining_set -= 1
 
         task_queue.task_done()
 
-        with open(files.log_path(s_timestamp), "at", encoding="utf-8") as f_log:
-            output.to_all(f"Remaining in queue: {task_queue.qsize()}", f_log)
+        with open(files.log_path(s_timestamp), 'at', encoding='UTF-8') as f_log:
+            output.to_all(f'Remaining in queue: {task_queue.qsize()}', f_log)
             output.to_all(output.form_separator(), f_log)
 
 
@@ -95,13 +95,13 @@ def ratelimit_if_needed(api_module: ModuleType, remaining: int, timestamp: str) 
         if headers_result['cooldown'] is not None:
             delay(float(headers_result['cooldown']))
             with open(files.log_path(timestamp), "at", encoding="utf-8") as f_log:
-                output.to_all(f"Cooldown: {headers_result['cooldown'] + ' ':|<62}", f_log)
+                output.to_all(f'Cooldown: {headers_result["cooldown"] + " ":|<62}', f_log)
                 output.to_all(output.form_separator(), f_log)
 
         fl_reset = float(headers_result['rate_limits'][api_headers.RATE_LIMIT_TIME_RESET])
 
-        with open(files.log_path(timestamp), "at", encoding="utf-8") as f_log:
-            output.to_all(f"Sleep: {str(fl_reset) + ' ':|<65}", f_log)
+        with open(files.log_path(timestamp), 'at', encoding='UTF-8') as f_log:
+            output.to_all(f'Sleep: {str(fl_reset) + " ":|<65}', f_log)
             output.to_all(output.form_separator(), f_log)
 
         # sleep until reset

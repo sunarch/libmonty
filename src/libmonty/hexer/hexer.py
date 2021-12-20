@@ -40,15 +40,15 @@ def run(stream: Callable = None,
         ) -> None:
 
     if stream is None:
-        raise ValueError("No input stream specified!")
+        raise ValueError('No input stream specified!')
 
     if index_converter is None:
-        raise ValueError("No index formatting method specified!")
+        raise ValueError('No index formatting method specified!')
 
     if char_converter is None:
-        raise ValueError("No char conversion method specified!")
+        raise ValueError('No char conversion method specified!')
 
-    print("")
+    print('')
 
     i_extra_width = 0
 
@@ -67,7 +67,7 @@ def run(stream: Callable = None,
     i_offset = 0
 
     lines.print_header(bytes_per_line, index_converter, i_extra_width)
-    print("")
+    print('')
 
     for b_unit in stream(bytes_per_line):
 
@@ -85,6 +85,6 @@ def run(stream: Callable = None,
         except KeyboardInterrupt:
             break
 
-    print("", flush=True)
+    print('', flush=True)
 
 # -------------------------------------------------------------------- #

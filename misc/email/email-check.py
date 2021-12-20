@@ -12,25 +12,25 @@ ls_emails = [
    
 ]
 
-with open("result.txt", "wt", encoding="utf-8") as f_result:
+with open('result.txt', 'wt', encoding='UTF-8') as f_result:
     
     for email in ls_emails:
     
-        print("Checking: {}".format(email))
+        print('Checking:', email)
         
         try:
             # Validate.
             valid = validate_email(email)
 
             # Update with the normalized form.
-            print("->  Valid: {}".format(valid.email))
-            f_result.write("{:<31} => {}\n".format(email, valid.email))
+            print('->  Valid:', valid.email)
+            f_result.write(f'{email:<31} => {valid.email}\n')
             
         except EmailSyntaxError as e:
             # email is not valid, exception message is human-readable
             print(str(e))
-            f_result.write("Invalid syntax: {}".format(email))
+            f_result.write(f'Invalid syntax: {email}')
             
         except EmailUndeliverableError as e:
             print(str(e))
-            f_result.write("Undeliverable: {}".format(email))
+            f_result.write(f'Undeliverable: {email}')

@@ -8,7 +8,7 @@
 
 def pseudo(value: int,
            pad_to: int = 0,
-           prefix: str = "",
+           prefix: str = '',
            ) -> str:
 
     return prefix + str(value).zfill(pad_to)
@@ -22,7 +22,7 @@ def _number_str(name: str,
                 ) -> str:
 
     if value < -1:
-        raise ValueError("Negative value in number formatting: {}".format(value))
+        raise ValueError(f'Negative value in number formatting: {value}')
 
     if value == -1:
         return name
@@ -32,8 +32,8 @@ def _number_str(name: str,
     s_output = s_output.zfill(pad_to)
 
     if prefix is not None:
-        if prefix in ("", base, f"0{base}"):
-            s_output = f"0{base}" + s_output
+        if prefix in ('', base, f'0{base}'):
+            s_output = f'0{base}' + s_output
         else:
             s_output = prefix + s_output
 
@@ -53,7 +53,7 @@ def hexadecimal_lower(value: int,
                       prefix: str = None,
                       ) -> str:
 
-    return _number_str("h", "x", value, pad_to, prefix)
+    return _number_str('h', 'x', value, pad_to, prefix)
 
 
 def hexadecimal_upper(value: int,
@@ -61,7 +61,7 @@ def hexadecimal_upper(value: int,
                       prefix: str = None,
                       ) -> str:
 
-    return _number_str("h", "X", value, pad_to, prefix)
+    return _number_str('h', 'X', value, pad_to, prefix)
 
 
 def decimal(value: int,
@@ -69,7 +69,7 @@ def decimal(value: int,
             prefix: str = None
             ) -> str:
 
-    return _number_str("d", "d", value, pad_to, prefix)
+    return _number_str('d', 'd', value, pad_to, prefix)
 
 
 def octal(value: int,
@@ -77,7 +77,7 @@ def octal(value: int,
           prefix: str = None
           ) -> str:
 
-    return _number_str("o", "o", value, pad_to, prefix)
+    return _number_str('o', 'o', value, pad_to, prefix)
 
 
 def binary(value: int,
@@ -85,6 +85,6 @@ def binary(value: int,
            prefix: str = None
            ) -> str:
 
-    return _number_str("b", "b", value, pad_to, prefix)
+    return _number_str('b', 'b', value, pad_to, prefix)
 
 # -------------------------------------------------------------------- #

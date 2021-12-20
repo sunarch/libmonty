@@ -11,15 +11,15 @@ import os
 
 def load_token_env() -> None:
 
-    dotenv.load_dotenv(f"libmonty/pixels/.env")
+    dotenv.load_dotenv('libmonty/pixels/.env')
 
 
 def get_auth_headers() -> dict:
 
-    token = os.getenv("TOKEN")
+    token = os.getenv('TOKEN')
 
     headers = {
-        "Authorization": f"Bearer {token}"
+        'Authorization': f'Bearer {token}'
     }
 
     return headers

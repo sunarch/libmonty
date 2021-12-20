@@ -13,18 +13,18 @@ class WavePCMAudioClass:
 
     def __init__(self, arg_num_channels=1, arg_sample_rate=44100, arg_bits_per_sample=16):
 
-        print("Initializing WavePCMAudioClass object...", end="")
+        print('Initializing WavePCMAudioClass object...')
 
         self.set_num_channels(arg_num_channels)
         self.set_sample_rate(arg_sample_rate)
         self.set_bits_per_sample(arg_bits_per_sample)
 
-        print("done.")
+        print('... done.')
 
-        print("Number of channels:  " + str(self.get_num_channels()))
-        print("Sample Rate:         " + str(self.get_sample_rate()) + " Hz")
-        print("Bits per Sample:     " + str(self.get_bits_per_sample()))
-        print("Sample Format:       " + str(self.get_sample_format()))
+        print('Number of channels:  ', str(self.get_num_channels()))
+        print('Sample Rate:         ', str(self.get_sample_rate()) + ' Hz')
+        print('Bits per Sample:     ', str(self.get_bits_per_sample()))
+        print('Sample Format:       ', str(self.get_sample_format()))
 
     ############################################################################
     # The canonical WAVE format starts with the RIFF header: ###################
@@ -32,9 +32,9 @@ class WavePCMAudioClass:
     # ChunkID ##################################################################
 
     # Offset: 0, Size: 4, Endian: big
-    # Contains the letters "RIFF" in ASCII form
+    # Contains the letters 'RIFF' in ASCII form
     # (0x52494646 big-endian form)
-    _chunk_id = b"RIFF"
+    _chunk_id = b'RIFF'
 
     # ChunkSize ################################################################
 
@@ -61,22 +61,22 @@ class WavePCMAudioClass:
     # Format ###################################################################
 
     # Offset: 8, Size: 4, Endian: big
-    # Contains the letters "WAVE"
+    # Contains the letters 'WAVE'
     # (0x57415645 big-endian form)
-    _format = b"WAVE"
+    _format = b'WAVE'
 
     ############################################################################
-    # The "WAVE" format consists of two subchunks: "fmt " and "data": ##########
+    # The 'WAVE' format consists of two subchunks: 'fmt ' and 'data': ##########
 
     ############################################################################
-    # The "fmt " subchunk describes the sound data's format: ###################
+    # The 'fmt ' subchunk describes the sound data's format: ###################
 
     # Subchunk1ID ##############################################################
 
     # Offset: 12, Size: 4, Endian: big
-    # Contains the letters "fmt "
+    # Contains the letters 'fmt '
     # (0x666d7420 big-endian form)
-    _subchunk_1_id = b"fmt "
+    _subchunk_1_id = b'fmt '
 
     # Subchunk1Size ############################################################
 
@@ -105,9 +105,9 @@ class WavePCMAudioClass:
 
     def set_num_channels(self, arg_int):
         if arg_int < 1:
-            raise ValueError("Channel count can't be lower than 1")
+            raise ValueError('Channel count can\'t be lower than 1')
         elif arg_int > 8:
-            raise ValueError("Channel count can't be higher than 8")
+            raise ValueError('Channel count can\'t be higher than 8')
         else:
             self._num_channels_int = arg_int
 
@@ -130,9 +130,9 @@ class WavePCMAudioClass:
 
     def set_sample_rate(self, arg_int):
         if arg_int < 8000:
-            raise ValueError("Channel count can't be lower than 8 KHz")
+            raise ValueError('Channel count can\'t be lower than 8 KHz')
         elif arg_int > 96000:
-            raise ValueError("Channel count can't be higher than 96 KHz")
+            raise ValueError('Channel count can\'t be higher than 96 KHz')
         else:
             self._sample_rate_int = arg_int
 
@@ -185,7 +185,7 @@ class WavePCMAudioClass:
     _bits_per_sample = b'\x00\x00'
     _bits_per_sample_int = 0
 
-    _sample_format = "U16_LE"
+    _sample_format = 'U16_LE'
 
     _min_sample_value = 0
     _max_sample_value = 1
@@ -203,7 +203,7 @@ class WavePCMAudioClass:
         elif arg_int == 32:
             self._bits_per_sample_int = 32
         else:
-            raise ValueError("Bits per Sample: 8, 16, 24 or 32")
+            raise ValueError('Bits per Sample: 8, 16, 24 or 32')
 
         self.__encode_bits_per_sample()
         self.update_byte_rate()
@@ -220,18 +220,18 @@ class WavePCMAudioClass:
 
     @staticmethod
     def get_sample_endianness():
-        return "little"
+        return 'little'
 
     @staticmethod
     def get_sample_endian_short():
-        return "LE"
+        return 'LE'
 
     def update_sample_format(self):
         local_bits_per_sample_int = self.get_bits_per_sample()
-        self._sample_format = "U" + str(local_bits_per_sample_int)
+        self._sample_format = 'U' + str(local_bits_per_sample_int)
 
         if local_bits_per_sample_int > 8:
-            self._sample_format += "_" + self.get_sample_endian_short()
+            self._sample_format += '_' + self.get_sample_endian_short()
 
     def get_sample_format(self):
         return self._sample_format
@@ -256,14 +256,14 @@ class WavePCMAudioClass:
     # ExtraParams
 
     ############################################################################
-    # The "data" subchunk contains the size of the data and the actual sound: ##
+    # The 'data' subchunk contains the size of the data and the actual sound: ##
 
     # Subchunk2ID ##############################################################
 
     # Offset: 36, Size: 4, Endian: big
-    # Contains the letters "data"
+    # Contains the letters 'data'
     # (0x64617461 big-endian form)
-    _subchunk_2_id = b"data"
+    _subchunk_2_id = b'data'
 
     # Subchunk2Size ############################################################
 
@@ -309,52 +309,52 @@ class WavePCMAudioClass:
 
     def add_sample(self, arg_int_list):
         # argIntList: one integer per channel in this sample
-        print("Adding sample " + str(arg_int_list))
+        print('Adding sample ', str(arg_int_list))
 
         if len(arg_int_list) != self.get_num_channels():
-            raise ValueError("More values in current sample than channels available")
+            raise ValueError('More values in current sample than channels available')
 
         bytes_per_sample = int(self.get_bits_per_sample() / 8)
 
         for i in range(len(arg_int_list)):
 
             if arg_int_list[i] < self.get_min_sample_value():
-                raise ValueError("A value inside the sample is too low")
+                raise ValueError('A value inside the sample is too low')
 
             if arg_int_list[i] > self.get_max_sample_value():
-                raise ValueError("A value inside the sample is too high")
+                raise ValueError('A value inside the sample is too high')
 
             sample_part_bytes = int(arg_int_list[i]).to_bytes(bytes_per_sample, byteorder='little', signed=False)
             self._extend_data(bytearray(sample_part_bytes))
 
     # OTHER ####################################################################
 
-    def write_to_file(self, arg_file_name="output.wav"):
+    def write_to_file(self, arg_file_name='output.wav'):
 
         self.update_data()
 
-        print("WRITING AUDIO DATA TO FILE")
+        print('WRITING AUDIO DATA TO FILE')
 
-        print("Number of channels:  " + str(self.get_num_channels()))
-        print("Sample Rate:         " + str(self.get_sample_rate()) + " Hz")
-        print("Bits per Sample:     " + str(self.get_bits_per_sample()))
-        print("Sample Format:       " + str(self.get_sample_format()))
+        print('Number of channels:  ', str(self.get_num_channels()))
+        print('Sample Rate:         ', str(self.get_sample_rate()), ' Hz')
+        print('Bits per Sample:     ', str(self.get_bits_per_sample()))
+        print('Sample Format:       ', str(self.get_sample_format()))
 
-        print("Opening file '" + arg_file_name + "' for writing...", end="")
+        print('Opening file \'', arg_file_name, '\' for writing...', end='')
 
         f = open(arg_file_name, 'wb')
 
-        print("done.")
+        print('... done.')
 
-        print("Writing RIFF header...", end="")
+        print('Writing RIFF header...', end='')
 
         f.write(self._chunk_id)         # size:  4 Bytes
         f.write(self._chunk_size)       # size:  4 Bytes
         f.write(self._format)          # size:  4 Bytes
 
-        print("done.")
+        print('... done.')
 
-        print("Writing 'fmt ' subchunk...", end="")
+        print('Writing \'fmt \' subchunk...', end='')
 
         f.write(self._subchunk_1_id)     # size:  4 Bytes
         f.write(self._subchunk_1_size)   # size:  4 Bytes
@@ -365,20 +365,20 @@ class WavePCMAudioClass:
         f.write(self._block_align)      # size: 2 Bytes
         f.write(self._bits_per_sample)   # size: 2 Bytes
 
-        print("done.")
+        print('... done.')
 
-        print("Writing 'data' subchunk...", end="")
+        print('Writing \'data\' subchunk...', end='')
 
         f.write(self._subchunk_2_id)     # size:  4 Bytes
         f.write(self._subchunk_2_size)   # size:  4 Bytes
         f.write(self._data)            # size: * Bytes
 
-        print("done.")
+        print('... done.')
 
-        print("Closing file...", end="")
+        print('Closing file...', end='')
 
         f.close()
 
-        print("done.")
+        print('... done.')
 
     # END ######################################################################

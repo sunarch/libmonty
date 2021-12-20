@@ -19,7 +19,7 @@ from pixels import api_get_size
 from pixels import api_set_pixel
 
 
-COMMAND = "poetry"
+COMMAND = 'poetry'
 
 
 def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
@@ -38,17 +38,17 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
         if len(kwargs['args']) == 2:
             b_test = True
 
-        s_title_line = ""
+        s_title_line = ''
         ls_lines = []
         i_longest = len(s_creator_line)
 
-        with open(f"{files.FOLDER_DATA}/{kwargs['args'][0]}.txt", "rt") as f_data:
+        with open(f'{files.FOLDER_DATA}/{kwargs["args"][0]}.txt', 'rt') as f_data:
 
             for line in f_data:
 
                 s_line = line.strip()
 
-                if s_title_line == "":
+                if s_title_line == '':
                     s_title_line = s_line
                 else:
                     ls_lines.append(s_line)
@@ -84,13 +84,13 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
             width = result_s['width']
             height = result_s['height']
         except KeyError:
-            raise ValueError("Invalid size.")
+            raise ValueError('Invalid size.')
 
         if width < i_horizontal + horizontal_start:
-            raise ValueError(f"Canvas not wide enough: {width} < {i_horizontal + horizontal_start}")
+            raise ValueError(f'Canvas not wide enough: {width} < {i_horizontal + horizontal_start}')
 
         if height < i_vertical + vertical_start:
-            raise ValueError(f"Canvas not tall enough: {height} < {i_vertical + vertical_start}")
+            raise ValueError(f'Canvas not tall enough: {height} < {i_vertical + vertical_start}')
 
         for i_row, ls_single_line in enumerate(ls_lines):
 
@@ -99,37 +99,37 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
                 if b_test:
                     ls_args = [str(i_col + horizontal_start), str(i_row + vertical_start)]
                     task_queue.put((api_get_pixel.COMMAND, ls_args, timestamp))
-                    d_args = dict(zip(["x", "y"], ls_args))
+                    d_args = dict(zip(['x', 'y'], ls_args))
                     s_request = output.form_request_input(api_get_pixel.API_NAME_GET, d_args)
 
                 else:
                     ls_args = [str(i_col + horizontal_start), str(i_row + vertical_start), rgb]
                     task_queue.put((api_set_pixel.COMMAND, ls_args, timestamp))
-                    d_args = dict(zip(["x", "y", "rgb"], ls_args))
+                    d_args = dict(zip(['x', 'y', 'rgb'], ls_args))
                     s_request = output.form_request_input(api_set_pixel.API_NAME_POST, d_args)
 
-                output.to_console(f"Queued: {s_request}")
+                output.to_console(f'Queued: {s_request}')
 
             if not b_test:
                 task_queue.put((api_get_pixels.COMMAND, [], timestamp))
                 s_request = output.form_request_input(api_get_pixels.API_NAME_GET, {})
-                output.to_console(f"Queued: {s_request}")
+                output.to_console(f'Queued: {s_request}')
 
             output.to_console(output.form_separator())
 
         return
 
-    raise ValueError("Invalid arguents.")
+    raise ValueError('Invalid arguents.')
 
 
 def line_to_adjusted_list_char(line: str, length: int, padder: str = ' ') -> list[str]:
 
-    return list(f"{line:{padder}<{length}}")
+    return list(f'{line:{padder}<{length}}')
 
 
 def line_to_adjusted_list_text_triplets(line: str, length: int, padder: str = ' ') -> list[str]:
 
-    s_triplet = ""
+    s_triplet = ''
     ls_result = []
 
     if len(line) % 3 != 0:
@@ -147,7 +147,7 @@ def line_to_adjusted_list_text_triplets(line: str, length: int, padder: str = ' 
             s_triplet = ""
 
     while len(ls_result) < length:
-        ls_result.append(format(ord(padder), "X") * 3)
+        ls_result.append(format(ord(padder), 'X') * 3)
 
     return ls_result
 
@@ -183,11 +183,11 @@ def list_char_add_vertical(line: list[str]) -> list[str]:
 
 def vertical() -> str:
 
-    return format(ord("|"), "X") * 3
+    return format(ord('|'), 'X') * 3
 
 
 def horizontal() -> str:
 
-    return format(ord("-"), "X") * 3
+    return format(ord('-'), 'X') * 3
 
 # -------------------------------------------------------------------- #

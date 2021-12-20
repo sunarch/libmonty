@@ -10,31 +10,31 @@ import shutil
 import time
 
 
-FOLDER_DATA = "libmonty/pixels/data"
+FOLDER_DATA = 'libmonty/pixels/data'
 
-FOLDER_LOGS = "libmonty/pixels/logs"
-FOLDER_LOGS_ARCHIVE = "libmonty/pixels/logs/archive"
+FOLDER_LOGS = 'libmonty/pixels/logs'
+FOLDER_LOGS_ARCHIVE = 'libmonty/pixels/logs/archive'
 
-FOLDER_IMG = "libmonty/pixels/canvas"
-FOLDER_IMG_ARCHIVE = "libmonty/pixels/canvas/archive"
+FOLDER_IMG = 'libmonty/pixels/canvas'
+FOLDER_IMG_ARCHIVE = 'libmonty/pixels/canvas/archive'
 
 
 def log_path(timecode: str) -> str:
 
-    return f"{FOLDER_LOGS}/{timecode}.txt"
+    return f'{FOLDER_LOGS}/{timecode}.txt'
 
 
 def log_filename() -> str:
 
-    return time.strftime("%Y-%m-%d-t-%H-%M-%S-z", time.gmtime())
+    return time.strftime('%Y-%m-%d-t-%H-%M-%S-z', time.gmtime())
 
 
 def archive_old_files():
 
     ls_groups = [
-        (FOLDER_LOGS, FOLDER_LOGS_ARCHIVE, ".txt"),
-        (FOLDER_IMG, FOLDER_IMG_ARCHIVE, ".png"),
-        (FOLDER_IMG, FOLDER_IMG_ARCHIVE, ".bin")
+        (FOLDER_LOGS, FOLDER_LOGS_ARCHIVE, '.txt'),
+        (FOLDER_IMG, FOLDER_IMG_ARCHIVE, '.png'),
+        (FOLDER_IMG, FOLDER_IMG_ARCHIVE, '.bin')
     ]
 
     for t_group in ls_groups:

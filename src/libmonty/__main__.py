@@ -17,10 +17,10 @@ def main(args: list[str]) -> None:
 
         if len(ls_input) == 0:
             try:
-                s_input = input("libmonty $ ")
+                s_input = input('libmonty $ ')
             except KeyboardInterrupt:
-                print("")  # input command empty => linebreak
-                print("Type 'exit' to exit interactive mode.")
+                print('')  # input command empty => linebreak
+                print('Type \'exit\' to exit interactive mode.')
                 continue
 
             ls_input = s_input.split(" ")
@@ -39,13 +39,13 @@ def main(args: list[str]) -> None:
             if b_debug:
                 traceback.print_exc()
         else:
-            if s_next == "debug":
+            if s_next == 'debug':
                 if b_debug:
                     b_debug = False
-                    print("Debug disabled.")
+                    print('Debug disabled.')
                 else:
                     b_debug = True
-                    print("Debug enabled.")
+                    print('Debug enabled.')
 
             elif s_next is not None:
                 break
@@ -56,9 +56,9 @@ def main(args: list[str]) -> None:
 def process_command(command: str, args: list[str]) -> str:
 
     d_commands = {
-        "exit": exit_interactive,
-        "debug": toggle_debug,
-        "hexer": hexer.main,
+        'exit': exit_interactive,
+        'debug': toggle_debug,
+        'hexer': hexer.main,
     }
 
     ls_args = []
@@ -66,19 +66,19 @@ def process_command(command: str, args: list[str]) -> str:
 
     for argument in args:
 
-        if "=" not in argument:
+        if '=' not in argument:
             ls_args.append(argument)
             continue
 
         ls_pair = argument.split("=")
 
         if len(ls_pair) > 2:
-            raise ValueError("Multiple '=' in keyword argument: {}".format(argument))
+            raise ValueError(f'Multiple \'=\' in keyword argument: {argument}')
 
         d_kwargs[ls_pair[0]] = ls_pair[1]
 
     if command not in d_commands:
-        raise ValueError("Unknown command: {}".format(command))
+        raise ValueError(f'Unknown command: {command}')
 
     try:
         s_return = d_commands[command](ls_args, d_kwargs)
@@ -89,14 +89,14 @@ def process_command(command: str, args: list[str]) -> str:
 
 
 def exit_interactive(args: list[str], kwargs: dict) -> str:
-    return "break"
+    return 'break'
 
 
 def toggle_debug(args: list[str], kwargs: dict) -> str:
-    return "debug"
+    return 'debug'
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main(sys.argv)
 
 # -------------------------------------------------------------------- #

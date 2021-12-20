@@ -16,31 +16,31 @@ from pixels import api_headers
 # Override the pixel at the specified position with the specified color.
 # This endpoint requires an authentication token. See this page for how to authenticate with the API.
 
-API_URL = "https://pixels.pythondiscord.com/set_pixel"
+API_URL = 'https://pixels.pythondiscord.com/set_pixel'
 
-API_NAME_POST = "POST /set_pixel"
-API_NAME_HEAD = "HEAD /set_pixel"
+API_NAME_POST = 'POST /set_pixel'
+API_NAME_HEAD = 'HEAD /set_pixel'
 
-COMMAND = "set"
+COMMAND = 'set'
 
 
 def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> dict:
 
     d_arguments = {
-        "x": x,  # 80
-        "y": y,  # 45
-        "rgb": rgb  # "00FF00"
+        'x': x,  # 80
+        'y': y,  # 45
+        'rgb': rgb  # "00FF00"
     }
 
     if None in (x, y, rgb):
 
-        if kwargs is not None and "x" in kwargs and "y" in kwargs and "rgb" in kwargs:
+        if kwargs is not None and 'x' in kwargs and 'y' in kwargs and 'rgb' in kwargs:
             d_arguments['x'] = kwargs['x']
             d_arguments['y'] = kwargs['y']
             d_arguments['rgb'] = kwargs['rgb']
 
         else:
-            raise ValueError("Missing parameter!")
+            raise ValueError('Missing parameter!')
 
     # Note: POST method, not a GET method
     response = requests.post(
@@ -52,26 +52,26 @@ def execute(x: int = None, y: int = None, rgb: str = None, **kwargs: dict) -> di
     try:
         payload = response.json()
         data = response.json()
-        data_type = "json"
+        data_type = 'json'
     except json.JSONDecodeError:
         payload = {}
         data = response.text
-        data_type = "text"
+        data_type = 'text'
 
     # e.g. "added pixel at x=123,y=12 of color 87CEEB"
     try:
-        message = payload["message"]
+        message = payload['message']
     except KeyError:
-        message = ""
+        message = ''
 
     d_result = {
-        "request_name": API_NAME_POST,
-        "request_arguments": d_arguments,
-        "response": response,
-        "data": data,
-        "data_type": data_type,
-        "data_encoding": response.encoding,
-        "message": message
+        'request_name': API_NAME_POST,
+        'request_arguments': d_arguments,
+        'response': response,
+        'data': data,
+        'data_type': data_type,
+        'data_encoding': response.encoding,
+        'message': message
     }
 
     d_result.update(api_headers.sort_by_type(response.headers))

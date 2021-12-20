@@ -13,4 +13,4 @@ def hash_sha1(arg_object):
 
 
 def integer_hash(arg_hex_digest):
-    return int(arg_hex_digest[:8], 16) # 8 hex digits of precision
+    return int(arg_hex_digest[:8], 16)  # 8 hex digits of precision

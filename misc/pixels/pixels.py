@@ -43,20 +43,20 @@ def main(args: list[str], kwargs: dict) -> None:
 
     s_timestamp = files.log_filename()
 
-    with open(files.log_path(s_timestamp), "wt", encoding="utf-8") as f_log:
+    with open(files.log_path(s_timestamp), 'wt', encoding='UTF-8') as f_log:
         output.to_all(output.form_separator(), f_log)
-        output.to_all(f"Pixels log: {s_timestamp}", f_log)
+        output.to_all(f'Pixels log: {s_timestamp}', f_log)
         output.to_all(output.form_separator(), f_log)
 
     while True:
 
         if not args:
             try:
-                s_input = input("pixels $ ")
+                s_input = input('pixels $ ')
                 output.to_console(output.form_separator())
             except KeyboardInterrupt:
-                print("")  # input command empty => linebreak
-                print("Type 'exit' to exit to main shell.")
+                print('')  # input command empty => linebreak
+                print('Type \'exit\' to exit to main shell.')
                 continue
 
             args = s_input.split(" ")
@@ -72,8 +72,8 @@ def main(args: list[str], kwargs: dict) -> None:
                                      execute=False,
                                      task_queue=task_queue)
         except ValueError as err:
-            s_next = "error"
-            if str(err) != "":
+            s_next = 'error'
+            if str(err) != '':
                 print(err)
                 output.to_console(output.form_separator())
 

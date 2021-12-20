@@ -16,7 +16,7 @@ class ListUtils:
                 return_list.extend(argument)
             elif type(argument) is dict:
                 for key, value in argument.items():
-                    new_entry = str(key) + "=" + str(value)
+                    new_entry = str(key) + '=' + str(value)
                     return_list.append(new_entry)
             else:
                 return_list.append(argument)
