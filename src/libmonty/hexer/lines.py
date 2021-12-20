@@ -79,7 +79,7 @@ def _part_counter(offset: int = 0,
                   index_formatter: Callable = number_str.pseudo,
                   ) -> str:
 
-    return " " + index_formatter(offset, digits) + "  "
+    return ' ' + index_formatter(offset, digits) + '  '
 
 
 def _part_bytes(b_unit: bytes,
@@ -87,7 +87,7 @@ def _part_bytes(b_unit: bytes,
                 number_converter: Callable = number_str.pseudo
                 ) -> str:
 
-    s_bytes = " ".join(map(lambda b: number_converter(b, 2), b_unit))
+    s_bytes = ' '.join(map(lambda b: number_converter(b, 2), b_unit))
 
     if len(b_unit) < bytes_per_line:
         s_format = '{:<' + str((bytes_per_line * 3) - 1) + '}'

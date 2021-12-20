@@ -2,101 +2,75 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+# imports: library
+from argparse import ArgumentParser
+import configparser
+import logging
+import logging.config
+import pkg_resources
 import sys
 import traceback
 
+# imports: project
+from libmonty import version
 from libmonty.hexer import hexer
 
 
-def main(args: list[str]) -> None:
+def main() -> None:
 
-    b_debug = False
-    ls_input = args[1:]
+    logger_config_name = 'data/logger.ini'
 
-    while True:
+    if not pkg_resources.resource_exists(__name__, logger_config_name):
+        logging.error('logger config does not exist')
+        return
 
-        if len(ls_input) == 0:
-            try:
-                s_input = input('libmonty $ ')
-            except KeyboardInterrupt:
-                print('')  # input command empty => linebreak
-                print('Type \'exit\' to exit interactive mode.')
-                continue
+    logger_config = pkg_resources.resource_stream(__name__, logger_config_name)
+    logger_config_str = logger_config.read().decode('UTF-8')
+    logger_config_parser = configparser.ConfigParser()
+    logger_config_parser.read_string(logger_config_str)
+    logging.config.fileConfig(logger_config_parser)
 
-            ls_input = s_input.split(" ")
+    logging.info(version.program_name)
+    logging.info('-' * len(version.program_name))
 
-        if len(ls_input) < 1:
-            continue
+    parser = ArgumentParser(prog=version.program_name)
 
-        command = ls_input[0]
-        ls_args = ls_input[1:]
+    parser.add_argument('--version',
+                        help='Display version',
+                        action='store_const', const=True, default=False,
+                        dest='version')
 
+    parser.add_argument('--debug',
+                        help='Enable debug output',
+                        action='store_const', const=True, default=False,
+                        dest='debug')
+
+    subparsers = parser.add_subparsers(help='command',
+                                       dest='command',
+                                       metavar='COMMAND')
+
+    hexer.create_arguments(subparsers)
+
+    args = parser.parse_args(sys.argv[1:])
+
+    if 'command' not in vars(args):
+
+        if args.version:
+            print(f'{version.program_name} {version.__version__}')
+            return
+
+    else:
         try:
-            s_next = process_command(command, ls_args)
+            if args.command == 'hexer':
+                hexer.main(args)
         except ValueError as err:
             if str(err) != "":
                 print(err)
-            if b_debug:
+            if args.debug:
                 traceback.print_exc()
-        else:
-            if s_next == 'debug':
-                if b_debug:
-                    b_debug = False
-                    print('Debug disabled.')
-                else:
-                    b_debug = True
-                    print('Debug enabled.')
-
-            elif s_next is not None:
-                break
-
-        ls_input = []
-
-
-def process_command(command: str, args: list[str]) -> str:
-
-    d_commands = {
-        'exit': exit_interactive,
-        'debug': toggle_debug,
-        'hexer': hexer.main,
-    }
-
-    ls_args = []
-    d_kwargs = {}
-
-    for argument in args:
-
-        if '=' not in argument:
-            ls_args.append(argument)
-            continue
-
-        ls_pair = argument.split("=")
-
-        if len(ls_pair) > 2:
-            raise ValueError(f'Multiple \'=\' in keyword argument: {argument}')
-
-        d_kwargs[ls_pair[0]] = ls_pair[1]
-
-    if command not in d_commands:
-        raise ValueError(f'Unknown command: {command}')
-
-    try:
-        s_return = d_commands[command](ls_args, d_kwargs)
-    except ValueError:
-        raise
-
-    return s_return
-
-
-def exit_interactive(args: list[str], kwargs: dict) -> str:
-    return 'break'
-
-
-def toggle_debug(args: list[str], kwargs: dict) -> str:
-    return 'debug'
 
 
 if __name__ == '__main__':
-    main(sys.argv)
+    main()
 
 # -------------------------------------------------------------------- #

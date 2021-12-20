@@ -14,7 +14,7 @@ from typing import Callable, Generator
 def create_from_file(path: str) -> Callable:
 
     if not os.path.isfile(path):
-        raise FileNotFoundError('File not found: \'{path}\'')
+        raise FileNotFoundError(f'File not found: \'{path}\'')
 
     def file_contents(bytes_per_line: int) -> Generator:
         with open(path, 'rb') as f_stream:

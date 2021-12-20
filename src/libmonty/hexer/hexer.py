@@ -5,8 +5,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from argparse import Namespace
 import time
-
 from typing import Callable
 
 from libmonty.environment import terminal
@@ -16,13 +16,37 @@ from libmonty.hexer import width
 from libmonty.hexer import lines
 
 
-def main(args: list[str], kwargs: dict) -> None:
+def create_arguments(subparsers):
+    parser_hexer = subparsers.add_parser('hexer', help='hex dump utility')
+
+    parser_hexer.add_argument('-s', '--stream',
+                              help='Stream',
+                              action='store', type=str, default=None,
+                              dest='stream')
+
+    parser_hexer.add_argument('-b', '--bytes-per-line',
+                              help='Bytes per line',
+                              action='store', type=int, default=16,
+                              dest='bytes_per_line')
+
+    parser_hexer.add_argument('-p', '--sleep',
+                              help='Sleep time between lines',
+                              action='store', type=float, default=0.01,
+                              dest='sleep')
+
+    parser_hexer.add_argument('-i', '--index-format',
+                              help='Index format',
+                              action='store', type=str, default='hexadecimal',
+                              dest='index_format')
+
+
+def main(args: Namespace) -> None:
 
     try:
-        stream, char_converter = arguments.stream(kwargs, args, 0)
-        i_bytes_per_line = arguments.bytes_per_line(kwargs, args, 1)
-        i_sleep = arguments.sleep(kwargs, args, 2)
-        index_converter = arguments.index_converter(kwargs, args, 3)
+        stream, char_converter = arguments.stream(args.stream)
+        i_bytes_per_line = arguments.bytes_per_line(args.bytes_per_line)
+        i_sleep = arguments.sleep(args.sleep)
+        index_converter = arguments.index_converter(args.index_format)
     except ValueError:
         raise
 
