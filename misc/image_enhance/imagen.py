@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python3
 # -*- coding: utf-8, vim: expandtab:ts=4 -*-
 
@@ -10,7 +9,7 @@
 import sys
 import getopt
 # import 'Image' from the PIL and 'numpy' for image processing and calculations
-import Image
+from PIL import Image
 import numpy
 
 # basic functions ##############################################################
@@ -184,13 +183,13 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
     except getopt.GetoptError:
-        print 'Usage: "./imgel.py -i <inputfile> -o <outputfile>"'
+        print('Usage: "./imgel.py -i <inputfile> -o <outputfile>"')
         sys.exit(2)
 
     # define actions based on command argument switches
     for opt, arg in opts:
         if opt == '-h':
-            print 'Usage: \"./imgel.py -i <inputfile> -o <outputfile>\"'
+            print('Usage: \"./imgel.py -i <inputfile> -o <outputfile>\"')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg
@@ -198,8 +197,8 @@ def main(argv):
             outputfile = arg
 
     # debug variable values gotten out of arguments
-    print 'Input file is "', inputfile
-    print 'Output file is "', outputfile
+    print('Input file is "', inputfile)
+    print('Output file is "', outputfile)
 
     # get source file name and target file name from args
     src_file = str(inputfile)
