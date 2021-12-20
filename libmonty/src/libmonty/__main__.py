@@ -9,11 +9,9 @@ import logging
 import logging.config
 import pkg_resources
 import sys
-import traceback
 
 # imports: project
 from libmonty import version
-from libmonty.hexer import hexer
 
 
 def main() -> None:
@@ -40,34 +38,11 @@ def main() -> None:
                         action='store_const', const=True, default=False,
                         dest='version')
 
-    parser.add_argument('--debug',
-                        help='Enable debug output',
-                        action='store_const', const=True, default=False,
-                        dest='debug')
-
-    subparsers = parser.add_subparsers(help='command',
-                                       dest='command',
-                                       metavar='COMMAND')
-
-    hexer.create_arguments(subparsers)
-
     args = parser.parse_args(sys.argv[1:])
 
-    if 'command' not in vars(args):
-
-        if args.version:
-            print(f'{version.program_name} {version.__version__}')
-            return
-
-    else:
-        try:
-            if args.command == 'hexer':
-                hexer.main(args)
-        except ValueError as err:
-            if str(err) != "":
-                print(err)
-            if args.debug:
-                traceback.print_exc()
+    if args.version:
+        print(f'{version.program_name} {version.__version__}')
+        return
 
 
 if __name__ == '__main__':

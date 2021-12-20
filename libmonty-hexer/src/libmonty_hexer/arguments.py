@@ -9,7 +9,30 @@ from typing import Tuple, Callable, Union
 
 from libmonty.formatting import char_str, number_str
 
-from libmonty.hexer import streams
+from libmonty_hexer import streams
+
+
+def create_arguments(parser_hexer):
+
+    parser_hexer.add_argument('-s', '--stream',
+                              help='Stream',
+                              action='store', type=str, default='random',
+                              dest='stream')
+
+    parser_hexer.add_argument('-b', '--bytes-per-line',
+                              help='Bytes per line',
+                              action='store', type=int, default=16,
+                              dest='bytes_per_line')
+
+    parser_hexer.add_argument('-p', '--sleep',
+                              help='Sleep time between lines',
+                              action='store', type=float, default=0.01,
+                              dest='sleep')
+
+    parser_hexer.add_argument('-i', '--index-format',
+                              help='Index format',
+                              action='store', type=str, default='hexadecimal',
+                              dest='index_format')
 
 
 def stream(source: Union[Callable, str]) -> Tuple[Callable, Callable]:

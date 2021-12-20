@@ -5,42 +5,58 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from argparse import Namespace
+from argparse import ArgumentParser, Namespace
+import configparser
+import logging
+import logging.config
+import pkg_resources
+import sys
 import time
 from typing import Callable
 
 from libmonty.environment import terminal
 
-from libmonty.hexer import arguments
-from libmonty.hexer import width
-from libmonty.hexer import lines
+from libmonty_hexer import version
+from libmonty_hexer import arguments
+from libmonty_hexer import width
+from libmonty_hexer import lines
 
 
-def create_arguments(subparsers):
-    parser_hexer = subparsers.add_parser('hexer', help='hex dump utility')
+def main() -> None:
+    logger_config_name = 'data/logger.ini'
 
-    parser_hexer.add_argument('-s', '--stream',
-                              help='Stream',
-                              action='store', type=str, default='random',
-                              dest='stream')
+    if not pkg_resources.resource_exists(__name__, logger_config_name):
+        logging.error('logger config does not exist')
+        return
 
-    parser_hexer.add_argument('-b', '--bytes-per-line',
-                              help='Bytes per line',
-                              action='store', type=int, default=16,
-                              dest='bytes_per_line')
+    logger_config = pkg_resources.resource_stream(__name__, logger_config_name)
+    logger_config_str = logger_config.read().decode('UTF-8')
+    logger_config_parser = configparser.ConfigParser()
+    logger_config_parser.read_string(logger_config_str)
+    logging.config.fileConfig(logger_config_parser)
 
-    parser_hexer.add_argument('-p', '--sleep',
-                              help='Sleep time between lines',
-                              action='store', type=float, default=0.01,
-                              dest='sleep')
+    # logging.info(version.program_name)
+    # logging.info('-' * len(version.program_name))
 
-    parser_hexer.add_argument('-i', '--index-format',
-                              help='Index format',
-                              action='store', type=str, default='hexadecimal',
-                              dest='index_format')
+    parser = ArgumentParser(prog=version.program_name)
+
+    parser.add_argument('--version',
+                        help='Display version',
+                        action='store_const', const=True, default=False,
+                        dest='version')
+
+    arguments.create_arguments(parser)
+
+    args = parser.parse_args(sys.argv[1:])
+
+    if args.version:
+        print(f'{version.program_name} {version.__version__}')
+        return
+
+    main_lib(args)
 
 
-def main(args: Namespace) -> None:
+def main_lib(args: Namespace) -> None:
 
     try:
         stream, char_converter = arguments.stream(args.stream)
@@ -110,5 +126,9 @@ def run(stream: Callable = None,
             break
 
     print('', flush=True)
+
+
+if __name__ == '__main__':
+    main()
 
 # -------------------------------------------------------------------- #

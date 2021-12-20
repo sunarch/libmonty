@@ -1,6 +1,6 @@
-# libmonty tool group
+# libmonty - Python libraries
 
-Python libraries, utilities, snippets, etc.
+Python libraries
 
 ### License
 [Mozilla Public License 2.0](https://spdx.org/licenses/MPL-2.0.html)
