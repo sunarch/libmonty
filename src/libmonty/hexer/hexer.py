@@ -21,7 +21,7 @@ def create_arguments(subparsers):
 
     parser_hexer.add_argument('-s', '--stream',
                               help='Stream',
-                              action='store', type=str, default=None,
+                              action='store', type=str, default='random',
                               dest='stream')
 
     parser_hexer.add_argument('-b', '--bytes-per-line',
