@@ -2,6 +2,12 @@
 
 Python libraries, utilities, snippets, etc.
 
+### parts
+
+- [libmonty](libmonty/README.md) (the library)
+- [libmonty-tools](libmonty-hexer/README.md) (meta-package for all tools)
+  - [libmonty-hexer](libmonty-hexer/README.md) (a hex dump tool)
+
 ### License
 [Mozilla Public License 2.0](https://spdx.org/licenses/MPL-2.0.html)
 

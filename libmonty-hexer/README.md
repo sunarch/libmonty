@@ -2,7 +2,15 @@
 
 a hex dump tool, part of [libmonty](https://github.com/sunarch/libmonty)
 
-### License
+## Installation
+
+The package is on PyPI: [libmonty-hexer](https://pypi.org/project/libmonty-hexer/)
+
+```
+pip install libmonty-hexer
+```
+
+## License
 [Mozilla Public License 2.0](https://spdx.org/licenses/MPL-2.0.html)
 
 ```

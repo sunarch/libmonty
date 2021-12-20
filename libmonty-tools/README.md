@@ -2,7 +2,19 @@
 
 a meta-package for all [libmonty](https://github.com/sunarch/libmonty) tools
 
-### License
+## tools
+
+- [libmonty-hexer](../libmonty-hexer/README.md) (a hex dump tool)
+
+## Installation
+
+The package is on PyPI: [libmonty-tools](https://pypi.org/project/libmonty-tools/)
+
+```
+pip install libmonty-tools
+```
+
+## License
 [Mozilla Public License 2.0](https://spdx.org/licenses/MPL-2.0.html)
 
 ```
