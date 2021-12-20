@@ -9,7 +9,7 @@ import requests
 
 from requests.structures import CaseInsensitiveDict
 
-from libmonty.pixels import config
+from pixels import config
 
 
 def request(api_url: str, request_name: str) -> dict:

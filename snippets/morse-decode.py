@@ -13,68 +13,68 @@ import sys
 
 morse = dict([
 
-# Letters #
+    # Letters #
 
-("A",".-"),
-("B","-..."),
-("C","-.-."),
-("D","-.."),
-("E","."),
-("F","..-."),
-("G","--."),
-("H","...."),
-("I",".."),
-("J",".---"),
-("K","-.-"),
-("L",".-.."),
-("M","--"),
+    ("A", ".-"),
+    ("B", "-..."),
+    ("C", "-.-."),
+    ("D", "-.."),
+    ("E", "."),
+    ("F", "..-."),
+    ("G", "--."),
+    ("H", "...."),
+    ("I", ".."),
+    ("J", ".---"),
+    ("K", "-.-"),
+    ("L", ".-.."),
+    ("M", "--"),
 
-("N","-."),
-("O","---"),
-("P",".--."),
-("Q","--.-"),
-("R",".-."),
-("S","..."),
-("T","-"),
-("U","..-"),
-("V","...-"),
-("W",".--"),
-("X","-..-"),
-("Y","-.--"),
-("Z","--.."),
+    ("N", "-."),
+    ("O", "---"),
+    ("P", ".--."),
+    ("Q", "--.-"),
+    ("R", ".-."),
+    ("S", "..."),
+    ("T", "-"),
+    ("U", "..-"),
+    ("V", "...-"),
+    ("W", ".--"),
+    ("X", "-..-"),
+    ("Y", "-.--"),
+    ("Z", "--.."),
 
-# Digits #
+    # Digits #
 
-("1",".----"),
-("2","..---"),
-("3","...--"),
-("4","....-"),
-("5","....."),
-("6","-...."),
-("7","--..."),
-("8","---.."),
-("9","----."),
-("0","-----"),
+    ("1", ".----"),
+    ("2", "..---"),
+    ("3", "...--"),
+    ("4", "....-"),
+    ("5", "....."),
+    ("6", "-...."),
+    ("7", "--..."),
+    ("8", "---.."),
+    ("9", "----."),
+    ("0", "-----"),
 
-# Punctuation Marks #
+    # Punctuation Marks #
 
-("&",".-..."),   # Ampersand
-("'",".----."),  # Apostrophe
-("@",".--.-."),  # At sign
-(")","-.--.-"),  # Bracket, close (parenthesis)
-("(","-.--."),   # Bracket, open (parenthesis)
-(":","---..."),  # Colon
-(",","--..--"),  # Comma
-("=","-...-"),   # Equals sign
-("!","-.-.--"),  # Exclamation mark - Not in ITU-R recommendation
-(".",".-.-.-"),  # Full-stop (period)
-("-","-....-"),  # Hyphen
-("+",".-.-."),   # Plus sign
-("\"",".-..-."), # Quotation marks
-("?","..--.."),  # Question mark (query)
-("/","-..-."),   # Slash
+    ("&", ".-..."),    # Ampersand
+    ("\'", ".----."),  # Apostrophe
+    ("@", ".--.-."),   # At sign
+    (")", "-.--.-"),   # Bracket, close (parenthesis)
+    ("(", "-.--."),    # Bracket, open (parenthesis)
+    (":", "---..."),   # Colon
+    (",", "--..--"),   # Comma
+    ("=", "-...-"),    # Equals sign
+    ("!", "-.-.--"),   # Exclamation mark - Not in ITU-R recommendation
+    (".", ".-.-.-"),   # Full-stop (period)
+    ("-", "-....-"),   # Hyphen
+    ("+", ".-.-."),    # Plus sign
+    ("\"", ".-..-."),  # Quotation marks
+    ("?", "..--.."),   # Question mark (query)
+    ("/", "-..-."),    # Slash
 
-(";","-.-.-.")  # Semicolon - unofficial
+    (";", "-.-.-.")  # Semicolon - unofficial
 
 ])
 
@@ -88,7 +88,7 @@ argumentcount = len(arguments)
 if argumentcount < 1:
     print("Error: missing command line argument")
     sys.exit(1)
-### BREAKPOINT #
+# BREAKPOINT #
 
 ################################################################################
 
@@ -99,7 +99,7 @@ for entry in morse.items():
 
 ################################################################################
 
-outfile = open("decoded-generated.txt",'w')
+outfile = open("decoded-generated.txt", 'w')
 
 with open(arguments[0], 'r') as infile:
     clear_unit = ""

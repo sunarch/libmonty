@@ -15,9 +15,10 @@
     'utils' folder
 """
 
+
 # style ########################################################################
 
-class AsciiStyle():
+class AsciiStyle:
     """ docstring """
 
     @staticmethod
@@ -65,9 +66,10 @@ class AsciiStyle():
         """ docstring """
         return "\x1b[53m{0}\x1b[0m".format(arg_printable)
 
+
 # font #########################################################################
 
-class AsciiFont():
+class AsciiFont:
     """ docstring """
 
     @staticmethod
@@ -81,14 +83,15 @@ class AsciiFont():
 
         inserted_no = "1"
 
-        if int(arg_alternate_font_no) in range(1, 10): # 0 < x < 10 #
+        if int(arg_alternate_font_no) in range(1, 10):  # 0 < x < 10 #
             inserted_no = str(arg_alternate_font_no)
 
         return "\x1b[1{0}m{1}\x1b[0m".format(inserted_no, arg_printable)
 
+
 # color ########################################################################
 
-class AsciiColor():
+class AsciiColor:
     """ docstring """
 
     @staticmethod
@@ -131,9 +134,10 @@ class AsciiColor():
         """ docstring """
         return "\x1b[37m{0}\x1b[0m".format(arg_printable)
 
+
 # background ###################################################################
 
-class AsciiBackground():
+class AsciiBackground:
     """ docstring """
 
     @staticmethod

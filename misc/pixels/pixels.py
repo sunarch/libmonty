@@ -8,14 +8,14 @@
 import queue
 import threading
 
-from libmonty.pixels import config
-from libmonty.pixels import output
-from libmonty.pixels import files
-from libmonty.pixels import commands
+from pixels import config
+from pixels import output
+from pixels import files
+from pixels import commands
 
-from libmonty.pixels import worker
+from pixels import worker
 
-from libmonty.pixels.cmd_process import process_command
+from pixels.cmd_process import process_command
 
 
 def main(args: list[str], kwargs: dict) -> None:

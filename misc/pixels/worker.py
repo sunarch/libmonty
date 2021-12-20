@@ -10,15 +10,15 @@ import time
 
 from types import ModuleType
 
-from libmonty.pixels import output
-from libmonty.pixels import files
+from pixels import output
+from pixels import files
 
-from libmonty.pixels.cmd_process import process_command
+from pixels.cmd_process import process_command
 
-from libmonty.pixels import api_get_pixel
-from libmonty.pixels import api_get_pixels
-from libmonty.pixels import api_set_pixel
-from libmonty.pixels import api_headers
+from pixels import api_get_pixel
+from pixels import api_get_pixels
+from pixels import api_set_pixel
+from pixels import api_headers
 
 
 def task_queue_worker(task_queue, **kwargs):

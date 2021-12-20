@@ -13,7 +13,8 @@
 # BUG (BUGFIX)
 #     Bugs: Reported defects tracked in bug database.
 # NOBUG (NOFIX, WONTFIX, DONTFIX, NEVERFIX, UNFIXABLE, CANTFIX)
-#     Will Not Be Fixed: Problems that are well-known but will never be addressed due to design problems or domain limitations.
+#     Will Not Be Fixed: Problems that are well-known but will never be addressed
+#         due to design problems or domain limitations.
 # REQ (REQUIREMENT, STORY)
 #     Requirements: Satisfactions of specific, formal requirements.
 # RFE (FEETCH, NYI, FR, FTRQ, FTR)

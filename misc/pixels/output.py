@@ -7,8 +7,8 @@
 
 from libmonty.network import responses
 
-from libmonty.pixels import files
-from libmonty.pixels import api_headers
+from pixels import files
+from pixels import api_headers
 
 
 def to_console(content: str) -> None:

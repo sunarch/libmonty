@@ -8,7 +8,7 @@
 import requests
 import json
 
-from libmonty.pixels import api_headers
+from pixels import api_headers
 
 # Get Size
 

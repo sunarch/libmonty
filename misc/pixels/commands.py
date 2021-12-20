@@ -9,13 +9,13 @@ import os.path
 
 from libmonty.images import convert_from_stream as img_convert
 
-from libmonty.pixels import output
-from libmonty.pixels import files
+from pixels import output
+from pixels import files
 
-from libmonty.pixels import api_get_pixel
-from libmonty.pixels import api_get_pixels
-from libmonty.pixels import api_get_size
-from libmonty.pixels import api_set_pixel
+from pixels import api_get_pixel
+from pixels import api_get_pixels
+from pixels import api_get_size
+from pixels import api_set_pixel
 
 
 COMMAND_EXIT = "exit"

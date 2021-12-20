@@ -8,8 +8,9 @@
 import hashlib
 
 
-def hashSHA1(argObject):
-    return hashlib.sha1(argObject).hexdigest()
+def hash_sha1(arg_object):
+    return hashlib.sha1(arg_object).hexdigest()
 
-def integerHash(argHexDigest):
-    return int(argHexDigest[:8], 16) # 8 hex digits of precision
+
+def integer_hash(arg_hex_digest):
+    return int(arg_hex_digest[:8], 16) # 8 hex digits of precision

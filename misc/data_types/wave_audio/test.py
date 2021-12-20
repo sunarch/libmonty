@@ -9,7 +9,7 @@ from WavePCMAudioClass import WavePCMAudioClass
 
 a = WavePCMAudioClass()
 
-#print("Sample Format:" + a.get_SampleFormat())
+# print("Sample Format:" + a.get_SampleFormat())
 
 print("")
 input("Press enter to create sawtooth samples")
@@ -23,4 +23,4 @@ print("")
 input("Press enter to write to file")
 print("")
 
-a.writeToFile()
+a.write_to_file()

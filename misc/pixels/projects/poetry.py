@@ -10,13 +10,13 @@ import string
 
 from libmonty.images import colors_named
 
-from libmonty.pixels import output
-from libmonty.pixels import files
+from pixels import output
+from pixels import files
 
-from libmonty.pixels import api_get_pixel
-from libmonty.pixels import api_get_pixels
-from libmonty.pixels import api_get_size
-from libmonty.pixels import api_set_pixel
+from pixels import api_get_pixel
+from pixels import api_get_pixels
+from pixels import api_get_size
+from pixels import api_set_pixel
 
 
 COMMAND = "poetry"
@@ -72,7 +72,7 @@ def command(execute: bool, timestamp: str, task_queue, **kwargs) -> None:
         ls_top = list_char_add_vertical(ls_top)
         ls_lines.insert(0, ls_top)
 
-        ls_bottom = [horizontal() for x in range(i_horizontal)]
+        ls_bottom = [horizontal()] * i_horizontal
         ls_lines.append(ls_bottom)
 
         i_vertical = len(ls_lines)

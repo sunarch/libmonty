@@ -6,7 +6,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-class ListUtils():
+class ListUtils:
 
     @staticmethod
     def new_list(arg_tuple):
@@ -15,9 +15,9 @@ class ListUtils():
             if type(argument) in (list, tuple, bytearray, range, set, frozenset):
                 return_list.extend(argument)
             elif type(argument) is dict:
-                for key,value in argument.items():
+                for key, value in argument.items():
                     new_entry = str(key) + "=" + str(value)
-                    return_list.append( new_entry )
+                    return_list.append(new_entry)
             else:
                 return_list.append(argument)
         return return_list

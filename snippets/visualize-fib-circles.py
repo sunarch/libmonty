@@ -9,33 +9,34 @@
 
 import pygame
 
+
 # main function ################################################################
 
 def main():
 
-    PRIME_1_DIGIT = 7   # largest 1 digit prime
-    PRIME_2_DIGIT = 97  # largest 2 digit prime
+    prime_1_digit = 7   # largest 1 digit prime
+    prime_2_digit = 97  # largest 2 digit prime
 
     # the first prime of every hundred with an order below 100
     # '503' excluded to keep under 500
-    CIRCLE_RADIUS_POSSIBILITIES = [101, 211, 307, 401]
-    CIRCLE_RADIUS_POSSIBILITIES_LENGTH = len(CIRCLE_RADIUS_POSSIBILITIES)
+    circle_radius_possibilities = [101, 211, 307, 401]
+    circle_radius_possibilities_length = len(circle_radius_possibilities)
 
-    WINDOW_SIZE = 1000
-    WINDOW_WIDTH = WINDOW_SIZE
-    WINDOW_HEIGHT = WINDOW_SIZE
-    WINDOW_CAPTION = "Visualizer"
+    window_size = 1000
+    window_width = window_size
+    window_height = window_size
+    window_caption = "Visualizer"
 
-    BACKGROUND_COLOR = (0, 0, 0)
+    background_color = (0, 0, 0)
 
-    TITLE_FONTSIZE = 36
-    TITLE_COLOR = (128, 128, 255)
+    title_fontsize = 36
+    title_color = (128, 128, 255)
     title_text = "[ press space to begin ]"
 
-    CIRCLE_COLOR = (255, 0, 0)
-    CIRCLE_POSITION_X = int(WINDOW_WIDTH / 2)
-    CIRCLE_POSITION_Y = int(WINDOW_HEIGHT / 2)
-    circle_radius = int(WINDOW_SIZE / 3)
+    circle_color = (255, 0, 0)
+    circle_position_x = int(window_width / 2)
+    circle_position_y = int(window_height / 2)
+    circle_radius = int(window_size / 3)
     circle_width = int(circle_radius / 3)
 
     fib_current_iteration = 0
@@ -45,17 +46,17 @@ def main():
 
     # p_display (screen/window)
     pygame.init()
-    p_display = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    pygame.display.set_caption(WINDOW_CAPTION)
+    p_display = pygame.display.set_mode((window_width, window_height))
+    pygame.display.set_caption(window_caption)
 
     # p_surface (background)
     p_surface = pygame.Surface(p_display.get_size())
     p_surface = p_surface.convert()
-    p_surface.fill(BACKGROUND_COLOR)
+    p_surface.fill(background_color)
 
     # Display some text
-    font = pygame.font.Font(None, TITLE_FONTSIZE)
-    text = font.render(title_text, 1, TITLE_COLOR)
+    font = pygame.font.Font(None, title_fontsize)
+    text = font.render(title_text, True, title_color)
     textpos = text.get_rect()
     textpos.centerx = p_surface.get_rect().centerx
     textpos.centery = p_surface.get_rect().centery
@@ -71,23 +72,25 @@ def main():
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.KEYDOWN:
-                p_surface.fill(BACKGROUND_COLOR)
+                p_surface.fill(background_color)
 
-                circle_radius = int(CIRCLE_RADIUS_POSSIBILITIES[fib_current_number % CIRCLE_RADIUS_POSSIBILITIES_LENGTH])
+                circle_radius = int(circle_radius_possibilities[fib_current_number % circle_radius_possibilities_length])
 
-                circle_width = int(fib_current_number % PRIME_2_DIGIT)
-                if circle_width < PRIME_1_DIGIT: circle_width = PRIME_1_DIGIT
+                circle_width = int(fib_current_number % prime_2_digit)
+                if circle_width < prime_1_digit:
+                    circle_width = prime_1_digit
 
-                title_text = str(fib_current_iteration) + ". | " +  '{0:,}'.format(fib_current_number) + " || R = " + str(circle_radius) + " || W = " + str(circle_width)
+                title_text = f'{fib_current_iteration}. | {fib_current_number}'
+                title_text += f' || R = {circle_radius} || W = {circle_width}'
 
-                font = pygame.font.Font(None, TITLE_FONTSIZE)
-                text = font.render(title_text, 1, TITLE_COLOR)
+                font = pygame.font.Font(None, title_fontsize)
+                text = font.render(title_text, True, title_color)
                 textpos = text.get_rect()
                 textpos.centerx = p_surface.get_rect().centerx
-                textpos.centery = int((TITLE_FONTSIZE / 2) + 20)
+                textpos.centery = int((title_fontsize / 2) + 20)
                 p_surface.blit(text, textpos)
 
-                pygame.draw.circle(p_surface, CIRCLE_COLOR, (CIRCLE_POSITION_X, CIRCLE_POSITION_Y), circle_radius, circle_width)
+                pygame.draw.circle(p_surface, circle_color, (circle_position_x, circle_position_y), circle_radius, circle_width)
 
                 fib_current_iteration += 1
                 fib_prev_number = fib_current_number
@@ -97,8 +100,10 @@ def main():
         p_display.blit(p_surface, (0, 0))
         pygame.display.flip()
 
+
 # start program ################################################################
 
-if __name__ == '__main__': main()
+if __name__ == '__main__':
+    main()
 
 # END ##########################################################################

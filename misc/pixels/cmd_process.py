@@ -5,14 +5,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from libmonty.pixels import commands
+from pixels import commands
 
-from libmonty.pixels import api_get_pixel
-from libmonty.pixels import api_get_pixels
-from libmonty.pixels import api_get_size
-from libmonty.pixels import api_set_pixel
+from pixels import api_get_pixel
+from pixels import api_get_pixels
+from pixels import api_get_size
+from pixels import api_set_pixel
 
-from libmonty.pixels.projects import poetry as project_poetry
+from pixels.projects import poetry as project_poetry
 
 
 def process_command(command: str,

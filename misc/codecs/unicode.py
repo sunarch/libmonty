@@ -6,8 +6,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-def encode(argObject):
-    return argObject.encode('utf-8')
+def encode(arg_object):
+    return arg_object.encode('utf-8')
 
-def decode(argObject):
-    return argObject.decode('utf-8')
+
+def decode(arg_object):
+    return arg_object.decode('utf-8')

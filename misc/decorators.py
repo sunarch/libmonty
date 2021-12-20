@@ -8,11 +8,11 @@
 
 # start decorator: printResult ################################################
 
-def printResult(argFunction):
-    def newFunction(arguments):
-        result = argFunction(arguments)
+def print_result(arg_function):
+    def new_function(arguments):
+        result = arg_function(arguments)
         if result is not None:
             print(str(result))
-    return newFunction
+    return new_function
 
 # end decorator: printResult ##################################################

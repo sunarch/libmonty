@@ -6,13 +6,13 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import requests
-import shutil
+# import shutil
 
 
-x_start  = -703
+x_start = -703
 x_finish = -694
 
-z_start  = -506
+z_start = -506
 z_finish = -500
 
 
@@ -38,4 +38,3 @@ for iter_x in range(x_start, x_finish + 1):
         print("        -22_-16/{x}_{z}.png".format(x=iter_x, z=iter_z))
         
         download_tile(iter_x, iter_z)
-

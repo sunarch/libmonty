@@ -6,25 +6,25 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-class WavePCMAudioClass(object):
+class WavePCMAudioClass:
 
     # format source: http://soundfile.sapp.org/doc/WaveFormat/
     # The Canonical WAVE PCM Soundfile Format
 
-    def __init__(self, argNumChannels=1, argSampleRate=44100, argBitsPerSample=16):
+    def __init__(self, arg_num_channels=1, arg_sample_rate=44100, arg_bits_per_sample=16):
 
         print("Initializing WavePCMAudioClass object...", end="")
 
-        self.set_NumChannels(argNumChannels)
-        self.set_SampleRate(argSampleRate)
-        self.set_BitsPerSample(argBitsPerSample)
+        self.set_num_channels(arg_num_channels)
+        self.set_sample_rate(arg_sample_rate)
+        self.set_bits_per_sample(arg_bits_per_sample)
 
         print("done.")
 
-        print("Number of channels:  " + str(self.get_NumChannels()))
-        print("Sample Rate:         " + str(self.get_SampleRate()) + " Hz")
-        print("Bits per Sample:     " + str(self.get_BitsPerSample()))
-        print("Sample Format:       " + str(self.get_SampleFormat()))
+        print("Number of channels:  " + str(self.get_num_channels()))
+        print("Sample Rate:         " + str(self.get_sample_rate()) + " Hz")
+        print("Bits per Sample:     " + str(self.get_bits_per_sample()))
+        print("Sample Format:       " + str(self.get_sample_format()))
 
     ############################################################################
     # The canonical WAVE format starts with the RIFF header: ###################
@@ -34,7 +34,7 @@ class WavePCMAudioClass(object):
     # Offset: 0, Size: 4, Endian: big
     # Contains the letters "RIFF" in ASCII form
     # (0x52494646 big-endian form)
-    __ChunkID = b"RIFF"
+    _chunk_id = b"RIFF"
 
     # ChunkSize ################################################################
 
@@ -44,26 +44,26 @@ class WavePCMAudioClass(object):
     # This is the size of the rest of the chunk following this number.
     # This is the size of the entire file in bytes minus 8 bytes for the
     # two fields not included in this count: ChunkID and ChunkSize.
-    __ChunkSize = b'\x00\x00\x00\x00'
-    __ChunkSizeInt = 0
+    _chunk_size = b'\x00\x00\x00\x00'
+    _chunk_size_int = 0
 
-    def __encode_ChunkSize(self):
-        self.__ChunkSize = int(self.__ChunkSizeInt).to_bytes(4, byteorder='little', signed=False)
+    def _encode_chunk_size(self):
+        self._chunk_size = int(self._chunk_size_int).to_bytes(4, byteorder='little', signed=False)
 
-    def update_ChunkSize(self):
-        self.__ChunkSizeInt = 36 + self.get_Subchunk2Size()
-        self.__encode_ChunkSize()
+    def update_chunk_size(self):
+        self._chunk_size_int = 36 + self.get_subchunk_2_size()
+        self._encode_chunk_size()
 
-    def get_ChunkSize(self):
-        self.update_ChunkSize()
-        return self.__ChunkSizeInt
+    def get_chunk_size(self):
+        self.update_chunk_size()
+        return self._chunk_size_int
 
     # Format ###################################################################
 
     # Offset: 8, Size: 4, Endian: big
     # Contains the letters "WAVE"
     # (0x57415645 big-endian form)
-    __Format = b"WAVE"
+    _format = b"WAVE"
 
     ############################################################################
     # The "WAVE" format consists of two subchunks: "fmt " and "data": ##########
@@ -76,88 +76,88 @@ class WavePCMAudioClass(object):
     # Offset: 12, Size: 4, Endian: big
     # Contains the letters "fmt "
     # (0x666d7420 big-endian form)
-    __Subchunk1ID = b"fmt "
+    _subchunk_1_id = b"fmt "
 
     # Subchunk1Size ############################################################
 
     # Offset: 16, Size: 4, Endian: little
     # 16 for PCM.  This is the size of the
     # rest of the Subchunk which follows this number.
-    __Subchunk1Size = int(16).to_bytes(4, byteorder='little', signed=False)
-    __Subchunk1SizeInt = 16
+    _subchunk_1_size = int(16).to_bytes(4, byteorder='little', signed=False)
+    _subchunk_1_size_int = 16
 
     # AudioFormat ##############################################################
 
     # Offset: 20, Size: 2, Endian: little
     # PCM = 1 (i.e. Linear quantization)
     # Values other than 1 indicate some form of compression.
-    __AudioFormat = int(1).to_bytes(2, byteorder='little', signed=False)
+    _audio_format = int(1).to_bytes(2, byteorder='little', signed=False)
 
     # NumChannels ##############################################################
 
     # Offset: 22, Size: 2, Endian: little
     # Mono = 1, Stereo = 2, etc.
-    __NumChannels = b'\x00\x00'
-    __NumChannelsInt = 0
+    _num_channels = b'\x00\x00'
+    _num_channels_int = 0
 
-    def __encode_NumChannels(self):
-        self.__NumChannels = int(self.__NumChannelsInt).to_bytes(2, byteorder='little', signed=False)
+    def _encode_num_channels(self):
+        self._num_channels = int(self._num_channels_int).to_bytes(2, byteorder='little', signed=False)
 
-    def set_NumChannels(self, argInt):
-        if argInt < 1:
+    def set_num_channels(self, arg_int):
+        if arg_int < 1:
             raise ValueError("Channel count can't be lower than 1")
-        elif argInt > 8:
+        elif arg_int > 8:
             raise ValueError("Channel count can't be higher than 8")
         else:
-            self.__NumChannelsInt = argInt
+            self._num_channels_int = arg_int
 
-        self.__encode_NumChannels()
-        self.update_ByteRate()
-        self.update_BlockAlign()
+        self._encode_num_channels()
+        self.update_byte_rate()
+        self.update_block_align()
 
-    def get_NumChannels(self):
-        return self.__NumChannelsInt
+    def get_num_channels(self):
+        return self._num_channels_int
 
     # SampleRate ###############################################################
 
     # Offset: 24, Size: 4, Endian: little
     # 8000, 44100, etc.
-    __SampleRate = b'\x00\x00\x00\x00'
-    __SampleRateInt = 0
+    _sample_rate = b'\x00\x00\x00\x00'
+    _sample_rate_int = 0
 
-    def __encode_SampleRate(self):
-        self.__SampleRate = int(self.__SampleRateInt).to_bytes(4, byteorder='little', signed=False)
+    def __encode_sample_rate(self):
+        self._sample_rate = int(self._sample_rate_int).to_bytes(4, byteorder='little', signed=False)
 
-    def set_SampleRate(self, argInt):
-        if argInt < 8000:
+    def set_sample_rate(self, arg_int):
+        if arg_int < 8000:
             raise ValueError("Channel count can't be lower than 8 KHz")
-        elif argInt > 96000:
+        elif arg_int > 96000:
             raise ValueError("Channel count can't be higher than 96 KHz")
         else:
-            self.__SampleRateInt = argInt
+            self._sample_rate_int = arg_int
 
-        self.__encode_SampleRate()
-        self.update_ByteRate()
+        self.__encode_sample_rate()
+        self.update_byte_rate()
 
-    def get_SampleRate(self):
-        return self.__SampleRateInt
+    def get_sample_rate(self):
+        return self._sample_rate_int
 
     # ByteRate #################################################################
 
     # Offset: 28, Size: 4, Endian: little
     # == SampleRate * NumChannels * BitsPerSample/8
-    __ByteRate = b'\x00\x00\x00\x00'
-    __ByteRateInt = 0
+    __byte_rate = b'\x00\x00\x00\x00'
+    _byte_rate_int = 0
 
-    def __encode_ByteRate(self):
-        self.__ByteRate = int(self.__ByteRateInt).to_bytes(4, byteorder='little', signed=False)
+    def _encode_byte_rate(self):
+        self.__byte_rate = int(self._byte_rate_int).to_bytes(4, byteorder='little', signed=False)
 
-    def update_ByteRate(self):
-        self.__ByteRateInt = self.get_SampleRate() * self.get_NumChannels() * self.get_BitsPerSample() / 8
-        self.__encode_ByteRate()
+    def update_byte_rate(self):
+        self._byte_rate_int = self.get_sample_rate() * self.get_num_channels() * self.get_bits_per_sample() / 8
+        self._encode_byte_rate()
 
-    def get_ByteRate(self):
-        return self.__ByteRateInt
+    def get_byte_rate(self):
+        return self._byte_rate_int
 
     # BlockAlign ###############################################################
 
@@ -165,82 +165,85 @@ class WavePCMAudioClass(object):
     # == NumChannels * BitsPerSample/8
     # The number of bytes for one sample including all channels.
     # I wonder what happens when this number isn't an integer?
-    __BlockAlign = b'\x00\x00'
-    __BlockAlignInt = 0
+    _block_align = b'\x00\x00'
+    _block_align_int = 0
 
-    def __encode_BlockAlign(self):
-        self.__BlockAlign = int(self.__BlockAlignInt).to_bytes(2, byteorder='little', signed=False)
+    def __encode_block_align(self):
+        self._block_align = int(self._block_align_int).to_bytes(2, byteorder='little', signed=False)
 
-    def update_BlockAlign(self):
-        self.__BlockAlignInt = self.get_NumChannels() * self.get_BitsPerSample() / 8
-        self.__encode_BlockAlign()
+    def update_block_align(self):
+        self._block_align_int = self.get_num_channels() * self.get_bits_per_sample() / 8
+        self.__encode_block_align()
 
-    def get_BlockAlign(self):
-        return self.__BlockAlignInt
+    def get_block_align(self):
+        return self._block_align_int
 
     # BitsPerSample ############################################################
 
     # Offset: 34, Size: 2, Endian: little
     # 8 bits = 8, 16 bits = 16, etc.
-    __BitsPerSample = b'\x00\x00'
-    __BitsPerSampleInt = 0
+    _bits_per_sample = b'\x00\x00'
+    _bits_per_sample_int = 0
 
-    __SampleFormat = "U16_LE"
+    _sample_format = "U16_LE"
 
-    __MinSampleValue = 0
-    __MaxSampleValue = 1
+    _min_sample_value = 0
+    _max_sample_value = 1
 
-    def __encode_BitsPerSample(self):
-        self.__BitsPerSample = int(self.__BitsPerSampleInt).to_bytes(2, byteorder='little', signed=False)
+    def __encode_bits_per_sample(self):
+        self._bits_per_sample = int(self._bits_per_sample_int).to_bytes(2, byteorder='little', signed=False)
 
-    def set_BitsPerSample(self, argInt):
-        if argInt == 8:
-            self.__BitsPerSampleInt = 8
-        elif argInt == 16:
-            self.__BitsPerSampleInt = 16
-        elif argInt == 24:
-            self.__BitsPerSampleInt = 24
-        elif argInt == 32:
-            self.__BitsPerSampleInt = 32
+    def set_bits_per_sample(self, arg_int):
+        if arg_int == 8:
+            self._bits_per_sample_int = 8
+        elif arg_int == 16:
+            self._bits_per_sample_int = 16
+        elif arg_int == 24:
+            self._bits_per_sample_int = 24
+        elif arg_int == 32:
+            self._bits_per_sample_int = 32
         else:
             raise ValueError("Bits per Sample: 8, 16, 24 or 32")
 
-        self.__encode_BitsPerSample()
-        self.update_ByteRate()
-        self.update_BlockAlign()
-        self.update_SampleFormat()
-        self.update_MaxSampleValue()
+        self.__encode_bits_per_sample()
+        self.update_byte_rate()
+        self.update_block_align()
+        self.update_sample_format()
+        self.update_max_sample_value()
 
-    def get_BitsPerSample(self):
-        return self.__BitsPerSampleInt
+    def get_bits_per_sample(self):
+        return self._bits_per_sample_int
 
-    def isSampleTypeSigned(self):
+    @staticmethod
+    def is_sample_type_signed():
         return False
 
-    def get_SampleEndianness(self):
+    @staticmethod
+    def get_sample_endianness():
         return "little"
 
-    def get_SampleEndianShort(self):
+    @staticmethod
+    def get_sample_endian_short():
         return "LE"
 
-    def update_SampleFormat(self):
-        localBitsPerSampleInt = self.get_BitsPerSample()
-        self.__SampleFormat = "U" + str(localBitsPerSampleInt)
+    def update_sample_format(self):
+        local_bits_per_sample_int = self.get_bits_per_sample()
+        self._sample_format = "U" + str(local_bits_per_sample_int)
 
-        if localBitsPerSampleInt > 8:
-            self.__SampleFormat += "_" + self.get_SampleEndianShort()
+        if local_bits_per_sample_int > 8:
+            self._sample_format += "_" + self.get_sample_endian_short()
 
-    def get_SampleFormat(self):
-        return self.__SampleFormat
+    def get_sample_format(self):
+        return self._sample_format
 
-    def get_MinSampleValue(self):
-        return self.__MinSampleValue
+    def get_min_sample_value(self):
+        return self._min_sample_value
 
-    def update_MaxSampleValue(self):
-        self.__MaxSampleValue = pow(2, self.get_BitsPerSample()) - 1
+    def update_max_sample_value(self):
+        self._max_sample_value = pow(2, self.get_bits_per_sample()) - 1
 
-    def get_MaxSampleValue(self):
-        return self.__MaxSampleValue
+    def get_max_sample_value(self):
+        return self._max_sample_value
 
     ############################################################################
 
@@ -260,7 +263,7 @@ class WavePCMAudioClass(object):
     # Offset: 36, Size: 4, Endian: big
     # Contains the letters "data"
     # (0x64617461 big-endian form)
-    __Subchunk2ID = b"data"
+    _subchunk_2_id = b"data"
 
     # Subchunk2Size ############################################################
 
@@ -269,106 +272,106 @@ class WavePCMAudioClass(object):
     # This is the number of bytes in the data.
     # You can also think of this as the size
     # of the read of the subchunk following this number.
-    __Subchunk2Size = b'\x00\x00\x00\x00'
-    __Subchunk2SizeInt = 0
+    _subchunk_2_size = b'\x00\x00\x00\x00'
+    _subchunk_2_size_int = 0
 
-    def __encode_Subchunk2Size(self):
-        self.__Subchunk2Size = int(self.__Subchunk2SizeInt).to_bytes(4, byteorder='little', signed=False)
+    def _encode_subchunk_2_size(self):
+        self._subchunk_2_size = int(self._subchunk_2_size_int).to_bytes(4, byteorder='little', signed=False)
 
-    def update_Subchunk2Size(self):
-        self.__Subchunk2SizeInt = len(self.get_Data())
-        self.__encode_Subchunk2Size()
+    def update_subchunk_2_size(self):
+        self._subchunk_2_size_int = len(self.get_data())
+        self._encode_subchunk_2_size()
 
-    def get_Subchunk2Size(self):
-        self.update_Subchunk2Size()
-        return self.__Subchunk2SizeInt
+    def get_subchunk_2_size(self):
+        self.update_subchunk_2_size()
+        return self._subchunk_2_size_int
 
     # Data #####################################################################
 
     # Offset: 44, Size: *, Endian: little
     # The actual sound data.
-    __Data = bytes()
-    __DataBytearray = bytearray()
+    _data = bytes()
+    _data_bytearray = bytearray()
 
-    def __encode_Data(self):
-        self.__Data = bytes(self.__DataBytearray)
+    def _encode_data(self):
+        self._data = bytes(self._data_bytearray)
 
-    def __extend_Data(self, argBytearray):
-        self.__DataBytearray.extend(argBytearray)
+    def _extend_data(self, arg_bytearray):
+        self._data_bytearray.extend(arg_bytearray)
 
     # convert DataBytearray to inmutable bytes in Data and update sizes
-    def update_Data(self):
-        self.__encode_Data()
-        self.update_ChunkSize()
+    def update_data(self):
+        self._encode_data()
+        self.update_chunk_size()
 
-    def get_Data(self):
-        return self.__DataBytearray
+    def get_data(self):
+        return self._data_bytearray
 
-    def add_sample(self, argIntList):
+    def add_sample(self, arg_int_list):
         # argIntList: one integer per channel in this sample
-        print("Adding sample " + str(argIntList))
+        print("Adding sample " + str(arg_int_list))
 
-        if len(argIntList) != self.get_NumChannels():
+        if len(arg_int_list) != self.get_num_channels():
             raise ValueError("More values in current sample than channels available")
 
-        BytesPerSample = int(self.get_BitsPerSample() / 8)
+        bytes_per_sample = int(self.get_bits_per_sample() / 8)
 
-        for i in range(len(argIntList)):
+        for i in range(len(arg_int_list)):
 
-            if argIntList[i] < self.get_MinSampleValue():
+            if arg_int_list[i] < self.get_min_sample_value():
                 raise ValueError("A value inside the sample is too low")
 
-            if argIntList[i] > self.get_MaxSampleValue():
+            if arg_int_list[i] > self.get_max_sample_value():
                 raise ValueError("A value inside the sample is too high")
 
-            samplePartBytes = int(argIntList[i]).to_bytes(BytesPerSample, byteorder='little', signed=False)
-            self.__extend_Data(bytearray(samplePartBytes))
+            sample_part_bytes = int(arg_int_list[i]).to_bytes(bytes_per_sample, byteorder='little', signed=False)
+            self._extend_data(bytearray(sample_part_bytes))
 
     # OTHER ####################################################################
 
-    def writeToFile(self, argFileName="output.wav"):
+    def write_to_file(self, arg_file_name="output.wav"):
 
-        self.update_Data()
+        self.update_data()
 
         print("WRITING AUDIO DATA TO FILE")
 
-        print("Number of channels:  " + str(self.get_NumChannels()))
-        print("Sample Rate:         " + str(self.get_SampleRate()) + " Hz")
-        print("Bits per Sample:     " + str(self.get_BitsPerSample()))
-        print("Sample Format:       " + str(self.get_SampleFormat()))
+        print("Number of channels:  " + str(self.get_num_channels()))
+        print("Sample Rate:         " + str(self.get_sample_rate()) + " Hz")
+        print("Bits per Sample:     " + str(self.get_bits_per_sample()))
+        print("Sample Format:       " + str(self.get_sample_format()))
 
-        print("Opening file '" + argFileName + "' for writing...", end="")
+        print("Opening file '" + arg_file_name + "' for writing...", end="")
 
-        f = open(argFileName, 'wb')
+        f = open(arg_file_name, 'wb')
 
         print("done.")
 
         print("Writing RIFF header...", end="")
 
-        f.write(self.__ChunkID)         # size:  4 Bytes
-        f.write(self.__ChunkSize)       # size:  4 Bytes
-        f.write(self.__Format)          # size:  4 Bytes
+        f.write(self._chunk_id)         # size:  4 Bytes
+        f.write(self._chunk_size)       # size:  4 Bytes
+        f.write(self._format)          # size:  4 Bytes
 
         print("done.")
 
         print("Writing 'fmt ' subchunk...", end="")
 
-        f.write(self.__Subchunk1ID)     # size:  4 Bytes
-        f.write(self.__Subchunk1Size)   # size:  4 Bytes
-        f.write(self.__AudioFormat)     # size: 2 Bytes
-        f.write(self.__NumChannels)     # size: 2 Bytes
-        f.write(self.__SampleRate)      # size:  4 Bytes
-        f.write(self.__ByteRate)        # size:  4 Bytes
-        f.write(self.__BlockAlign)      # size: 2 Bytes
-        f.write(self.__BitsPerSample)   # size: 2 Bytes
+        f.write(self._subchunk_1_id)     # size:  4 Bytes
+        f.write(self._subchunk_1_size)   # size:  4 Bytes
+        f.write(self._audio_format)     # size: 2 Bytes
+        f.write(self._num_channels)     # size: 2 Bytes
+        f.write(self._sample_rate)      # size:  4 Bytes
+        f.write(self.__byte_rate)        # size:  4 Bytes
+        f.write(self._block_align)      # size: 2 Bytes
+        f.write(self._bits_per_sample)   # size: 2 Bytes
 
         print("done.")
 
         print("Writing 'data' subchunk...", end="")
 
-        f.write(self.__Subchunk2ID)     # size:  4 Bytes
-        f.write(self.__Subchunk2Size)   # size:  4 Bytes
-        f.write(self.__Data)            # size: * Bytes
+        f.write(self._subchunk_2_id)     # size:  4 Bytes
+        f.write(self._subchunk_2_size)   # size:  4 Bytes
+        f.write(self._data)            # size: * Bytes
 
         print("done.")
 

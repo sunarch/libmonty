@@ -12,37 +12,41 @@ import getopt
 from PIL import Image
 import numpy
 
+
 # basic functions ##############################################################
 
-def arithmetic_mean_int(arg_numList):
-    numList = arg_numList
-    numCount = len(numList)
-    numSum = 0
-    for i1 in range(numCount):
-        numSum += numList[i1]
-    returnValue = int( numSum / numCount )
-    return returnValue
+def arithmetic_mean_int(arg_num_list):
+    num_list = arg_num_list
+    num_count = len(num_list)
+    num_sum = 0
+    for i1 in range(num_count):
+        num_sum += num_list[i1]
+    return int(num_sum / num_count)
 
-def isEven(arg_num):
+
+def is_even(arg_num):
     if arg_num % 2 == 0:
         return True
     else:
         return False
 
-def isOdd(arg_num):
+
+def is_odd(arg_num):
     if arg_num % 2 == 1:
         return True
     else:
         return False
 
+
 # global variables #############################################################
 
-src_array = False
+src_array = None
 src_image_height = 0
 src_image_width = 0
 final_image_height = 0
 final_image_width = 0
-final_array = False
+final_array = None
+
 
 # preparation functions ########################################################
 
@@ -65,15 +69,15 @@ def double_pixels_1():
 
     # create array for new image grid and fill it up with zeros
     # it is important that the data type is uint8 (unsigned integer 8) or the output will be scrambled
-    final_array = numpy.zeros((final_image_height,final_image_width,3), dtype=numpy.uint8)
+    final_array = numpy.zeros((final_image_height, final_image_width, 3), dtype=numpy.uint8)
 
     # Runthrough 1: filling the new grid with source pixels and black pixels
     for i1 in range(final_image_height):
         # odd vertical pixels
-        if isOdd(i1 + 1):
+        if is_odd(i1 + 1):
             for i2 in range(final_image_width):
                 # odd horizontal pixels
-                if isOdd(i2 + 1):
+                if is_odd(i2 + 1):
                     for i3 in range(3):
                         final_array[i1][i2][i3] = src_array[(i1-1)/2][(i2-1)/2][i3]
                 else:
@@ -85,8 +89,9 @@ def double_pixels_1():
                     final_array[i1][i2][i3] = 0
 
     # Debugging new image dimensions
-    print("Final image height: " + str( len(final_array) ) )
-    print("Final image width: " + str( len(final_array[1]) ) )
+    print("Final image height: " + str(len(final_array)))
+    print("Final image width: " + str(len(final_array[1])))
+
 
 # filling functions ############################################################
 
@@ -109,10 +114,10 @@ def two_point_filling_1():
     # Runthrough 1: estimating new pixels with 2 horizontal source pixel neighbors
     for i1 in range(final_image_height):
         # odd vertical pixels
-        if isOdd(i1 + 1):
+        if is_odd(i1 + 1):
             for i2 in range(final_image_width):
                 # even horizontal pixels
-                if isEven(i2 + 1):
+                if is_even(i2 + 1):
                     for i3 in range(3):
                         # horizontal 2-point average
                         final_array[i1][i2][i3] = arithmetic_mean_int((final_array[i1][i2-1][i3],final_array[i1][i2+1][i3]))
@@ -120,10 +125,10 @@ def two_point_filling_1():
     # Runthrough 2: estimating new pixels with 2 vertical source pixel neighbors
     for i1 in range(final_image_height):
         # even vertical pixels
-        if isEven(i1 + 1):
+        if is_even(i1 + 1):
             for i2 in range(final_image_width):
                 # odd horizontal pixels
-                if isOdd(i2 + 1):
+                if is_odd(i2 + 1):
                     for i3 in range(3):
                         # vertical 2-point average
                         final_array[i1][i2][i3] = arithmetic_mean_int((final_array[i1-1][i2][i3],final_array[i1+1][i2][i3]))
@@ -131,10 +136,10 @@ def two_point_filling_1():
     # Runthrough 3: estimating new pixels with only diagonal source pixel neighbors
     for i1 in range(final_image_height):
         # even vertical pixels
-        if isEven(i1 + 1):
+        if is_even(i1 + 1):
             for i2 in range(final_image_width):
                 # even horizontal pixels
-                if isEven(i2 + 1):
+                if is_even(i2 + 1):
                     for i3 in range(3):
                         top_left = final_array[i1-1][i2-1][i3]
                         top_right = final_array[i1-1][i2+1][i3]
@@ -145,10 +150,14 @@ def two_point_filling_1():
 
     return True
 
+
 def four_point_filling_1():
-    # 1) diagonal 4-point: pos_5 = arithmetic_mean_int((pos_7, pos_9, pos_1, pos_2)) where all 4 are original pixels
-    # 2) horizontal 4-point: pos_5 = arithmetic_mean_int((pos_8, pos_2, pos_4, pos_6)) where pos_4 and pos_6 are original pixels
-    # 3) vertical 4-point: pos_5 = arithmetic_mean_int((pos_8, pos_2, pos_4, pos_6)) where pos_8 and pos_2 are original pixels
+    # 1) diagonal 4-point: pos_5 =
+    #   arithmetic_mean_int((pos_7, pos_9, pos_1, pos_2)) where all 4 are original pixels
+    # 2) horizontal 4-point: pos_5 =
+    #   arithmetic_mean_int((pos_8, pos_2, pos_4, pos_6)) where pos_4 and pos_6 are original pixels
+    # 3) vertical 4-point: pos_5 =
+    #   arithmetic_mean_int((pos_8, pos_2, pos_4, pos_6)) where pos_8 and pos_2 are original pixels
 
     # defining scope for global variables
     global src_array
@@ -162,6 +171,7 @@ def four_point_filling_1():
     double_pixels_1()
 
     return True
+
 
 # main function ################################################################
 
@@ -233,9 +243,10 @@ def main(argv):
     # [ORIGINAL:] Save
     final_image.save(target_file)
 
+
 # start program ################################################################
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    main(sys.argv[1:])
 
 # END ##########################################################################

@@ -59,7 +59,6 @@ def process_command(command: str, args: list[str]) -> str:
         "exit": exit_interactive,
         "debug": toggle_debug,
         "hexer": hexer.main,
-        "pixels": pixels.main
     }
 
     ls_args = []

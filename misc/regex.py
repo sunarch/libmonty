@@ -8,16 +8,17 @@
 import re
 
 
-def RegExMatch(argString, argCompiledPattern):
-    match = argCompiledPattern.fullmatch(argString)
+def regex_match(arg_string, arg_compiled_pattern):
+    match = arg_compiled_pattern.fullmatch(arg_string)
     if match:
         return match.groupdict()
     else:
         return None
 
-###############################################################################
-######################### REGULAR EXPRESSION MATCHERS #########################
-###############################################################################
+
+###############################
+# REGULAR EXPRESSION MATCHERS #
+###############################
 
 
 # examples
@@ -35,9 +36,9 @@ REGEX_ANT_DATA = re.compile("(?P<name>[a-zA-Z]),(?P<row>(0|[1-9][0-9]*)),(?P<col
 
 # matching example
 
-#parsed = RegExMatch(arguments[n], REGEX_RULE_CLA)
-#if parsed is not None:
-#    newRule = parsed["value"].split("-")
-#    for i in range(0, len(rule)):
-#        rule[i] = int(newRule[i])
-#    continue
+# parsed = RegExMatch(arguments[n], REGEX_RULE_CLA)
+# if parsed is not None:
+#     newRule = parsed["value"].split("-")
+#     for i in range(0, len(rule)):
+#         rule[i] = int(newRule[i])
+#     continue

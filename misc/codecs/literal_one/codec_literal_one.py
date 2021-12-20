@@ -10,10 +10,8 @@
 # Build-in module imports
 import sys
 
-# Package imports
-import text
+# print("codec_literal_one\n")
 
-#print("codec_literal_one\n")
 
 # ==================================================================== #
 # HELPER FUNCTIONS
@@ -24,15 +22,19 @@ def validate_chapter_no(arg_chapter_no):
         exit_with_error("incorrect argument value")
     return return_value
 
+
 def validate_verse_no(arg_verse_no, arg_verse_count):
     return_value = int(arg_verse_no)
     if return_value < 1 or return_value > arg_verse_count:
         exit_with_error("incorrect argument value")
     return return_value
 
+
 def exit_with_error(text):
     print(text)
     sys.exit(1)
+
+
 # ==================================================================== #
 # MODE FUNCTIONS
 
@@ -54,11 +56,14 @@ def mode_quote(arg_chapter_no, arg_verse_no):
     # print verse
     print(verses[verse_no])
 
+
 def mode_encrypt(arg_chapter_no, arg_plain_text):
     pass
 
+
 def mode_decrypt(arg_chapter_no, arg_code_text):
     pass
+
 
 # ==================================================================== #
 

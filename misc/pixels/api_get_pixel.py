@@ -8,8 +8,8 @@
 import requests
 import json
 
-from libmonty.pixels import config
-from libmonty.pixels import api_headers
+from pixels import config
+from pixels import api_headers
 
 # Get Pixel
 
