@@ -6,7 +6,6 @@ import sys
 import traceback
 
 from libmonty.hexer import hexer
-from libmonty.pixels import pixels
 
 
 def main(args: list[str]) -> None:
