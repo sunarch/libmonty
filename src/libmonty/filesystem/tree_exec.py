@@ -22,7 +22,7 @@ class IndentItem:
 
 
 def quoted(content):
-    return '"{}"'.format(content)
+    return f'"{content}"'
 
 
 def prefixed(content, indents=None, tree=None):
@@ -84,18 +84,20 @@ def recursive_list(dir_name, command=None, indents=None, tree=None):
 
     indents_before = indents + [IndentItem.BeforeLast]
     for item in dir_list_filtered[:-1]:
-        recursive_list(item, command, indents=indents_before, tree=IndentItem.DirMiddle)
+        recursive_list(item, command,
+                       indents=indents_before, tree=IndentItem.DirMiddle)
 
     if len(dir_list_filtered) > 0:
         indents_after = indents + [IndentItem.AfterLast]
-        recursive_list(dir_list_filtered[-1], command, indents=indents_after, tree=IndentItem.DirLast)
+        recursive_list(dir_list_filtered[-1], command,
+                       indents=indents_after, tree=IndentItem.DirLast)
 
 
 def arg_type_dir_path(path):
-    if os.path.isdir(path):
-        return path
-    else:
-        raise argparse.ArgumentTypeError('Given argument "{}" is not a valid directory path'.format(path))
+    if not os.path.isdir(path):
+        raise argparse.ArgumentTypeError(f'Given argument "{path}" is not a valid directory path')
+
+    return path
 
 
 def main():
