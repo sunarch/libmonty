@@ -2,6 +2,10 @@
 
 Python libraries
 
+## parts
+
+- `libmonty-hexer` - a hex dump tool
+
 ## Installation
 
 The package is on PyPI: [libmonty](https://pypi.org/project/libmonty/)
