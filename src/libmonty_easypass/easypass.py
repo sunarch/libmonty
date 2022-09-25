@@ -4,226 +4,171 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
-# imports ######################################################################
-
-import os
+# imports: library
+import functools
+import logging
+import os.path
+import pkg_resources
 import tkinter
 from tkinter import ttk
 
 
-# set working directory to script location ####################################################################
-
-if __file__:
-    os.chdir(os.path.dirname(os.path.realpath(__file__)))
-
-# constants ####################################################################
-
-IS_DEBUG_MODE = True
-
-# variables ####################################################################
-
-dice_words = ["ERROR"]
-dice_words_count = len(dice_words)
-dice_words_result = "ERROR"
-
-# wordListLang = "en"
-# randomSiteUrl = "http://www.random.org/integers/?num=30&min=1&max=6&col=5&base=10&format=plain&rnd=new"
-
-# wordlist #####################################################################
-
-wordlist_file_name = 'data/agr-wordlist-en-original.txt'
-wordlist_dict = {}
-wordlist_dict_keys = wordlist_dict.keys()
+def download_random(wordcount: int, count: int = 1):
+    url = ('http://www.random.org/integers/'
+           '?min=1&max=6&base=10&format=plain&rnd=new'
+           f'&num={wordcount * count}&col={wordcount}'
+           )
+    raise NotImplementedError
 
 
-def get_wordlist_file_path():
-    global wordlist_file_name
-    return os.path.join('data', wordlist_file_name)
+def load_wordlist(wordlist_filename: str) -> dict:
+
+    resource_name = f'data/{wordlist_filename}.txt'
+
+    if not pkg_resources.resource_exists(__name__, resource_name):
+        raise ValueError('wordlist does not exist')
+
+    with pkg_resources.resource_stream(__name__, resource_name) as wordlist_file:
+        wordlist = wordlist_file.read().decode('UTF-8').strip().split('\n')
+
+    return dict([item.strip().split('\t', -1)
+                for item in wordlist])
 
 
-# source file ##################################################################
+def lookup(wordlist: dict, dice_ids: list[str]) -> list[str]:
 
-source_file_name = ""
-source_dice_ids = []
-
-
-def set_source_file_name(arg_source_file_name):
-    global source_file_name
-    source_file_name = arg_source_file_name
-    debug("source_file_name = {0}".format(source_file_name))
+    return [wordlist[dice_id]
+            for dice_id in dice_ids]
 
 
-def get_source_file_path():
-    global source_file_name
-    return os.path.join("data", "{0}.txt".format(source_file_name))
+# actions
 
+def action_load_wordlist(var_wordlist_filename: tkinter.StringVar
+                         ) -> None:
 
-# result file ##################################################################
+    wordlist_file_name = os.path.join('data', f'{var_wordlist_filename.get()}.txt')
 
-def get_result_file_path():
-    global source_file_name
-    return os.path.join("output", "{0}-result.txt".format(source_file_name))
-
-
-# functions ####################################################################
-
-def debug(message):
-    global IS_DEBUG_MODE
-
-    if IS_DEBUG_MODE:
-        print(message)
-
-
-# def load_wordlist ############################################################
-
-def load_wordlist():
-
-    global wordlist_dict
-    global wordlist_dict_keys
-
-    try:
-        wordlist_file = open(get_wordlist_file_path(), 'r')
-    except IOError:
-        print('error, file not found')
-    else:
-        with wordlist_file:
-
-            for line in wordlist_file:
-                key, value = line.rstrip().split("\t", -1)
-                wordlist_dict[key] = value
-
-            wordlist_dict_keys = wordlist_dict.keys()
-
-
-# def lookup ###################################################################
-
-def lookup():
-
-    global wordlist_dict
-    global wordlist_dict_keys
-    global source_dice_ids
-    global dice_words
-    global dice_words_count
-    global dice_words_result
-
-    debug("START: matching wordListValues to fileValues and setting diceWords")
-
-    if len(source_dice_ids) > 0:
-        dice_words = list()
-        dice_words_count = len(dice_words)
-        dice_words_result = str()
-
-    for dice_id in source_dice_ids:
-        # debug("dice_id '{0}'".format(dice_id))
-        if dice_id in wordlist_dict_keys:
-            debug("wordlist_dict['{0}'] : '{1}'".format(dice_id, wordlist_dict[dice_id]))
-            dice_words.append(wordlist_dict[dice_id])
-
-    debug("dice_words = {0}".format(dice_words))
-
-    dice_words_count = len(dice_words)
-
-    result_word_separator = " "
-
-    dice_words_result = result_word_separator.join(dice_words)
-
-    debug("dice_words_result = {0}".format(dice_words_result))
-
-    # for n3 in range( diceWordsCount ):
-    #     dice_words_result = dice_words_result + str( diceWords[n3] )
-    #     if n3 != diceWordsCount - 1:
-    #         dice_words_result = dice_words_result + " "
-
-
-# def display_result ###########################################################
-
-def display_result():
-    var_result.set(dice_words_result)
-
-
-# bound action function ########################################################
-
-def action_load_file():
-    global source_dice_ids
-
-    set_source_file_name(var_filename.get())
-    source_lines = []
-
-    try:
-        source_file = open(get_source_file_path(), 'r+')
-    except IOError:
-        print('error, file not found')
+    if not pkg_resources.resource_exists(__name__, wordlist_file_name):
+        logging.error('wordlist does not exist')
         return
-    else:
-        with source_file:
-            for line in source_file:
-                source_lines.append(line.strip())
 
-    source_dice_ids = source_lines
+    wordlist = pkg_resources.resource_stream(__name__, wordlist_file_name)
+    wordlist_str = wordlist.read().decode('UTF-8')
 
-    debug(source_dice_ids)
 
-    lookup()
+def action_load_file(wordlist: dict,
+                     var_filename: tkinter.StringVar,
+                     var_result: tkinter.StringVar,
+                     var_result_separator: tkinter.StringVar,
+                     button_save_to_file: ttk.Button
+                     ) -> None:
 
-    display_result()
+    with open(f'{var_filename.get()}.txt', 'r', encoding='UTF-8') as source_file:
+        dice_ids = [line.strip()
+                    for line in source_file]
+
+    dice_words: list[str] = lookup(wordlist, dice_ids)
+
+    result_separator = var_result_separator.get()
+
+    var_result.set(result_separator.join(dice_words))
 
     button_save_to_file.state(["!disabled"])
 
 
-def action_save_to_file():
-    global dice_words_result
+def action_save_to_file(var_result: tkinter.StringVar,
+                        var_result_separator: tkinter.StringVar,
+                        var_result_filename: tkinter.StringVar,
+                        ) -> None:
 
-    try:
-        result_file = open(get_result_file_path(), 'w')
-    except IOError:
-        print('error, file could not be opened for writing')
-    else:
-        with result_file:
-            result_file.write(dice_words_result)
+    result_separator = var_result_separator.get()
+    results = var_result.get().split(result_separator)
 
-
-# set up the GUI ###############################################################
-
-# root #
-root = tkinter.Tk()
-root.title("easypass")
-root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=1)
-root.bind('<Return>', action_load_file)
-
-# bound variables #
-var_filename = tkinter.StringVar()
-var_filename.set("dice-sample")
-var_result = tkinter.StringVar()
-
-# main frame #
-frame_main = ttk.Frame(root, padding="3 3 12 12")
-frame_main.grid(column=0, row=0)
-for row in range(0, 1):
-    frame_main.columnconfigure(row, weight=1)
-for col in range(0, 4):
-    frame_main.rowconfigure(col, weight=1)
-
-# row 1 #
-ttk.Label(frame_main, text="File:").grid(column=1, row=1, padx=5, pady=5)
-entry_filename = ttk.Entry(frame_main, width=15, textvariable=var_filename)
-entry_filename.grid(column=2, row=1, padx=5, pady=5)
-ttk.Label(frame_main, text=".txt").grid(column=3, row=1, padx=5, pady=5)
-ttk.Button(frame_main, text="Load", command=action_load_file).grid(column=4, row=1, padx=5, pady=5)
-
-# row 2 #
-ttk.Label(frame_main, text="Result:").grid(column=1, row=2, padx=5, pady=5)
-ttk.Label(frame_main, textvariable=var_result).grid(column=2, row=2, columnspan=2, padx=5, pady=5)
-button_save_to_file = ttk.Button(frame_main, text="Save to file", command=action_save_to_file)
-button_save_to_file.grid(column=4, row=2, padx=5, pady=5)
-button_save_to_file.state(["disabled"])
-
-# main program loop #
-load_wordlist()
-entry_filename.focus()
-debug("Debug mode is on")
-root.mainloop()
+    with open(f'{var_result_filename.get()}.txt', 'w', encoding='UTF-8') as fh_result:
+        fh_result.write(result_separator.join(results))
 
 
-# END ##########################################################################
+# GUI
+
+def main():
+    # root
+    root = tkinter.Tk()
+    root.title("easypass")
+    root.columnconfigure(0, weight=1)
+    root.rowconfigure(0, weight=1)
+
+    # bound variables
+    # var_wordlist_lang = tkinter.StringVar()
+    # var_wordlist_lang.set('en')
+    var_wordlist_filename = tkinter.StringVar()
+    var_wordlist_filename.set('agr-wordlist-en-original')
+    var_filename = tkinter.StringVar()
+    var_filename.set('dice-sample')
+    var_result_separator = tkinter.StringVar()
+    var_result_separator.set(' ')
+    var_result = tkinter.StringVar()
+    var_result_filename = tkinter.StringVar()
+    var_result_filename.set('dicewords')
+
+    # load data
+    wordlist: dict = load_wordlist(var_wordlist_filename.get())
+
+    # named components
+    frame_main = ttk.Frame(root, padding="3 3 12 12")
+    entry_filename = ttk.Entry(frame_main, width=15, textvariable=var_filename)
+    button_load_file = ttk.Button(frame_main, text="Load")
+    button_save_to_file = ttk.Button(frame_main, text="Save to file")
+
+    # action closures
+
+    closure_action_load_file = functools.partial(action_load_file,
+                                                 wordlist=wordlist,
+                                                 var_filename=var_filename,
+                                                 var_result=var_result,
+                                                 var_result_separator=var_result_separator,
+                                                 button_save_to_file=button_save_to_file)
+
+    closure_action_save_to_file = functools.partial(action_save_to_file,
+                                                    var_result=var_result,
+                                                    var_result_separator=var_result_separator,
+                                                    var_result_filename=var_result_filename)
+
+    # bind commands
+    button_load_file.configure(command=closure_action_load_file)
+    button_save_to_file.configure(command=closure_action_save_to_file)
+
+    # bind actions
+    root.bind('<Return>', closure_action_load_file)
+
+    # grid - main
+    frame_main.grid(column=0, row=0)
+    for row in range(0, 1):
+        frame_main.columnconfigure(row, weight=1)
+    for col in range(0, 4):
+        frame_main.rowconfigure(col, weight=1)
+
+    # grid - row 1
+    ttk.Label(frame_main, text="File:")\
+        .grid(column=1, row=1, padx=5, pady=5)
+    entry_filename.grid(column=2, row=1, padx=5, pady=5)
+    ttk.Label(frame_main, text=".txt")\
+        .grid(column=3, row=1, padx=5, pady=5)
+    button_load_file.grid(column=4, row=1, padx=5, pady=5)
+
+    # grid - row 2
+    ttk.Label(frame_main, text="Result:")\
+        .grid(column=1, row=2, padx=5, pady=5)
+    ttk.Label(frame_main, textvariable=var_result)\
+        .grid(column=2, row=2, columnspan=2, padx=5, pady=5)
+    button_save_to_file.grid(column=4, row=2, padx=5, pady=5)
+
+    # set states and focus
+    button_save_to_file.state(["disabled"])
+    entry_filename.focus()
+
+    # main program loop
+    root.mainloop()
+
+
+if __name__ == '__main__':
+    main()

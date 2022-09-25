@@ -28,3 +28,7 @@ Example to get random dice throws from:
 ## other info
 
 - ['Password strength' on WikiPedia](https://en.wikipedia.org/wiki/Password_strength)
+
+## personal
+
+- originally in separate repo `easypass`, started Apr 18, 2014
