@@ -27,7 +27,7 @@ def main() -> None:
 
     parser.add_argument('--version',
                         help='Display version',
-                        action='store_const', const=True, default=False,
+                        action='store_true',
                         dest='version')
 
     args = parser.parse_args(sys.argv[1:])
