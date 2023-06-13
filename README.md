@@ -4,7 +4,6 @@ Python libraries
 
 ## parts
 
-- `libmonty-hexer` - a hex dump tool
 - [libmonty-easypass](easypass.md)
     - a passphrase generation tool
 
