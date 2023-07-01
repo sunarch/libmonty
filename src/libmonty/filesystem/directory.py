@@ -116,8 +116,8 @@ def create_dir(name):
 def create_file(name):
     """Create file"""
 
-    newfile = open(name, 'x')
-    newfile.close()
+    with open(name, 'x', encoding='UTF-8') as _:
+        pass
 
 
 # special getters ##############################################################
@@ -125,24 +125,23 @@ def create_file(name):
 def get_int_from_file(arg_path):
     """Get int from file"""
 
-    valuefile = open(arg_path, 'rt')
-
-    return int(valuefile.readlines()[0].splitlines()[0])
+    with open(arg_path, 'r', encoding='UTF-8') as fh_value:
+        return int(fh_value.readlines()[0].splitlines()[0])
 
 
 def get_string_from_file(arg_path):
     """Get string from file"""
 
-    valuefile = open(arg_path, 'rt')
-
-    return valuefile.readlines()[0].splitlines()[0]
+    with open(arg_path, 'r', encoding='UTF-8') as fh_value:
+        return fh_value.readlines()[0].splitlines()[0]
 
 
 def get_list_from_file(arg_path):
     """Get list from file"""
 
-    valuefile = open(arg_path, 'rt')
-    lines = valuefile.readlines()
+    with open(arg_path, 'r', encoding='UTF-8') as fh_value:
+        lines = fh_value.readlines()
+
     return_list = list()
 
     for line in lines:
@@ -159,8 +158,9 @@ def get_list_from_file(arg_path):
 def get_dict_from_file(arg_path):
     """Get dict from file"""
 
-    valuefile = open(arg_path, "rt")
-    lines = valuefile.readlines()
+    with open(arg_path, "r", encoding='UTF-8') as fh_value:
+        lines = fh_value.readlines()
+
     return_dict = dict()
 
     for line in lines:

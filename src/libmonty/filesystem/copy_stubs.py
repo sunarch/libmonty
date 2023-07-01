@@ -46,7 +46,7 @@ def copy_stubs(from_dir: str, to_dir: str, change: Tuple[str, str]) -> None:
             print(' ', '#', 'Already existed.')
             continue
 
-        with open(path_new, 'wt') as fh_new:
+        with open(path_new, 'w', encoding='UTF-8') as fh_new:
             print('', file=fh_new)
 
         print(' ', '#', 'Done.')

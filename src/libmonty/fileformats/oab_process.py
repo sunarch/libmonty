@@ -29,7 +29,7 @@ SRC_DELIMITER = "/o="
 def file_len(s_file_name):
     """File length"""
 
-    with codecs.open(s_file_name, 'r', encoding='utf-8', errors='replace') as file:
+    with codecs.open(s_file_name, 'r', encoding='UTF-8', errors='replace') as file:
         for i, l in enumerate(file):
             pass
     return i + 1
@@ -38,19 +38,19 @@ def file_len(s_file_name):
 def generator_by_line(s_filename):
     """Generator by line"""
 
-    f_out = open(s_filename, 'w', encoding='utf8')
+    with open(s_filename, 'w', encoding='UTF-8') as fh_out:
 
-    while True:
-        s_row = (yield True)
+        while True:
+            s_row = (yield True)
 
-        if s_row is None:
-            continue
-        elif s_row is False:
-            f_out.close()
-            break
-        else:
-            f_out.write(s_row)
-            pass
+            if s_row is None:
+                continue
+            elif s_row is False:
+                fh_out.close()
+                break
+            else:
+                fh_out.write(s_row)
+                pass
 
 
 def next_by_line(o_generator, s_content):
@@ -148,9 +148,9 @@ def process(org, id_label_org, id_label_tech):
 
     # loop
 
-    with codecs.open(DEFAULT_INPUT_FILE_PATH, 'r', encoding='utf-8', errors='replace') as file_in, \
-         open(DEFAULT_OUTPUT_UNITS_FILE_PATH, "wt", encoding='utf8') as file_out_units, \
-         open(DEFAULT_OUTPUT_UNITS_SPLIT_FILE_PATH, "wt", encoding='utf8') as file_out_units_split:
+    with codecs.open(DEFAULT_INPUT_FILE_PATH, 'r', encoding='UTF-8', errors='replace') as file_in, \
+         open(DEFAULT_OUTPUT_UNITS_FILE_PATH, "w", encoding='UTF-8') as file_out_units, \
+         open(DEFAULT_OUTPUT_UNITS_SPLIT_FILE_PATH, "w", encoding='UTF-8') as file_out_units_split:
 
         while True:
 

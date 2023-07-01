@@ -57,8 +57,8 @@ class Config:
 
         path = self.data_path(self.board_name, 'config.json')
 
-        with open(path, 'rb') as config_file:
-            config_json = json.load(config_file)
+        with open(path, 'rb') as fh_config:
+            config_json = json.load(fh_config)
 
         self.title = config_json['title']
 
