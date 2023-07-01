@@ -28,9 +28,9 @@ def _load_mixer():
         if (mixer_init := pygame.mixer.get_init()) is not None:
             logging.info('Mixer initalized.')
             mixer_frequency, mixer_format, mixer_channels = mixer_init
-            logging.info(f'frequency: {mixer_frequency}')
-            logging.info(f'format:    {mixer_format}')
-            logging.info(f'channels:  {mixer_channels}')
+            logging.info('frequency: %s', mixer_frequency)
+            logging.info('format:    %s', mixer_format)
+            logging.info('channels:  %s', mixer_channels)
         else:
             raise MixerInitError('Mixer NOT initalized!')
 
