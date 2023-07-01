@@ -4,6 +4,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Easypass
+"""
+
 # imports: library
 import functools
 import logging
@@ -14,6 +17,8 @@ from tkinter import ttk
 
 
 def download_random(wordcount: int, count: int = 1):
+    """Download random"""
+
     url = ('http://www.random.org/integers/'
            '?min=1&max=6&base=10&format=plain&rnd=new'
            f'&num={wordcount * count}&col={wordcount}'
@@ -22,6 +27,7 @@ def download_random(wordcount: int, count: int = 1):
 
 
 def load_wordlist(wordlist_filename: str) -> dict:
+    """Load wordlist"""
 
     resource_name = f'data/{wordlist_filename}.txt'
 
@@ -36,6 +42,7 @@ def load_wordlist(wordlist_filename: str) -> dict:
 
 
 def lookup(wordlist: dict, dice_ids: list[str]) -> list[str]:
+    """Lookup"""
 
     return [wordlist[dice_id]
             for dice_id in dice_ids]
@@ -43,8 +50,8 @@ def lookup(wordlist: dict, dice_ids: list[str]) -> list[str]:
 
 # actions
 
-def action_load_wordlist(var_wordlist_filename: tkinter.StringVar
-                         ) -> None:
+def action_load_wordlist(var_wordlist_filename: tkinter.StringVar) -> None:
+    """Action: Load wordlist"""
 
     wordlist_file_name = os.path.join('data', f'{var_wordlist_filename.get()}.txt')
 
@@ -62,6 +69,7 @@ def action_load_file(wordlist: dict,
                      var_result_separator: tkinter.StringVar,
                      button_save_to_file: ttk.Button
                      ) -> None:
+    """Action: Load file"""
 
     with open(f'{var_filename.get()}.txt', 'r', encoding='UTF-8') as source_file:
         dice_ids = [line.strip()
@@ -80,6 +88,7 @@ def action_save_to_file(var_result: tkinter.StringVar,
                         var_result_separator: tkinter.StringVar,
                         var_result_filename: tkinter.StringVar,
                         ) -> None:
+    """Action: Save to file"""
 
     result_separator = var_result_separator.get()
     results = var_result.get().split(result_separator)
@@ -91,6 +100,8 @@ def action_save_to_file(var_result: tkinter.StringVar,
 # GUI
 
 def main():
+    """Main"""
+
     # root
     root = tkinter.Tk()
     root.title("easypass")

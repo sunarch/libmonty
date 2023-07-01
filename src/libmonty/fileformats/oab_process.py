@@ -5,6 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""OAB processing
+"""
+
 # imports: library
 from argparse import ArgumentParser
 import codecs
@@ -24,6 +27,8 @@ SRC_DELIMITER = "/o="
 # functions
 
 def file_len(s_file_name):
+    """File length"""
+
     with codecs.open(s_file_name, 'r', encoding='utf-8', errors='replace') as file:
         for i, l in enumerate(file):
             pass
@@ -31,6 +36,7 @@ def file_len(s_file_name):
 
 
 def generator_by_line(s_filename):
+    """Generator by line"""
 
     f_out = open(s_filename, 'w', encoding='utf8')
 
@@ -48,10 +54,13 @@ def generator_by_line(s_filename):
 
 
 def next_by_line(o_generator, s_content):
+    """Next by line"""
+
     o_generator.send(s_content)
 
 
 def end_by_line(o_generator):
+    """End by line"""
 
     try:
         o_generator.send(False)
@@ -60,6 +69,8 @@ def end_by_line(o_generator):
 
 
 def is_identifier(s_item):
+    """Is identifier?"""
+
     ls_item = s_item.split("-")
 
     if len(ls_item) >= 5 and len(ls_item[0]) == 8:
@@ -69,6 +80,8 @@ def is_identifier(s_item):
 
 
 def elements_line_compose(i_items, d_item_elements, id_label_org, id_label_tech):
+    """Elements line compose"""
+
     s_return = str(i_items)
 
     s_return += f';{d_item_elements[id_label_tech]}'
@@ -90,6 +103,7 @@ def output_elements_line(i_content_items,
                          o_gen_file_elements,
                          id_label_org,
                          id_label_tech):
+    """Output elements line"""
 
     # add to items count and print status
     i_content_items += 1
@@ -105,6 +119,7 @@ def output_elements_line(i_content_items,
 
 
 def process(org, id_label_org, id_label_tech):
+    """Process"""
 
     # length of data file
 
@@ -286,6 +301,8 @@ def process(org, id_label_org, id_label_tech):
 
 
 def main():
+    """Main"""
+
     parser = ArgumentParser(prog='OAB processing')
 
     parser.add_argument('-o', '--org',

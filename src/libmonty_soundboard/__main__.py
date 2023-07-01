@@ -5,6 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Soundboard
+"""
+
 # imports: library
 from argparse import ArgumentParser
 import logging
@@ -24,6 +27,7 @@ from libmonty_soundboard import version
 
 
 def main() -> None:
+    """Main"""
 
     logging_helper.apply_config(version.PROGRAM_NAME,
                                 version.__version__,

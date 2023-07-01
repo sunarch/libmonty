@@ -5,6 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Sound
+"""
+
 # imports: library
 import logging
 
@@ -13,6 +16,8 @@ import pygame
 
 
 class MixerInitError(Exception):
+    """Mixer init error"""
+
     pass
 
 
@@ -21,6 +26,7 @@ if not pygame.mixer:
 
 
 def _load_mixer():
+    """Load mixer"""
 
     if not pygame.mixer.get_init():
         pygame.mixer.init()
@@ -36,6 +42,7 @@ def _load_mixer():
 
 
 def load_sound(path):
+    """Load sound"""
 
     class NoneSound:
         def play(self):
@@ -56,4 +63,6 @@ def load_sound(path):
 
 
 def deinit() -> None:
+    """De-init"""
+
     pygame.mixer.quit()

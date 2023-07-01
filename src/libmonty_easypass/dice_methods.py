@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8, vim: expandtab:ts=4 -*-
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+"""Dice methods
+"""
+
 import secrets
 from typing import List
 from codetiming import Timer
@@ -6,6 +16,7 @@ N = 100000
 
 
 def measure_one(measure_count: int):
+    """Measure one"""
 
     def randlist_l_1(count: int) -> list[int]:
         return [int(''.join([str(secrets.randbelow(6) + 1)
@@ -20,6 +31,7 @@ def measure_one(measure_count: int):
 
 
 def measure_parts(measure_count: int):
+    """Measure parts"""
 
     def throws():
         return [(secrets.randbelow(6) + 1) for _ in range(5)]
@@ -38,6 +50,7 @@ def measure_parts(measure_count: int):
 
 
 def measure_detailed(measure_count: int):
+    """Measure detailed"""
 
     def randlist(count: int) -> List[int]:
         ls_random = []
@@ -65,6 +78,8 @@ def measure_detailed(measure_count: int):
 
 
 def main(count: int = N) -> None:
+    """Main"""
+
     print('')
     print('Method measurements:')
     print('')

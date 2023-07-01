@@ -5,12 +5,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Copy stubs
+"""
+
 import os
 
 from typing import Tuple
 
 
 def copy_stubs(from_dir: str, to_dir: str, change: Tuple[str, str]) -> None:
+    """Copy stubs"""
+
     from_dir, to_dir = map(lambda x: x.strip(), (from_dir, to_dir))
     change_from, change_to = map(lambda x: x.strip(), change)
 
@@ -50,6 +55,8 @@ def copy_stubs(from_dir: str, to_dir: str, change: Tuple[str, str]) -> None:
 
 
 def main():
+    """Main"""
+
     src_dir = input('Source dir: ')
     dest_dir = input('Destination dir: ')
 

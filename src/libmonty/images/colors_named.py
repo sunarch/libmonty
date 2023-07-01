@@ -5,6 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Colors
+"""
+
 COLORS = {
     'F0F8FF': 'AliceBlue',
     'FAEBD7': 'AntiqueWhite',

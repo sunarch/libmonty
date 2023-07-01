@@ -5,6 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Tree exec
+"""
+
 import os.path
 import subprocess
 import argparse
@@ -14,6 +17,8 @@ DEBUG_PARENT_LAST = True
 
 
 class IndentItem:
+    """IdentItem"""
+
     BeforeLast = '│   '
     AfterLast = '    '
     DirRoot = ''
@@ -22,10 +27,14 @@ class IndentItem:
 
 
 def quoted(content):
+    """Quoted"""
+
     return f'"{content}"'
 
 
 def prefixed(content, indents=None, tree=None):
+    """Prefixed"""
+
     if indents is None:
         indents = []
 
@@ -40,6 +49,8 @@ def prefixed(content, indents=None, tree=None):
 
 
 def recursive_list(dir_name, command=None, indents=None, tree=None):
+    """Recursive list"""
+
     if indents is None:
         indents = []
 
@@ -94,6 +105,8 @@ def recursive_list(dir_name, command=None, indents=None, tree=None):
 
 
 def arg_type_dir_path(path):
+    """Arg type: dir path"""
+
     if not os.path.isdir(path):
         raise argparse.ArgumentTypeError(f'Given argument "{path}" is not a valid directory path')
 
@@ -101,6 +114,8 @@ def arg_type_dir_path(path):
 
 
 def main():
+    """Main"""
+
     parser = argparse.ArgumentParser(description='Directory list with applied command.')
 
     parser.add_argument('--root', dest='root', default=os.getcwd(), type=arg_type_dir_path,

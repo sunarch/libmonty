@@ -5,10 +5,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Wave PCM audio
+"""
+
 from tqdm import tqdm
 
 
 class WavePCMAudio:
+    """Wave PCM audio"""
 
     DEFAULT_NUM_CHANNELS = 1
     DEFAULT_SAMPLE_RATE = 44100
@@ -21,6 +25,7 @@ class WavePCMAudio:
                  num_channels=DEFAULT_NUM_CHANNELS,
                  sample_rate=DEFAULT_SAMPLE_RATE,
                  bits_per_sample=DEFAULT_BITS_PER_SAMPLE):
+        """Initialize"""
 
         print('Initializing WavePCMAudioClass object ...', end='')
 
@@ -50,10 +55,14 @@ class WavePCMAudio:
 
     @property
     def chunk_id(self) -> str:
+        """Chunk ID"""
+
         return 'RIFF'
 
     @property
     def chunk_id_bytes(self) -> bytes:
+        """Chunk ID bytes"""
+
         return bytes(self.chunk_id, encoding='ASCII')
 
     # ChunkSize ################################################################
@@ -67,10 +76,14 @@ class WavePCMAudio:
 
     @property
     def chunk_size(self) -> int:
+        """Chunk size"""
+
         return 36 + self.subchunk_2_size
 
     @property
     def chunk_size_bytes(self) -> bytes:
+        """Chunk size bytes"""
+
         return self.chunk_size.to_bytes(4, byteorder='little', signed=False)
 
     # Format ###################################################################
@@ -81,10 +94,14 @@ class WavePCMAudio:
 
     @property
     def format(self) -> str:
+        """Format"""
+
         return 'WAVE'
 
     @property
     def format_bytes(self) -> bytes:
+        """Format bytes"""
+
         return bytes(self.format, encoding='ASCII')
 
     ############################################################################
@@ -101,10 +118,14 @@ class WavePCMAudio:
 
     @property
     def subchunk_1_id(self) -> str:
+        """Subchunk 1 ID"""
+
         return 'fmt '
 
     @property
     def subchunk_1_id_bytes(self) -> bytes:
+        """Subchunk 1 ID bytes"""
+
         return bytes(self.subchunk_1_id, encoding='ASCII')
 
     # Subchunk1Size ############################################################
@@ -115,10 +136,14 @@ class WavePCMAudio:
 
     @property
     def subchunk_1_size(self) -> int:
+        """Subchunk 1 size"""
+
         return 16
 
     @property
     def subchunk_1_size_bytes(self) -> bytes:
+        """Subchunk 1 size bytes"""
+
         return self.subchunk_1_size.to_bytes(4, byteorder='little', signed=False)
 
     # AudioFormat ##############################################################
@@ -129,10 +154,14 @@ class WavePCMAudio:
 
     @property
     def audio_format(self) -> int:
+        """Audio format"""
+
         return 1
 
     @property
     def audio_format_bytes(self) -> bytes:
+        """Audio format bytes"""
+
         return self.audio_format.to_bytes(2, byteorder='little', signed=False)
 
     # NumChannels ##############################################################
@@ -142,10 +171,14 @@ class WavePCMAudio:
 
     @property
     def num_channels(self) -> int:
+        """Num channels"""
+
         return self._num_channels
 
     @num_channels.setter
     def num_channels(self, new_value: int) -> None:
+        """Set num channels"""
+
         if new_value < 1:
             raise ValueError('Channel count can\'t be lower than 1')
         if new_value > 8:
@@ -155,6 +188,8 @@ class WavePCMAudio:
 
     @property
     def num_channels_bytes(self) -> bytes:
+        """Num channels - bytes"""
+
         return self.num_channels.to_bytes(2, byteorder='little', signed=False)
 
     # SampleRate ###############################################################
@@ -164,10 +199,14 @@ class WavePCMAudio:
 
     @property
     def sample_rate(self) -> int:
+        """Sample rate"""
+
         return self._sample_rate
 
     @sample_rate.setter
     def sample_rate(self, new_value: int) -> None:
+        """Set - sample rate"""
+
         if new_value < 8000:
             raise ValueError('Sample rate can\'t be lower than 8 KHz')
         if new_value > 96000:
@@ -177,6 +216,8 @@ class WavePCMAudio:
 
     @property
     def sample_rate_bytes(self) -> bytes:
+        """Sample rate bytes"""
+
         return self.sample_rate.to_bytes(4, byteorder='little', signed=False)
 
     # ByteRate #################################################################
@@ -186,10 +227,14 @@ class WavePCMAudio:
 
     @property
     def byte_rate(self) -> int:
+        """Byte rate"""
+
         return int(self.sample_rate * self.num_channels * self.bits_per_sample / 8)
 
     @property
     def byte_rate_bytes(self) -> bytes:
+        """Byte rate bytes"""
+
         return self.byte_rate.to_bytes(4, byteorder='little', signed=False)
 
     # BlockAlign ###############################################################
@@ -201,10 +246,14 @@ class WavePCMAudio:
 
     @property
     def block_align(self) -> int:
+        """Block align"""
+
         return int(self.num_channels * self.bits_per_sample / 8)
 
     @property
     def block_align_bytes(self) -> bytes:
+        """Block align bytes"""
+
         return self.block_align.to_bytes(2, byteorder='little', signed=False)
 
     # BitsPerSample ############################################################
@@ -214,10 +263,14 @@ class WavePCMAudio:
 
     @property
     def bits_per_sample(self) -> int:
+        """Bits per sample"""
+
         return self._bits_per_sample
 
     @bits_per_sample.setter
     def bits_per_sample(self, new_value: int) -> None:
+        """Bits per sample"""
+
         if new_value in {8, 16, 24, 32}:
             self._bits_per_sample = new_value
         else:
@@ -225,28 +278,40 @@ class WavePCMAudio:
 
     @property
     def bits_per_sample_bytes(self) -> bytes:
+        """Bits per sample bytes"""
+
         return self.bits_per_sample.to_bytes(2, byteorder='little', signed=False)
 
     ######################################
 
     @property
     def is_sample_format_signed(self) -> bool:
+        """Is sample format signed?"""
+
         return False
 
     @property
     def sample_format_signed(self) -> str:
+        """Sample format signed"""
+
         return 'S' if self.is_sample_format_signed else 'U'
 
     @property
     def is_sample_format_big_endian(self) -> bool:
+        """Is sample format big endian"""
+
         return False
 
     @property
     def sample_format_endian(self) -> str:
+        """Sample format endian"""
+
         return 'BE' if self.is_sample_format_big_endian else 'LE'
 
     @property
     def sample_format(self) -> str:
+        """Sample format"""
+
         sample_format = f'{self.sample_format_signed}{self.bits_per_sample}'
         if self.bits_per_sample > 8:
             sample_format += f'_{self.sample_format_endian}'
@@ -256,10 +321,14 @@ class WavePCMAudio:
 
     @property
     def min_sample_value(self) -> int:
+        """Min sample value"""
+
         return 0
 
     @property
     def max_sample_value(self) -> int:
+        """Max sample value"""
+
         return pow(2, self.bits_per_sample) - 1
 
     ############################################################################
@@ -283,10 +352,14 @@ class WavePCMAudio:
 
     @property
     def subchunk_2_id(self) -> str:
+        """Subchunk 2 ID"""
+
         return 'data'
 
     @property
     def subchunk_2_id_bytes(self) -> bytes:
+        """Subchunk 2 ID bytes"""
+
         return bytes(self.subchunk_2_id, encoding='ASCII')
 
     # Subchunk2Size ############################################################
@@ -299,10 +372,14 @@ class WavePCMAudio:
 
     @property
     def subchunk_2_size(self) -> int:
+        """Subchunk 2 size"""
+
         return len(self.data)
 
     @property
     def subchunk_2_size_bytes(self) -> bytes:
+        """Subchunk 2 size bytes"""
+
         return self.subchunk_2_size.to_bytes(4, byteorder='little', signed=False)
 
     # Data #####################################################################
@@ -312,9 +389,13 @@ class WavePCMAudio:
 
     @property
     def data(self) -> bytearray:
+        """Data"""
+
         return self._data
 
     def add_sample(self, channel_values: list[int], mono_to_all: bool = False) -> None:
+        """Add sample"""
+
         print('Adding sample ', str(channel_values))
 
         if len(channel_values) > self.num_channels:
@@ -342,12 +423,15 @@ class WavePCMAudio:
     # OTHER ####################################################################
 
     def print_format_info(self) -> None:
+        """Print format info"""
+
         print('Number of channels:  ', str(self.num_channels))
         print('Sample Rate:         ', str(self.sample_rate) + ' Hz')
         print('Bits per Sample:     ', str(self.bits_per_sample))
         print('Sample Format:       ', str(self.sample_format))
 
     def write_to_file(self, arg_file_name='output.wav'):
+        """Write to file"""
 
         print('')
         print('WRITING AUDIO DATA TO FILE')

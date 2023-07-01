@@ -5,6 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Config
+"""
+
 # imports: library
 from dataclasses import dataclass, InitVar, field
 import json
@@ -13,12 +16,15 @@ import os
 
 @dataclass
 class SoundboardItem:
+    """Soundboard item"""
+
     filename: str
     text: str
 
 
 @dataclass
 class Config:
+    """Config"""
 
     main_file_path: InitVar[str]
 
@@ -35,12 +41,17 @@ class Config:
         self._data_dir = os.path.join(self._main_dir, 'data')
 
     def data_path(self, *elements) -> str:
+        """Data path"""
+
         return os.path.join(self._data_dir, *elements)
 
     def data_path_board(self, *elements) -> str:
+        """Data path board"""
+
         return os.path.join(self._data_dir, self.board_name, *elements)
 
     def load(self, name):
+        """Load"""
 
         self.board_name = name
 

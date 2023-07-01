@@ -5,10 +5,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""HTTP responses
+"""
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
 
 def get(code: int) -> dict:
+    """Get response code"""
 
     try:
         d_details = _responses[code]

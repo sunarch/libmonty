@@ -5,14 +5,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""JSON
+"""
+
 from typing import Any, Generator
 
 
 def indent(steps: int = 0, size: int = 2):
+    """Indent"""
+
     return ' ' * size * steps
 
 
 def formatter(unit: Any, indent_steps: int = 0) -> Generator:
+    """Formatter"""
 
     if isinstance(unit, list):
         for index, item in enumerate(unit):

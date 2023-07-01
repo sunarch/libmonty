@@ -5,10 +5,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Char str
+"""
+
 import string
 
 
 def pseudo(value: int = ord('.')) -> str:
+    """Pseudo"""
 
     return chr(value)
 
@@ -17,6 +21,7 @@ def _byte_to_printable_non_ws_or_space(value: int,
                                        default: str = '.',
                                        space: str = ' ',
                                        ) -> str:
+    """Byte to printable non-WS or space"""
 
     s_char = chr(value)
 
@@ -33,6 +38,7 @@ def _byte_to_printable_non_ws_or_space(value: int,
 
 
 def byte_to_compact_printable_with_dots(value: int) -> str:
+    """Byte to compact printable with dots"""
 
     s_default = '.'
     s_space = chr(0x22C5)  # ⋅ Dot Operator
@@ -41,6 +47,7 @@ def byte_to_compact_printable_with_dots(value: int) -> str:
 
 
 def byte_to_compact_printable_with_frames(value: int) -> str:
+    """Byte to compact printable with frames"""
 
     s_default = chr(0x2395)  # ⎕ Apl Functional Symbol Quad
     s_space = chr(0x02FD)  # ⋅˽ Modifier Letter Shelf
