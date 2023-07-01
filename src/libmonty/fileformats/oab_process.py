@@ -71,14 +71,14 @@ def is_identifier(s_item):
 def elements_line_compose(i_items, d_item_elements, id_label_org, id_label_tech):
     s_return = str(i_items)
 
-    s_return += ";{}".format(d_item_elements[id_label_tech])
-    s_return += ";{}".format(d_item_elements['full_name'])
+    s_return += f';{d_item_elements[id_label_tech]}'
+    s_return += f';{d_item_elements["full_name"]}'
     try:
-        s_return += ";{}".format(d_item_elements[id_label_org])
+        s_return += f';{d_item_elements[id_label_org]}'
     except KeyError:
         s_return += ";"
-    s_return += ";{}".format(d_item_elements['first_name'])
-    s_return += ";{}".format(d_item_elements['last_name'])
+    s_return += f';{d_item_elements["first_name"]}'
+    s_return += f';{d_item_elements["last_name"]}'
 
     s_return += "\n"
 
@@ -220,7 +220,7 @@ def process(org, id_label_org, id_label_tech):
 
                 # túl rövid, egyéb típusú bejegyzés átugrása
                 if len(ls_content_unit) < 5:
-                    s_line = "Nincs elég elem az {}-s sorban! ({}.)\n{}".format(org, i_lines, str(ls_content_unit))
+                    s_line = f'Nincs elég elem az {org}-s sorban! ({i_lines}.)\n{ls_content_unit}'
                     print(s_line)
                     continue
 

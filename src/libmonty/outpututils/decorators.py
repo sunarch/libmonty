@@ -17,43 +17,43 @@
 
 def bold_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[1m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[1m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def faint_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[2m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[2m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def italic_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[3m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[3m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def underlined_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[4m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[4m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def blinking_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[5m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[5m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def image_negative_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[7m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[7m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def primary_font_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[10m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[10m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
@@ -62,119 +62,119 @@ def alternate_font_text(arg_function):
         inserted_no = "1"
         if int(arg_alternate_font_no) in range(1, 10):  # 0 < x < 10 #
             inserted_no = str(arg_alternate_font_no)
-        return '\x1b[1{0}m{1}\x1b[0m'.format(inserted_no, arg_function(arg_printable, arg_alternate_font_no))
+        return f'\x1b[1{inserted_no}m{arg_function(arg_printable, arg_alternate_font_no)}\x1b[0m'
     return new_function
 
 
 def black_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[30m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[30m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def red_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[31m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[31m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def green_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[32m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[32m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def yellow_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[33m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[33m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def blue_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[34m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[34m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def magenta_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[35m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[35m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def cyan_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[36m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[36m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def white_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[37m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[37m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def bg_black_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[40m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[40m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def bg_red_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[41m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[41m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def bg_green_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[42m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[42m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def bg_yellow_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[43m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[43m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def bg_blue_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[44m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[44m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def bg_magenta_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[45m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[45m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def bg_cyan_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[46m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[46m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def bg_white_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[47m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[47m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def framed_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[51m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[51m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def encircled_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[52m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[52m{arg_function(arg_printable)}\x1b[0m'
     return new_function
 
 
 def overlined_text(arg_function):
     def new_function(arg_printable):
-        return '\x1b[53m{0}\x1b[0m'.format(arg_function(arg_printable))
+        return f'\x1b[53m{arg_function(arg_printable)}\x1b[0m'
     return new_function

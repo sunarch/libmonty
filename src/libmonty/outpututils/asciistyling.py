@@ -24,47 +24,47 @@ class AsciiStyle:
     @staticmethod
     def bold(arg_printable):
         """ docstring """
-        return '\x1b[1m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[1m{arg_printable}\x1b[0m'
 
     @staticmethod
     def faint(arg_printable):
         """ docstring """
-        return '\x1b[2m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[2m{arg_printable}\x1b[0m'
 
     @staticmethod
     def italic(arg_printable):
         """ docstring """
-        return '\x1b[3m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[3m{arg_printable}\x1b[0m'
 
     @staticmethod
     def underlined(arg_printable):
         """ docstring """
-        return '\x1b[4m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[4m{arg_printable}\x1b[0m'
 
     @staticmethod
     def blink(arg_printable):
         """ docstring """
-        return '\x1b[5m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[5m{arg_printable}\x1b[0m'
 
     @staticmethod
     def image_negative(arg_printable):
         """ docstring """
-        return '\x1b[7m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[7m{arg_printable}\x1b[0m'
 
     @staticmethod
     def framed(arg_printable):
         """ docstring """
-        return '\x1b[51m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[51m{arg_printable}\x1b[0m'
 
     @staticmethod
     def encircled(arg_printable):
         """ docstring """
-        return '\x1b[52m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[52m{arg_printable}\x1b[0m'
 
     @staticmethod
     def overlined(arg_printable):
         """ docstring """
-        return '\x1b[53m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[53m{arg_printable}\x1b[0m'
 
 
 # font #########################################################################
@@ -75,7 +75,7 @@ class AsciiFont:
     @staticmethod
     def primary(arg_printable):
         """ docstring """
-        return '\x1b[10m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[10m{arg_printable}\x1b[0m'
 
     @staticmethod
     def alternate(arg_printable, arg_alternate_font_no):
@@ -86,7 +86,7 @@ class AsciiFont:
         if int(arg_alternate_font_no) in range(1, 10):  # 0 < x < 10 #
             inserted_no = str(arg_alternate_font_no)
 
-        return '\x1b[1{0}m{1}\x1b[0m'.format(inserted_no, arg_printable)
+        return f'\x1b[1{inserted_no}m{arg_printable}\x1b[0m'
 
 
 # color ########################################################################
@@ -97,42 +97,42 @@ class AsciiColor:
     @staticmethod
     def black(arg_printable):
         """ docstring """
-        return '\x1b[30m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[30m{arg_printable}\x1b[0m'
 
     @staticmethod
     def red(arg_printable):
         """ docstring """
-        return '\x1b[31m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[31m{arg_printable}\x1b[0m'
 
     @staticmethod
     def green(arg_printable):
         """ docstring """
-        return '\x1b[32m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[32m{arg_printable}\x1b[0m'
 
     @staticmethod
     def yellow(arg_printable):
         """ docstring """
-        return '\x1b[33m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[33m{arg_printable}\x1b[0m'
 
     @staticmethod
     def blue(arg_printable):
         """ docstring """
-        return '\x1b[34m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[34m{arg_printable}\x1b[0m'
 
     @staticmethod
     def magenta(arg_printable):
         """ docstring """
-        return '\x1b[35m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[35m{arg_printable}\x1b[0m'
 
     @staticmethod
     def cyan(arg_printable):
         """ docstring """
-        return '\x1b[36m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[36m{arg_printable}\x1b[0m'
 
     @staticmethod
     def white(arg_printable):
         """ docstring """
-        return '\x1b[37m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[37m{arg_printable}\x1b[0m'
 
 
 # background ###################################################################
@@ -143,39 +143,39 @@ class AsciiBackground:
     @staticmethod
     def black(arg_printable):
         """ docstring """
-        return '\x1b[40m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[40m{arg_printable}\x1b[0m'
 
     @staticmethod
     def red(arg_printable):
         """ docstring """
-        return '\x1b[41m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[41m{arg_printable}\x1b[0m'
 
     @staticmethod
     def green(arg_printable):
         """ docstring """
-        return '\x1b[42m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[42m{arg_printable}\x1b[0m'
 
     @staticmethod
     def yellow(arg_printable):
         """ docstring """
-        return '\x1b[43m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[43m{arg_printable}\x1b[0m'
 
     @staticmethod
     def blue(arg_printable):
         """ docstring """
-        return '\x1b[44m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[44m{arg_printable}\x1b[0m'
 
     @staticmethod
     def magenta(arg_printable):
         """ docstring """
-        return '\x1b[45m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[45m{arg_printable}\x1b[0m'
 
     @staticmethod
     def cyan(arg_printable):
         """ docstring """
-        return '\x1b[46m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[46m{arg_printable}\x1b[0m'
 
     @staticmethod
     def white(arg_printable):
         """ docstring """
-        return '\x1b[47m{0}\x1b[0m'.format(arg_printable)
+        return f'\x1b[47m{arg_printable}\x1b[0m'
