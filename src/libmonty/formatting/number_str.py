@@ -86,5 +86,3 @@ def binary(value: int,
            ) -> str:
 
     return _number_str('b', 'b', value, pad_to, prefix)
-
-# -------------------------------------------------------------------- #

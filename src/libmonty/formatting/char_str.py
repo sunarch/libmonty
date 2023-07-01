@@ -46,5 +46,3 @@ def byte_to_compact_printable_with_frames(value: int) -> str:
     s_space = chr(0x02FD)  # ⋅˽ Modifier Letter Shelf
 
     return _byte_to_printable_non_ws_or_space(value, s_default, s_space)
-
-# -------------------------------------------------------------------- #

@@ -5,8 +5,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-# imports ######################################################################
-
 import os
 import re
 
@@ -140,5 +138,3 @@ def get_dict_from_file(arg_path):
             return_dict[new_key] = new_value
 
     return return_dict
-
-# END ##########################################################################

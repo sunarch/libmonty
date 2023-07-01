@@ -37,5 +37,3 @@ def formatter(unit: Any, indent_steps: int = 0) -> Generator:
 
     else:
         yield str(unit)
-
-# -------------------------------------------------------------------- #

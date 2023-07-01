@@ -32,5 +32,3 @@ def rgb(folder: str,
         img2 = PIL.Image.frombytes('RGB', size, data, decoder_name=_DECODER_RAW)
         img2 = img2.resize(scaled_size, resample=PIL.Image.NEAREST)
         img2.save(f'{folder}/{filename}-scale-{scale}.png')
-
-# -------------------------------------------------------------------- #

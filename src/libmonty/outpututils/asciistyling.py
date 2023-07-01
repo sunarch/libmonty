@@ -179,5 +179,3 @@ class AsciiBackground:
     def white(arg_printable):
         """ docstring """
         return '\x1b[47m{0}\x1b[0m'.format(arg_printable)
-
-# END ##########################################################################
