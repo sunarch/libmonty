@@ -104,7 +104,7 @@ def main():
 
     # root
     root = tkinter.Tk()
-    root.title("easypass")
+    root.title('easypass')
     root.columnconfigure(0, weight=1)
     root.rowconfigure(0, weight=1)
 
@@ -125,10 +125,10 @@ def main():
     wordlist: dict = load_wordlist(var_wordlist_filename.get())
 
     # named components
-    frame_main = ttk.Frame(root, padding="3 3 12 12")
+    frame_main = ttk.Frame(root, padding='3 3 12 12')
     entry_filename = ttk.Entry(frame_main, width=15, textvariable=var_filename)
-    button_load_file = ttk.Button(frame_main, text="Load")
-    button_save_to_file = ttk.Button(frame_main, text="Save to file")
+    button_load_file = ttk.Button(frame_main, text='Load')
+    button_save_to_file = ttk.Button(frame_main, text='Save to file')
 
     # action closures
 
@@ -159,22 +159,22 @@ def main():
         frame_main.rowconfigure(col, weight=1)
 
     # grid - row 1
-    ttk.Label(frame_main, text="File:")\
+    ttk.Label(frame_main, text='File:')\
         .grid(column=1, row=1, padx=5, pady=5)
     entry_filename.grid(column=2, row=1, padx=5, pady=5)
-    ttk.Label(frame_main, text=".txt")\
+    ttk.Label(frame_main, text='.txt')\
         .grid(column=3, row=1, padx=5, pady=5)
     button_load_file.grid(column=4, row=1, padx=5, pady=5)
 
     # grid - row 2
-    ttk.Label(frame_main, text="Result:")\
+    ttk.Label(frame_main, text='Result:')\
         .grid(column=1, row=2, padx=5, pady=5)
     ttk.Label(frame_main, textvariable=var_result)\
         .grid(column=2, row=2, columnspan=2, padx=5, pady=5)
     button_save_to_file.grid(column=4, row=2, padx=5, pady=5)
 
     # set states and focus
-    button_save_to_file.state(["disabled"])
+    button_save_to_file.state(['disabled'])
     entry_filename.focus()
 
     # main program loop

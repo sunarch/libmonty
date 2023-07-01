@@ -23,55 +23,55 @@ class AsciiStyle:
 
     @staticmethod
     def bold(arg_printable):
-        """ Bold """
+        """Bold"""
 
         return f'\x1b[1m{arg_printable}\x1b[0m'
 
     @staticmethod
     def faint(arg_printable):
-        """ Faint """
+        """Faint"""
 
         return f'\x1b[2m{arg_printable}\x1b[0m'
 
     @staticmethod
     def italic(arg_printable):
-        """ Italic """
+        """Italic"""
 
         return f'\x1b[3m{arg_printable}\x1b[0m'
 
     @staticmethod
     def underlined(arg_printable):
-        """ Underlined """
+        """Underlined"""
 
         return f'\x1b[4m{arg_printable}\x1b[0m'
 
     @staticmethod
     def blink(arg_printable):
-        """ Blink """
+        """Blink"""
 
         return f'\x1b[5m{arg_printable}\x1b[0m'
 
     @staticmethod
     def image_negative(arg_printable):
-        """ Image negative """
+        """Image negative"""
 
         return f'\x1b[7m{arg_printable}\x1b[0m'
 
     @staticmethod
     def framed(arg_printable):
-        """ Framed """
+        """Framed"""
 
         return f'\x1b[51m{arg_printable}\x1b[0m'
 
     @staticmethod
     def encircled(arg_printable):
-        """ Encircled """
+        """Encircled"""
 
         return f'\x1b[52m{arg_printable}\x1b[0m'
 
     @staticmethod
     def overlined(arg_printable):
-        """ Overlined """
+        """Overlined"""
 
         return f'\x1b[53m{arg_printable}\x1b[0m'
 

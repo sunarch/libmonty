@@ -167,7 +167,7 @@ def process(org, id_label_org, id_label_tech):
                     b_end_of_file = True
                 else:
                     i_lines += 1
-                    print(f"Processing line {i_lines} of {i_data_file_lines}")
+                    print(f'Processing line {i_lines} of {i_data_file_lines}')
 
                     s_search += line
 
@@ -193,13 +193,13 @@ def process(org, id_label_org, id_label_tech):
 
             # add to units count and print status
             i_content_units += 1
-            print(f"Content unit identified. (No. {i_content_units})")
+            print(f'Content unit identified. (No. {i_content_units})')
 
             # isolate current content unit
             s_content_unit = s_search[i_search_1:i_search_2 - 1]
 
             # write to 'units' file
-            file_out_units.write("[{:>6}] '{}'\n".format(i_content_units, s_content_unit))
+            file_out_units.write(f'[{i_content_units:>6}] \'{s_content_unit}\'\n')
 
             # remove current content unit from search string
             s_search = s_search[i_search_2:len(s_search)-1]
@@ -210,13 +210,13 @@ def process(org, id_label_org, id_label_tech):
             # write to 'units_split' file
             s_line = ""
             for i_x, s_unit_item in enumerate(ls_content_unit):
-                if s_line == "":
-                    s_line += "[#{:>6}] '{}'\n".format(i_content_units, s_unit_item)
+                if s_line == '':
+                    s_line += '[#{i_content_units:>6}] \'{s_unit_item}\'\n'
                 else:
-                    s_line += "        [{:>2}] '{}'\n".format(i_x, s_unit_item)
+                    s_line += '        [{i_x:>2}] \'{s_unit_item}\'\n'
             file_out_units_split.write(s_line)
 
-            if f"/o={org}/" in ls_content_unit[0]:
+            if f'/o={org}/' in ls_content_unit[0]:
 
                 # if next ORG line reached but an ORG line is already added
                 # but elements not yet output because ID-ORG missing: output to elements
@@ -230,7 +230,7 @@ def process(org, id_label_org, id_label_tech):
                     b_unit_type_org_added = False
 
                 # szervezeti bejegyzés átugrása
-                if ls_content_unit[1].find("org_") == 0:
+                if ls_content_unit[1].find('org_') == 0:
                     continue
 
                 # túl rövid, egyéb típusú bejegyzés átugrása
@@ -261,8 +261,8 @@ def process(org, id_label_org, id_label_tech):
                     s_id_tech = ls_content_unit[3]
                     s_full_name = ls_content_unit[4]
 
-                    if re.findall("[(][A-Z0-9]{6}[)]", s_full_name):
-                        s_full_name = "".join(re.split("[(][A-Z0-9]{6}[)]", s_full_name))
+                    if re.findall('[(][A-Z0-9]{6}[)]', s_full_name):
+                        s_full_name = "".join(re.split('[(][A-Z0-9]{6}[)]', s_full_name))
                         s_full_name = s_full_name.strip()
 
                 # hozzáadás az elemlistához
@@ -279,7 +279,7 @@ def process(org, id_label_org, id_label_tech):
 
             for s_unit_item in ls_content_unit:
 
-                if len(s_unit_item) == 6 and re.findall("[A-Z0-9]{6}", s_unit_item):
+                if len(s_unit_item) == 6 and re.findall('[A-Z0-9]{6}', s_unit_item):
                     s_id_org = s_unit_item
 
             if len(s_id_org) != 0:

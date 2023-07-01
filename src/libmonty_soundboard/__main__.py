@@ -67,7 +67,7 @@ def main() -> None:
     frm.grid()
 
     ttk.Label(frm, text=config.title).grid(column=0, row=0)
-    ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=0)
+    ttk.Button(frm, text='Quit', command=root.destroy).grid(column=1, row=0)
 
     for index, sound_item in enumerate(config.sound_items):
         sound_item_path = config.data_path_board(sound_item.filename)

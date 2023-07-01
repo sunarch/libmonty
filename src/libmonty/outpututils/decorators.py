@@ -79,7 +79,7 @@ def alternate_font_text(arg_function):
     """Alternate font text"""
 
     def new_function(arg_printable, arg_alternate_font_no):
-        inserted_no = "1"
+        inserted_no = '1'
         if int(arg_alternate_font_no) in range(1, 10):  # 0 < x < 10 #
             inserted_no = str(arg_alternate_font_no)
         return f'\x1b[1{inserted_no}m{arg_function(arg_printable, arg_alternate_font_no)}\x1b[0m'
