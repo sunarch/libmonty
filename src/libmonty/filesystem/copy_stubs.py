@@ -20,14 +20,14 @@ def copy_stubs(from_dir: str, to_dir: str, change: Tuple[str, str]) -> None:
     change_from, change_to = map(lambda x: x.strip(), change)
 
     if not os.path.exists(to_dir) or not os.path.isdir(to_dir):
-        raise RuntimeError('TO dir does not exist: {}'.format(to_dir))
+        raise RuntimeError(f'TO dir does not exist: {to_dir}')
 
     try:
         file_list = os.listdir(from_dir)
-    except FileNotFoundError:
-        raise RuntimeError('FROM dir does not exist: {}'.format(from_dir))
-    except NotADirectoryError:
-        raise RuntimeError('FROM dir is not a directory: {}'.format(from_dir))
+    except FileNotFoundError as exc:
+        raise RuntimeError(f'FROM dir does not exist: {from_dir}') from exc
+    except NotADirectoryError as exc:
+        raise RuntimeError(f'FROM dir is not a directory: {from_dir}') from exc
 
     for filename_old in file_list:
 

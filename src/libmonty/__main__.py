@@ -19,6 +19,7 @@ from libmonty import version
 
 
 def main() -> None:
+    """Main"""
 
     logging_helper.apply_config(version.PROGRAM_NAME,
                                 version.__version__,

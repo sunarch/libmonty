@@ -11,13 +11,14 @@
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
 
+
 def get(code: int) -> dict:
     """Get response code"""
 
     try:
         d_details = _responses[code]
-    except KeyError:
-        raise ValueError(f'Response code not found: {code}')
+    except KeyError as exc:
+        raise ValueError(f'Response code not found: {code}') from exc
 
     return d_details
 

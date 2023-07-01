@@ -45,7 +45,11 @@ def load_sound(path):
     """Load sound"""
 
     class NoneSound:
+        """None sound"""
+
         def play(self):
+            """Dummy play method"""
+
             pass
 
     if not pygame.mixer:

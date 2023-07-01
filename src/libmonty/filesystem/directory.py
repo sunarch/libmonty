@@ -142,14 +142,14 @@ def get_list_from_file(arg_path):
     with open(arg_path, 'r', encoding='UTF-8') as fh_value:
         lines = fh_value.readlines()
 
-    return_list = list()
+    return_list = []
 
     for line in lines:
         line_content = line.splitlines()[0]
 
         non_data_content = re.fullmatch('^[.*]?$', line_content)
 
-        if not non_data_content and line_content is not '':
+        if not non_data_content and line_content != '':
             return_list.append( line.splitlines()[0].strip() )
 
     return return_list
@@ -161,14 +161,14 @@ def get_dict_from_file(arg_path):
     with open(arg_path, "r", encoding='UTF-8') as fh_value:
         lines = fh_value.readlines()
 
-    return_dict = dict()
+    return_dict = {}
 
     for line in lines:
         line_content = line.splitlines()[0]
 
         non_data_content = re.fullmatch('^[.*]?$', line_content)
 
-        if not non_data_content and line_content is not '':
+        if not non_data_content and line_content != '':
 
             new_kv_pair = line_content.split( DATA_FILE_DICT_DELIMITER )
             new_key = new_kv_pair[0].strip()
