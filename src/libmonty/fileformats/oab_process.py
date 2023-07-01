@@ -107,7 +107,7 @@ def output_elements_line(i_content_items,
 
     # add to items count and print status
     i_content_items += 1
-    print("Item written. (No. {})".format(i_content_items))
+    print(f"Item written. (No. {i_content_items})")
 
     s_output = elements_line_compose(i_content_items,
                                      d_content_item_elements,
@@ -124,7 +124,7 @@ def process(org, id_label_org, id_label_tech):
     # length of data file
 
     i_data_file_lines = file_len(DEFAULT_INPUT_FILE_PATH)
-    print("{} lines in data file.".format(i_data_file_lines))
+    print(f"{i_data_file_lines} lines in data file.")
 
     # variables
 
@@ -167,7 +167,7 @@ def process(org, id_label_org, id_label_tech):
                     b_end_of_file = True
                 else:
                     i_lines += 1
-                    print("Processing line {} of {}".format(i_lines, i_data_file_lines))
+                    print(f"Processing line {i_lines} of {i_data_file_lines}")
 
                     s_search += line
 
@@ -193,7 +193,7 @@ def process(org, id_label_org, id_label_tech):
 
             # add to units count and print status
             i_content_units += 1
-            print("Content unit identified. (No. {})".format(i_content_units))
+            print(f"Content unit identified. (No. {i_content_units})")
 
             # isolate current content unit
             s_content_unit = s_search[i_search_1:i_search_2 - 1]
@@ -205,7 +205,7 @@ def process(org, id_label_org, id_label_tech):
             s_search = s_search[i_search_2:len(s_search)-1]
 
             # split content unit string by NUL separators
-            ls_content_unit = s_content_unit.split(u'\u0000')
+            ls_content_unit = s_content_unit.split('\u0000')
 
             # write to 'units_split' file
             s_line = ""
