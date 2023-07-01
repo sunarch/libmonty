@@ -45,12 +45,12 @@ def generator_by_line(s_filename):
 
             if s_row is None:
                 continue
-            elif s_row is False:
+
+            if s_row is False:
                 fh_out.close()
                 break
-            else:
-                fh_out.write(s_row)
-                pass
+
+            fh_out.write(s_row)
 
 
 def next_by_line(o_generator, s_content):
@@ -75,8 +75,8 @@ def is_identifier(s_item):
 
     if len(ls_item) >= 5 and len(ls_item[0]) == 8:
         return True
-    else:
-        return False
+
+    return False
 
 
 def elements_line_compose(i_items, d_item_elements, id_label_org, id_label_tech):
@@ -209,9 +209,9 @@ def process(org, id_label_org, id_label_tech):
 
             # write to 'units_split' file
             s_line = ""
-            for i_x, s_unit_item in enumerate(ls_content_unit):
+            for _, s_unit_item in enumerate(ls_content_unit):
                 if s_line == '':
-                    s_line += '[#{i_content_units:>6}] \'{s_unit_item}\'\n'
+                    s_line += f'[#{i_content_units:>6}] \'{s_unit_item}\'\n'
                 else:
                     s_line += '        [{i_x:>2}] \'{s_unit_item}\'\n'
             file_out_units_split.write(s_line)
