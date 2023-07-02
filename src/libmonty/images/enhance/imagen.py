@@ -9,7 +9,7 @@
 """
 
 # library
-from argparse import ArgumentParser, ArgumentTypeError, Namespace
+from argparse import ArgumentParser, Namespace
 import os.path
 from typing import Iterable, Sized
 
@@ -17,6 +17,9 @@ from typing import Iterable, Sized
 import numpy
 from PIL import Image
 from tqdm import tqdm
+
+# imports: project
+from libmonty.environment.arguments import type_file_path
 
 
 def arithmetic_mean(numbers: Iterable[int] and Sized) -> int:
@@ -188,15 +191,6 @@ def four_point_filling_1(pixel_matrix: numpy.ndarray) -> numpy.ndarray:
     pixel_matrix = double_pixels_1(pixel_matrix)
 
     return pixel_matrix
-
-
-def type_file_path(path: str) -> str:
-    """Argument parser file path type"""
-
-    if not os.path.isfile(path):
-        raise ArgumentTypeError(f'Argument "{path}" is not a valid path')
-
-    return path
 
 
 def main() -> None:
