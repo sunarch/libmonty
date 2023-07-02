@@ -11,9 +11,11 @@
 import functools
 import logging
 import os.path
-import pkg_resources
 import tkinter
 from tkinter import ttk
+
+# imports: library - after tkinter
+import pkg_resources
 
 
 def download_random(wordcount: int, count: int = 1) -> None:

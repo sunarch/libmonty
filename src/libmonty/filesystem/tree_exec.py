@@ -8,9 +8,11 @@
 """Tree exec
 """
 
+# imports: library
+import argparse
 import os.path
 import subprocess
-import argparse
+
 
 DEBUG_INDENT: bool = True
 DEBUG_PARENT_LAST: bool = True

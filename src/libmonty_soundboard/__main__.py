@@ -11,7 +11,6 @@
 # imports: library
 from argparse import ArgumentParser
 import logging
-import sys
 import tkinter  # no underscore, lowercase 't' for V3.0 and later
 from tkinter import ttk
 
@@ -47,7 +46,7 @@ def main() -> None:
                         action='store', default=None,
                         dest='board_name')
 
-    args = parser.parse_args(sys.argv[1:])
+    args = parser.parse_args()
 
     if args.version:
         print(f'libmonty Soundboard {version.__version__}')

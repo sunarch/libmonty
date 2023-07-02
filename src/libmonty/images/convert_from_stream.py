@@ -8,6 +8,7 @@
 """Convert image from stream
 """
 
+# imports: requirements
 import PIL.Image
 
 # modes: https://pillow.readthedocs.io/en/stable/handbook/concepts.html#concept-modes

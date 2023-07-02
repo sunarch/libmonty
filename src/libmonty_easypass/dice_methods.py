@@ -8,8 +8,10 @@
 """Dice methods
 """
 
+# imports: library
 import secrets
 from codetiming import Timer
+
 
 N = 100000
 
