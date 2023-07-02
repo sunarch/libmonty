@@ -239,7 +239,8 @@ def process(org, id_label_org: str, id_label_tech: str) -> None:
 
                 # túl rövid, egyéb típusú bejegyzés átugrása
                 if len(content_unit_list) < 5:
-                    line = f'Nincs elég elem az {org}-s sorban! ({line_count}.)\n{content_unit_list}'
+                    line = f'Nincs elég elem az {org}-s sorban! ({line_count}.)\n'
+                    line += f'{content_unit_list}'
                     print(line)
                     continue
 

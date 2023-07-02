@@ -18,8 +18,6 @@ import pygame
 class MixerInitError(Exception):
     """Mixer init error"""
 
-    pass
-
 
 if not pygame.mixer:
     logging.warning('sound disabled')
@@ -49,8 +47,6 @@ def load_sound(path):
 
         def play(self):
             """Dummy play method"""
-
-            pass
 
     if not pygame.mixer:
         return NoneSound()

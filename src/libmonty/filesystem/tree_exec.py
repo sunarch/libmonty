@@ -50,7 +50,11 @@ def prefixed(content: str, indents: list[str] = None, tree: str = None) -> str:
     return prefix + content
 
 
-def recursive_list(dir_name: str, command: str = None, indents: list[str] = None, tree: str = None) -> None:
+def recursive_list(dir_name: str,
+                   command: str = None,
+                   indents: list[str] = None,
+                   tree: str = None
+                   ) -> None:
     """Recursive list"""
 
     if indents is None:
