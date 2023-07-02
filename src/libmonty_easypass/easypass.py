@@ -38,10 +38,13 @@ def load_wordlist(wordlist_filename: str) -> dict:
         raise ValueError('wordlist does not exist')
 
     with pkg_resources.resource_stream(__name__, resource_name) as wordlist_file:
-        wordlist = wordlist_file.read().decode('UTF-8').strip().split('\n')
+        resource: str = wordlist_file.read().decode('UTF-8')
 
-    return dict([item.strip().split('\t', -1)
-                for item in wordlist])
+    wordlist: list[str] = resource.strip().split('\n')
+    wordlist: list[tuple[str, str]] = list(map(lambda x: tuple(x.strip().split('\t', -1)),
+                                               wordlist))
+
+    return dict(wordlist)
 
 
 def lookup(wordlist: dict, dice_ids: list[str]) -> list[str]:
