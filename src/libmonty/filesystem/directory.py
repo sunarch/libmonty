@@ -17,8 +17,6 @@ import re
 BASE_DIR: str = '~'
 DATA_FILE_DICT_DELIMITER: str = '='
 
-global exec_dir
-
 
 # operations ###################################################################
 
@@ -63,13 +61,6 @@ def get_current_dir_content_count() -> int:
     """Get current dir content count"""
 
     return len(os.listdir(os.getcwd()))
-
-
-def save_exec_dir() -> None:
-    """Save exec dir"""
-
-    global exec_dir
-    exec_dir: str = os.getcwd()
 
 
 # checks #######################################################################
