@@ -9,142 +9,146 @@
 """
 
 # imports: library
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 import codecs
 import re
+from typing import Generator
 
 # where to get the input file:
 # C:\Users\%username%\AppData\Local\Microsoft\Outlook
 # -> Offline Address Books
 
-DEFAULT_INPUT_FILE_PATH = "aa-private-data/udetails-adjusted.oab"
-DEFAULT_OUTPUT_UNITS_FILE_PATH = "zz-private-output/contact-list-units.txt"
-DEFAULT_OUTPUT_UNITS_SPLIT_FILE_PATH = "zz-private-output/contact-list-units-split.txt"
-DEFAILT_OUTPUT_ELEMENTS_FILE_PATH = "zz-private-output/contact-list-elements.csv"
-SRC_DELIMITER = "/o="
+DEFAULT_INPUT_FILE_PATH: str = 'aa-private-data/udetails-adjusted.oab'
+DEFAULT_OUTPUT_UNITS_FILE_PATH: str = 'zz-private-output/contact-list-units.txt'
+DEFAULT_OUTPUT_UNITS_SPLIT_FILE_PATH: str = 'zz-private-output/contact-list-units-split.txt'
+DEFAILT_OUTPUT_ELEMENTS_FILE_PATH: str = 'zz-private-output/contact-list-elements.csv'
+SRC_DELIMITER: str = '/o='
 
 
 # functions
 
-def file_len(s_file_name):
+def file_len(filename: str) -> int:
     """File length"""
 
-    with codecs.open(s_file_name, 'r', encoding='UTF-8', errors='replace') as file:
-        for i, l in enumerate(file):
+    with codecs.open(filename, 'r', encoding='UTF-8', errors='replace') as file:
+        for index, _ in enumerate(file):
             pass
-    return i + 1
+    return index + 1
 
 
-def generator_by_line(s_filename):
+def generator_by_line(filename: str) -> Generator:
     """Generator by line"""
 
-    with open(s_filename, 'w', encoding='UTF-8') as fh_out:
+    with open(filename, 'w', encoding='UTF-8') as fh_out:
 
         while True:
-            s_row = (yield True)
+            row: str or bool = (yield True)
 
-            if s_row is None:
+            if row is None:
                 continue
 
-            if s_row is False:
+            if row is False:
                 fh_out.close()
                 break
 
-            fh_out.write(s_row)
+            fh_out.write(row)
 
 
-def next_by_line(o_generator, s_content):
+def next_by_line(generator: Generator, content: str or None) -> None:
     """Next by line"""
 
-    o_generator.send(s_content)
+    generator.send(content)
 
 
-def end_by_line(o_generator):
+def end_by_line(generator: Generator) -> None:
     """End by line"""
 
     try:
-        o_generator.send(False)
+        generator.send(False)
     except StopIteration:
         pass
 
 
-def is_identifier(s_item):
+def is_identifier(item: str) -> bool:
     """Is identifier?"""
 
-    ls_item = s_item.split("-")
+    item_list: list = item.split("-")
 
-    if len(ls_item) >= 5 and len(ls_item[0]) == 8:
+    if len(item_list) >= 5 and len(item_list[0]) == 8:
         return True
 
     return False
 
 
-def elements_line_compose(i_items, d_item_elements, id_label_org, id_label_tech):
+def elements_line_compose(item_count: int,
+                          item_elements: dict,
+                          id_label_org: str,
+                          id_label_tech: str) -> str:
     """Elements line compose"""
 
-    s_return = str(i_items)
+    composed: str = str(item_count)
 
-    s_return += f';{d_item_elements[id_label_tech]}'
-    s_return += f';{d_item_elements["full_name"]}'
+    composed += f';{item_elements[id_label_tech]}'
+    composed += f';{item_elements["full_name"]}'
     try:
-        s_return += f';{d_item_elements[id_label_org]}'
+        composed += f';{item_elements[id_label_org]}'
     except KeyError:
-        s_return += ";"
-    s_return += f';{d_item_elements["first_name"]}'
-    s_return += f';{d_item_elements["last_name"]}'
+        composed += ";"
+    composed += f';{item_elements["first_name"]}'
+    composed += f';{item_elements["last_name"]}'
 
-    s_return += "\n"
+    composed += '\n'
 
-    return s_return
+    return composed
 
 
-def output_elements_line(i_content_items,
-                         d_content_item_elements,
-                         o_gen_file_elements,
-                         id_label_org,
-                         id_label_tech):
+def output_elements_line(content_item_count: int,
+                         content_item_elements: dict,
+                         gen_file_elements: Generator,
+                         id_label_org: str,
+                         id_label_tech: str) -> int:
     """Output elements line"""
 
     # add to items count and print status
-    i_content_items += 1
-    print(f"Item written. (No. {i_content_items})")
+    content_item_count += 1
+    print(f'Item written. (No. {content_item_count})')
 
-    s_output = elements_line_compose(i_content_items,
-                                     d_content_item_elements,
-                                     id_label_org,
-                                     id_label_tech)
-    next_by_line(o_gen_file_elements, s_output)
+    output: str = elements_line_compose(content_item_count,
+                                        content_item_elements,
+                                        id_label_org,
+                                        id_label_tech)
+    next_by_line(gen_file_elements, output)
 
-    return i_content_items
+    return content_item_count
 
 
-def process(org, id_label_org, id_label_tech):
+def process(org, id_label_org: str, id_label_tech: str) -> None:
     """Process"""
 
     # length of data file
 
-    i_data_file_lines = file_len(DEFAULT_INPUT_FILE_PATH)
-    print(f"{i_data_file_lines} lines in data file.")
+    data_file_line_count: int = file_len(DEFAULT_INPUT_FILE_PATH)
+    print(f"{data_file_line_count} lines in data file.")
 
     # variables
 
-    b_end_of_file = False
-    i_lines = 0
+    is_end_of_file: bool = False
+    line_count: int = 0
 
-    b_content_unit_found = False
-    i_content_units = 0
+    is_content_unit_found: bool = False
+    content_unit_count: int = 0
 
-    b_unit_type_org_added = False
+    is_unit_type_org_added: bool = False
 
-    i_content_items = 0
-    d_content_item_elements = {}
+    content_item_count: int = 0
+    content_item_elements: dict = {}
 
-    s_search = ""
+    search_text: str = ''
 
     # create elements file generator
-    o_gen_file_elements = generator_by_line(DEFAILT_OUTPUT_ELEMENTS_FILE_PATH)
+    gen_file_elements: Generator = generator_by_line(DEFAILT_OUTPUT_ELEMENTS_FILE_PATH)
     # start the generator
-    next_by_line(o_gen_file_elements, None)
+    next_by_line(gen_file_elements, None)
 
     # loop
 
@@ -154,153 +158,153 @@ def process(org, id_label_org, id_label_tech):
 
         while True:
 
-            if b_end_of_file:
+            if is_end_of_file:
                 break
 
             # if next unit not yet found: get next line from file
-            if not b_content_unit_found:
+            if not is_content_unit_found:
 
                 line = file_in.readline()
 
                 # if line is empty end of file is reached
                 if not line:
-                    b_end_of_file = True
+                    is_end_of_file = True
                 else:
-                    i_lines += 1
-                    print(f'Processing line {i_lines} of {i_data_file_lines}')
+                    line_count += 1
+                    print(f'Processing line {line_count} of {data_file_line_count}')
 
-                    s_search += line
+                    search_text += line
 
             # search for the beginning of the unit
 
-            i_search_1 = s_search.find(SRC_DELIMITER)
+            i_search_1 = search_text.find(SRC_DELIMITER)
 
             # if unit beginning not found: skip to processing next line
             if i_search_1 == -1:
-                b_content_unit_found = False
+                is_content_unit_found = False
                 continue
 
             # search for the beginning of the next unit (~ end of the current one)
 
-            i_search_2 = s_search.find(SRC_DELIMITER, i_search_1 + 1)
+            i_search_2 = search_text.find(SRC_DELIMITER, i_search_1 + 1)
 
-            if i_search_2 == -1 and not b_end_of_file:
-                b_content_unit_found = False
+            if i_search_2 == -1 and not is_end_of_file:
+                is_content_unit_found = False
                 continue
 
             # else
-            b_content_unit_found = True
+            is_content_unit_found = True
 
             # add to units count and print status
-            i_content_units += 1
-            print(f'Content unit identified. (No. {i_content_units})')
+            content_unit_count += 1
+            print(f'Content unit identified. (No. {content_unit_count})')
 
             # isolate current content unit
-            s_content_unit = s_search[i_search_1:i_search_2 - 1]
+            content_unit_text: str = search_text[i_search_1:i_search_2 - 1]
 
             # write to 'units' file
-            file_out_units.write(f'[{i_content_units:>6}] \'{s_content_unit}\'\n')
+            file_out_units.write(f'[{content_unit_count:>6}] \'{content_unit_text}\'\n')
 
             # remove current content unit from search string
-            s_search = s_search[i_search_2:len(s_search)-1]
+            search_text: str = search_text[i_search_2:len(search_text)-1]
 
             # split content unit string by NUL separators
-            ls_content_unit = s_content_unit.split('\u0000')
+            content_unit_list: list = content_unit_text.split('\u0000')
 
             # write to 'units_split' file
-            s_line = ""
-            for _, s_unit_item in enumerate(ls_content_unit):
-                if s_line == '':
-                    s_line += f'[#{i_content_units:>6}] \'{s_unit_item}\'\n'
+            line: str = ''
+            for index, unit_item_text in enumerate(content_unit_list):
+                if line == '':
+                    line += f'[#{content_unit_count:>6}] \'{unit_item_text}\'\n'
                 else:
-                    s_line += '        [{i_x:>2}] \'{s_unit_item}\'\n'
-            file_out_units_split.write(s_line)
+                    line += f'        [{index:>2}] \'{unit_item_text}\'\n'
+            file_out_units_split.write(line)
 
-            if f'/o={org}/' in ls_content_unit[0]:
+            if f'/o={org}/' in content_unit_list[0]:
 
                 # if next ORG line reached but an ORG line is already added
                 # but elements not yet output because ID-ORG missing: output to elements
-                if b_unit_type_org_added:
-                    i_content_items = output_elements_line(
-                        i_content_items,
-                        d_content_item_elements,
-                        o_gen_file_elements,
+                if is_unit_type_org_added:
+                    content_item_count = output_elements_line(
+                        content_item_count,
+                        content_item_elements,
+                        gen_file_elements,
                         id_label_org,
                         id_label_tech)
-                    b_unit_type_org_added = False
+                    is_unit_type_org_added = False
 
                 # szervezeti bejegyzés átugrása
-                if ls_content_unit[1].find('org_') == 0:
+                if content_unit_list[1].find('org_') == 0:
                     continue
 
                 # túl rövid, egyéb típusú bejegyzés átugrása
-                if len(ls_content_unit) < 5:
-                    s_line = f'Nincs elég elem az {org}-s sorban! ({i_lines}.)\n{ls_content_unit}'
-                    print(s_line)
+                if len(content_unit_list) < 5:
+                    line = f'Nincs elég elem az {org}-s sorban! ({line_count}.)\n{content_unit_list}'
+                    print(line)
                     continue
 
                 # empty content elements list
-                d_content_item_elements = {}
+                content_item_elements = {}
 
                 # ha szám van a i4 elemben, akkor a vezetéknév és keresztnév nincs külön
 
                 # old check
-                # if (re.findall("[0-9]", ls_content_unit[4]) and
-                #         not re.findall("[(][A-Z0-9]{6}[)]", ls_content_unit[4])):
+                # if (re.findall("[0-9]", content_unit_list[4]) and
+                #         not re.findall("[(][A-Z0-9]{6}[)]", content_unit_list[4])):
 
-                if is_identifier(ls_content_unit[4]):
+                if is_identifier(content_unit_list[4]):
 
-                    s_id_tech = ls_content_unit[2]
-                    s_full_name = ls_content_unit[3]
-                    s_first_name = ""
-                    s_last_name = ""
+                    id_tech: str = content_unit_list[2]
+                    full_name: str = content_unit_list[3]
+                    first_name: str = ''
+                    last_name: str = ''
 
                 else:
-                    s_first_name = ls_content_unit[1]
-                    s_last_name = ls_content_unit[2]
-                    s_id_tech = ls_content_unit[3]
-                    s_full_name = ls_content_unit[4]
+                    first_name: str = content_unit_list[1]
+                    last_name: str = content_unit_list[2]
+                    id_tech: str = content_unit_list[3]
+                    full_name: str = content_unit_list[4]
 
-                    if re.findall('[(][A-Z0-9]{6}[)]', s_full_name):
-                        s_full_name = "".join(re.split('[(][A-Z0-9]{6}[)]', s_full_name))
-                        s_full_name = s_full_name.strip()
+                    if re.findall('[(][A-Z0-9]{6}[)]', full_name):
+                        full_name: str = "".join(re.split('[(][A-Z0-9]{6}[)]', full_name))
+                        full_name: str = full_name.strip()
 
                 # hozzáadás az elemlistához
-                d_content_item_elements[id_label_tech] = s_id_tech
-                d_content_item_elements['full_name'] = s_full_name
-                d_content_item_elements['first_name'] = s_first_name
-                d_content_item_elements['last_name'] = s_last_name
+                content_item_elements[id_label_tech] = id_tech
+                content_item_elements['full_name'] = full_name
+                content_item_elements['first_name'] = first_name
+                content_item_elements['last_name'] = last_name
 
-                b_unit_type_org_added = True
+                is_unit_type_org_added = True
 
             # check for ID-ORG in all content units
 
-            s_id_org = ""
+            id_org: str = ''
 
-            for s_unit_item in ls_content_unit:
+            for unit_item_text in content_unit_list:
 
-                if len(s_unit_item) == 6 and re.findall('[A-Z0-9]{6}', s_unit_item):
-                    s_id_org = s_unit_item
+                if len(unit_item_text) == 6 and re.findall('[A-Z0-9]{6}', unit_item_text):
+                    id_org: str = unit_item_text
 
-            if len(s_id_org) != 0:
-                d_content_item_elements[id_label_org] = s_id_org
+            if len(id_org) != 0:
+                content_item_elements[id_label_org] = id_org
 
             # if ID-ORG found and ORG line already added: output to elements
 
-            if b_unit_type_org_added and len(s_id_org) != 0:
-                i_content_items = output_elements_line(
-                    i_content_items,
-                    d_content_item_elements,
-                    o_gen_file_elements,
+            if is_unit_type_org_added and len(id_org) != 0:
+                content_item_count = output_elements_line(
+                    content_item_count,
+                    content_item_elements,
+                    gen_file_elements,
                     id_label_org,
                     id_label_tech)
-                b_unit_type_org_added = False
+                is_unit_type_org_added = False
 
     # end elements generator
-    end_by_line(o_gen_file_elements)
+    end_by_line(gen_file_elements)
 
 
-def main():
+def main() -> None:
     """Main"""
 
     parser = ArgumentParser(prog='OAB processing')
@@ -320,7 +324,7 @@ def main():
                         required=True,
                         dest='id_label_tech')
 
-    args = parser.parse_args()
+    args: Namespace = parser.parse_args()
 
     process(org=args.org,
             id_label_org=args.id_label_org,

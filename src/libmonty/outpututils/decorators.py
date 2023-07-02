@@ -11,248 +11,250 @@
 https://en.wikipedia.org/wiki/ANSI_escape_code
 """
 
+from typing import Callable
 
-def bold_text(arg_function):
+
+def bold_text(function: Callable) -> Callable:
     """Bold text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[1m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[1m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def faint_text(arg_function):
+def faint_text(function: Callable) -> Callable:
     """Faint text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[2m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[2m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def italic_text(arg_function):
+def italic_text(function: Callable) -> Callable:
     """Italic text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[3m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[3m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def underlined_text(arg_function):
+def underlined_text(function: Callable) -> Callable:
     """Underlined text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[4m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[4m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def blinking_text(arg_function):
+def blinking_text(function: Callable) -> Callable:
     """Blinking text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[5m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[5m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def image_negative_text(arg_function):
+def image_negative_text(function: Callable) -> Callable:
     """Image negative text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[7m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[7m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def primary_font_text(arg_function):
+def primary_font_text(function: Callable) -> Callable:
     """Primary font text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[10m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[10m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def alternate_font_text(arg_function):
+def alternate_font_text(function: Callable) -> Callable:
     """Alternate font text"""
 
-    def new_function(arg_printable, arg_alternate_font_no):
+    def new_function(printable: str, arg_alternate_font_no) -> str:
         inserted_no = '1'
         if int(arg_alternate_font_no) in range(1, 10):  # 0 < x < 10 #
             inserted_no = str(arg_alternate_font_no)
-        return f'\x1b[1{inserted_no}m{arg_function(arg_printable, arg_alternate_font_no)}\x1b[0m'
+        return f'\x1b[1{inserted_no}m{function(printable, arg_alternate_font_no)}\x1b[0m'
 
     return new_function
 
 
-def black_text(arg_function):
+def black_text(function: Callable) -> Callable:
     """Black text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[30m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[30m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def red_text(arg_function):
+def red_text(function: Callable) -> Callable:
     """Red text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[31m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[31m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def green_text(arg_function):
+def green_text(function: Callable) -> Callable:
     """Green text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[32m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[32m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def yellow_text(arg_function):
+def yellow_text(function: Callable) -> Callable:
     """Yellow text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[33m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[33m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def blue_text(arg_function):
+def blue_text(function: Callable) -> Callable:
     """Blue text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[34m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[34m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def magenta_text(arg_function):
+def magenta_text(function: Callable) -> Callable:
     """Magenta text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[35m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[35m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def cyan_text(arg_function):
+def cyan_text(function: Callable) -> Callable:
     """Cyan text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[36m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[36m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def white_text(arg_function):
+def white_text(function: Callable) -> Callable:
     """White text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[37m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[37m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def bg_black_text(arg_function):
+def bg_black_text(function: Callable) -> Callable:
     """Background black text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[40m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[40m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def bg_red_text(arg_function):
+def bg_red_text(function: Callable) -> Callable:
     """Background red text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[41m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[41m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def bg_green_text(arg_function):
+def bg_green_text(function: Callable) -> Callable:
     """Background green text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[42m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[42m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def bg_yellow_text(arg_function):
+def bg_yellow_text(function: Callable) -> Callable:
     """Background yellow text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[43m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[43m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def bg_blue_text(arg_function):
+def bg_blue_text(function: Callable) -> Callable:
     """Background blue text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[44m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[44m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def bg_magenta_text(arg_function):
+def bg_magenta_text(function: Callable) -> Callable:
     """Background magenta text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[45m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[45m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def bg_cyan_text(arg_function):
+def bg_cyan_text(function: Callable) -> Callable:
     """Background cyan text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[46m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[46m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def bg_white_text(arg_function):
+def bg_white_text(function: Callable) -> Callable:
     """Background white text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[47m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[47m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def framed_text(arg_function):
+def framed_text(function: Callable) -> Callable:
     """Framed text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[51m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[51m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def encircled_text(arg_function):
+def encircled_text(function: Callable) -> Callable:
     """Encircled text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[52m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[52m{function(printable)}\x1b[0m'
 
     return new_function
 
 
-def overlined_text(arg_function):
+def overlined_text(function: Callable) -> Callable:
     """Overlined text"""
 
-    def new_function(arg_printable):
-        return f'\x1b[53m{arg_function(arg_printable)}\x1b[0m'
+    def new_function(printable: str) -> str:
+        return f'\x1b[53m{function(printable)}\x1b[0m'
 
     return new_function

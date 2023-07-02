@@ -16,20 +16,21 @@ import tkinter
 from tkinter import ttk
 
 
-def download_random(wordcount: int, count: int = 1):
+def download_random(wordcount: int, count: int = 1) -> None:
     """Download random"""
 
-    url = ('http://www.random.org/integers/'
-           '?min=1&max=6&base=10&format=plain&rnd=new'
-           f'&num={wordcount * count}&col={wordcount}'
-           )
+    url: str = (
+        'http://www.random.org/integers/'
+        '?min=1&max=6&base=10&format=plain&rnd=new'
+        f'&num={wordcount * count}&col={wordcount}'
+    )
     raise NotImplementedError
 
 
 def load_wordlist(wordlist_filename: str) -> dict:
     """Load wordlist"""
 
-    resource_name = f'data/{wordlist_filename}.txt'
+    resource_name: str = f'data/{wordlist_filename}.txt'
 
     if not pkg_resources.resource_exists(__name__, resource_name):
         raise ValueError('wordlist does not exist')
@@ -53,14 +54,14 @@ def lookup(wordlist: dict, dice_ids: list[str]) -> list[str]:
 def action_load_wordlist(var_wordlist_filename: tkinter.StringVar) -> None:
     """Action: Load wordlist"""
 
-    wordlist_file_name = os.path.join('data', f'{var_wordlist_filename.get()}.txt')
+    wordlist_file_name: str = os.path.join('data', f'{var_wordlist_filename.get()}.txt')
 
     if not pkg_resources.resource_exists(__name__, wordlist_file_name):
         logging.error('wordlist does not exist')
         return
 
     wordlist = pkg_resources.resource_stream(__name__, wordlist_file_name)
-    wordlist_str = wordlist.read().decode('UTF-8')
+    wordlist_text: str = wordlist.read().decode('UTF-8')
 
 
 def action_load_file(wordlist: dict,
@@ -77,7 +78,7 @@ def action_load_file(wordlist: dict,
 
     dice_words: list[str] = lookup(wordlist, dice_ids)
 
-    result_separator = var_result_separator.get()
+    result_separator: str = var_result_separator.get()
 
     var_result.set(result_separator.join(dice_words))
 
@@ -90,8 +91,8 @@ def action_save_to_file(var_result: tkinter.StringVar,
                         ) -> None:
     """Action: Save to file"""
 
-    result_separator = var_result_separator.get()
-    results = var_result.get().split(result_separator)
+    result_separator: str = var_result_separator.get()
+    results: list[str] = var_result.get().split(result_separator)
 
     with open(f'{var_result_filename.get()}.txt', 'w', encoding='UTF-8') as fh_result:
         fh_result.write(result_separator.join(results))

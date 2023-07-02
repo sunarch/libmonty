@@ -15,11 +15,11 @@ def get_cols() -> int:
     """Get columns"""
 
     try:
-        o_size = os.get_terminal_size()
-        i_cols = o_size.columns
-        # i_lines = o_size.lines
+        size = os.get_terminal_size()
+        cols: int = size.columns
+        # lines: int = size.lines
     except OSError:
-        i_cols = 80
-        # i_lines = 20
+        cols = 80
+        # lines = 20
 
-    return i_cols
+    return cols

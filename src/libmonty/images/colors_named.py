@@ -8,7 +8,7 @@
 """Colors
 """
 
-COLORS = {
+COLORS: dict[str, str] = {
     'F0F8FF': 'AliceBlue',
     'FAEBD7': 'AntiqueWhite',
     '00FFFF': 'Aqua / Cyan',

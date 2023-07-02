@@ -8,6 +8,6 @@
 """Version and general info
 """
 
-PROGRAM_NAME = 'libmonty'
+PROGRAM_NAME: str = 'libmonty'
 
-__version__ = '0.0.3'
+__version__: str = '0.0.3'

@@ -10,10 +10,8 @@
 
 import os
 
-from typing import Tuple
 
-
-def copy_stubs(from_dir: str, to_dir: str, change: Tuple[str, str]) -> None:
+def copy_stubs(from_dir: str, to_dir: str, change: tuple[str, str]) -> None:
     """Copy stubs"""
 
     from_dir, to_dir = map(lambda x: x.strip(), (from_dir, to_dir))
@@ -23,7 +21,7 @@ def copy_stubs(from_dir: str, to_dir: str, change: Tuple[str, str]) -> None:
         raise RuntimeError(f'TO dir does not exist: {to_dir}')
 
     try:
-        file_list = os.listdir(from_dir)
+        file_list: list[str] = os.listdir(from_dir)
     except FileNotFoundError as exc:
         raise RuntimeError(f'FROM dir does not exist: {from_dir}') from exc
     except NotADirectoryError as exc:
@@ -36,11 +34,11 @@ def copy_stubs(from_dir: str, to_dir: str, change: Tuple[str, str]) -> None:
 
         filename, _ = os.path.splitext(filename_old)
 
-        filename_new = filename.replace(change_from, change_to) + '.txt'
+        filename_new: str = filename.replace(change_from, change_to) + '.txt'
 
         print(' ->', filename_new)
 
-        path_new = os.path.join(to_dir, filename_new)
+        path_new: str = os.path.join(to_dir, filename_new)
 
         if os.path.isfile(path_new):
             print(' ', '#', 'Already existed.')
@@ -54,14 +52,14 @@ def copy_stubs(from_dir: str, to_dir: str, change: Tuple[str, str]) -> None:
     print('')
 
 
-def main():
+def main() -> None:
     """Main"""
 
-    src_dir = input('Source dir: ')
-    dest_dir = input('Destination dir: ')
+    src_dir: str = input('Source dir: ')
+    dest_dir: str = input('Destination dir: ')
 
-    replace = input('Replace: ')
-    replace_with = input('Replace with: ')
+    replace: str = input('Replace: ')
+    replace_with: str = input('Replace with: ')
 
     try:
         copy_stubs(src_dir, dest_dir, (replace, replace_with))

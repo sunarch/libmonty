@@ -9,7 +9,6 @@
 """
 
 import secrets
-from typing import List
 from codetiming import Timer
 
 N = 100000
@@ -30,7 +29,7 @@ def measure_one(measure_count: int):
     measuring.stop()
 
 
-def measure_parts(measure_count: int):
+def measure_parts(measure_count: int) -> None:
     """Measure parts"""
 
     def throws():
@@ -43,35 +42,33 @@ def measure_parts(measure_count: int):
         return [int_join(throws()) for _ in range(count)]
 
     print(f'{"Parts: ":<10}', end='')
-    measuring = Timer()
+    measuring: Timer = Timer()
     measuring.start()
     _ = randlist_l_2(measure_count)
     measuring.stop()
 
 
-def measure_detailed(measure_count: int):
+def measure_detailed(measure_count: int) -> None:
     """Measure detailed"""
 
-    def randlist(count: int) -> List[int]:
-        ls_random = []
+    def randlist(count: int) -> list[int]:
+        random_list: list[int] = []
 
         for _1 in range(count):
-            ls_throws = []
+            throws_list: list[str] = []
 
             for _2 in range(5):
-                i_random = secrets.randbelow(6) + 1
-                s_random = str(i_random)
-                ls_throws.append(s_random)
+                random_number: int = secrets.randbelow(6) + 1
+                throws_list.append(str(random_number))
 
-            s_id = ''.join(ls_throws)
-            i_id = int(s_id)
+            id_text: str = ''.join(throws_list)
 
-            ls_random.append(i_id)
+            random_list.append(int(id_text))
 
-        return ls_random
+        return random_list
 
     print('Detailed: ', end='')
-    measuring = Timer()
+    measuring: Timer = Timer()
     measuring.start()
     _ = randlist(measure_count)
     measuring.stop()

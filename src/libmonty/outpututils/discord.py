@@ -9,38 +9,38 @@
 """
 
 
-def bold(text: str):
+def bold(text: str) -> str:
     """Bold"""
 
     return f'**{text}**'
 
 
-def italic(text: str):
+def italic(text: str) -> str:
     """Italic"""
 
     return f'*{text}*'
 
 
-def strikethrough(text: str):
+def strikethrough(text: str) -> str:
     """Strike-through"""
 
     return f'~~{text}~~'
 
 
-def quote(text: str):
+def quote(text: str) -> str:
     """Quote
     unofficial"""
 
     return f'"{text}"'
 
 
-def code(text: str):
+def code(text: str) -> str:
     """Code"""
 
     return f'`{text}`'
 
 
-def hidden(text: str):
+def hidden(text: str) -> str:
     """Hidden"""
 
     return f'||{text}||'

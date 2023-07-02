@@ -11,25 +11,25 @@
 from libmonty.outpututils.asciistyling import AsciiColor, AsciiStyle
 
 
-def display_error_message(error):
+def display_error_message(error: Exception) -> None:
     """Display error message"""
 
     print(AsciiStyle.bold((AsciiColor.red('Error')) + ', ' + error.args[0]))
 
 
-def error_message(message):
+def error_message(message: str) -> None:
     """Error message"""
 
     print(AsciiStyle.bold(AsciiColor.red('Error')) + ', ' + message)
 
 
-def warning_message(message):
+def warning_message(message: str) -> None:
     """Warning message"""
 
     print(AsciiStyle.bold(AsciiColor.yellow('Warning')) + ', ' + message)
 
 
-def info_message(message):
+def info_message(message: str) -> None:
     """Info message"""
 
     print(AsciiStyle.bold(AsciiColor.blue('Info')) + ', ' + message)

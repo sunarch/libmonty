@@ -12,62 +12,62 @@ import os.path
 import subprocess
 import argparse
 
-DEBUG_INDENT = True
-DEBUG_PARENT_LAST = True
+DEBUG_INDENT: bool = True
+DEBUG_PARENT_LAST: bool = True
 
 
 class IndentItem:
     """IdentItem"""
 
-    BeforeLast = '│   '
-    AfterLast = '    '
-    DirRoot = ''
-    DirMiddle = '├── '
-    DirLast = '└── '
+    BeforeLast: str = '│   '
+    AfterLast: str = '    '
+    DirRoot: str = ''
+    DirMiddle: str = '├── '
+    DirLast: str = '└── '
 
 
-def quoted(content):
+def quoted(content) -> str:
     """Quoted"""
 
     return f'"{content}"'
 
 
-def prefixed(content, indents=None, tree=None):
+def prefixed(content: str, indents: list[str] = None, tree: str = None) -> str:
     """Prefixed"""
 
     if indents is None:
-        indents = []
+        indents: list = []
 
-    prefix_str = ''.join(indents[:-1])
+    prefix: str = ''.join(indents[:-1])
 
     if tree is None:
-        prefix_str += '-> '
+        prefix += '-> '
     else:
-        prefix_str += tree
+        prefix += tree
 
-    return prefix_str + content
+    return prefix + content
 
 
-def recursive_list(dir_name, command=None, indents=None, tree=None):
+def recursive_list(dir_name: str, command: str = None, indents: list[str] = None, tree: str = None) -> None:
     """Recursive list"""
 
     if indents is None:
-        indents = []
+        indents: list = []
 
     if tree == IndentItem.DirRoot:
-        display_name = dir_name
+        display_name: str = dir_name
     else:
-        display_name = os.path.basename(dir_name)
+        display_name: str = os.path.basename(dir_name)
 
     print(prefixed(display_name, indents=indents, tree=tree))
 
     if command is not None:
-        indents_comment = indents + [IndentItem.AfterLast]
-        indents_subcomment = indents_comment + [IndentItem.AfterLast]
+        indents_comment: list[str] = indents + [IndentItem.AfterLast]
+        indents_subcomment: list[str] = indents_comment + [IndentItem.AfterLast]
 
         try:
-            dir_space_escaped = dir_name.replace(' ', '\\' + ' ')
-            command_substituted = command.replace('$', dir_space_escaped)
+            dir_space_escaped: str = dir_name.replace(' ', '\\' + ' ')
+            command_substituted: str = command.replace('$', dir_space_escaped)
             print(prefixed('applying ', indents=indents_comment) + quoted(command_substituted))
             sub_output = subprocess.check_output(command_substituted, shell=True)
         except subprocess.CalledProcessError as err:
@@ -76,35 +76,39 @@ def recursive_list(dir_name, command=None, indents=None, tree=None):
         else:
             print(prefixed('Return code: ', indents=indents_comment) + quoted('0'))
             print(prefixed('Output: ', indents=indents_comment))
-            output_items = sub_output.split(b'\n')
+            output_items: list = sub_output.split(b'\n')
             if output_items[-1] == '':
-                output_items = output_items[:-1]
+                output_items: list = output_items[:-1]
             for item in output_items:
                 item = str(item, encoding='UTF-8')
                 print(prefixed(quoted(item), indents=indents_subcomment))
 
     try:
-        dir_list = [os.path.join(dir_name, item)
-                    for item in os.listdir(dir_name)]
+        dir_list: list[str] = [
+            os.path.join(dir_name, item)
+            for item in os.listdir(dir_name)
+        ]
     except OSError:
         return
 
-    dir_list_filtered = [os.path.normpath(item)
-                         for item in dir_list
-                         if os.path.isdir(item)]
+    dir_list_filtered: list[str] = [
+        os.path.normpath(item)
+        for item in dir_list
+        if os.path.isdir(item)
+    ]
 
-    indents_before = indents + [IndentItem.BeforeLast]
+    indents_before: list[str] = indents + [IndentItem.BeforeLast]
     for item in dir_list_filtered[:-1]:
         recursive_list(item, command,
                        indents=indents_before, tree=IndentItem.DirMiddle)
 
     if len(dir_list_filtered) > 0:
-        indents_after = indents + [IndentItem.AfterLast]
+        indents_after: list[str] = indents + [IndentItem.AfterLast]
         recursive_list(dir_list_filtered[-1], command,
                        indents=indents_after, tree=IndentItem.DirLast)
 
 
-def arg_type_dir_path(path):
+def arg_type_dir_path(path: str) -> str:
     """Arg type: dir path"""
 
     if not os.path.isdir(path):
@@ -113,7 +117,7 @@ def arg_type_dir_path(path):
     return path
 
 
-def main():
+def main() -> None:
     """Main"""
 
     parser = argparse.ArgumentParser(description='Directory list with applied command.')
@@ -125,7 +129,7 @@ def main():
                         help='Shell command to execute on every directory.')
 
     args = parser.parse_args()
-    root = os.path.abspath(str(args.root, encoding='UTF-8'))
+    root: str = os.path.abspath(str(args.root, encoding='UTF-8'))
 
     recursive_list(root, command=args.command, tree=IndentItem.DirRoot)
 

@@ -11,7 +11,7 @@
 from typing import Any, Generator
 
 
-def indent(steps: int = 0, size: int = 2):
+def indent(steps: int = 0, size: int = 2) -> str:
     """Indent"""
 
     return ' ' * size * steps

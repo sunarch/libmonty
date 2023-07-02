@@ -14,14 +14,14 @@ import PIL.Image
 
 # MODE "RGB" : (3x8-bit pixels, true color)
 
-_DECODER_RAW = 'raw'
+_DECODER_RAW: str = 'raw'
 
 
 def rgb(folder: str,
         filename: str,
         data: bytes,
         size: tuple[int, int],
-        scale: int = None):
+        scale: int = None) -> None:
     """RGB"""
 
     width, height = size

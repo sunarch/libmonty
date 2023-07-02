@@ -55,7 +55,7 @@ class Config:
 
         self.board_name = name
 
-        path = self.data_path(self.board_name, 'config.json')
+        path: str = self.data_path(self.board_name, 'config.json')
 
         with open(path, 'rb') as fh_config:
             config_json = json.load(fh_config)

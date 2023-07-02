@@ -14,17 +14,17 @@ from tqdm import tqdm
 class WavePCMAudio:
     """Wave PCM audio"""
 
-    DEFAULT_NUM_CHANNELS = 1
-    DEFAULT_SAMPLE_RATE = 44100
-    DEFAULT_BITS_PER_SAMPLE = 16
+    DEFAULT_NUM_CHANNELS: int = 1
+    DEFAULT_SAMPLE_RATE: int = 44100
+    DEFAULT_BITS_PER_SAMPLE: int = 16
 
     # format source: http://soundfile.sapp.org/doc/WaveFormat/
     # The Canonical WAVE PCM Soundfile Format
 
     def __init__(self,
-                 num_channels=DEFAULT_NUM_CHANNELS,
-                 sample_rate=DEFAULT_SAMPLE_RATE,
-                 bits_per_sample=DEFAULT_BITS_PER_SAMPLE):
+                 num_channels: int = DEFAULT_NUM_CHANNELS,
+                 sample_rate: int = DEFAULT_SAMPLE_RATE,
+                 bits_per_sample: int = DEFAULT_BITS_PER_SAMPLE) -> None:
         """Initialize"""
 
         print('Initializing WavePCMAudioClass object ...', end='')
@@ -312,9 +312,11 @@ class WavePCMAudio:
     def sample_format(self) -> str:
         """Sample format"""
 
-        sample_format = f'{self.sample_format_signed}{self.bits_per_sample}'
+        sample_format: str = f'{self.sample_format_signed}{self.bits_per_sample}'
+
         if self.bits_per_sample > 8:
             sample_format += f'_{self.sample_format_endian}'
+
         return sample_format
 
     ######################################
@@ -417,7 +419,7 @@ class WavePCMAudio:
             if item > self.max_sample_value:
                 raise ValueError('A value inside the sample is too high')
 
-            sample_part_bytes = item.to_bytes(bytes_per_sample, byteorder='little', signed=False)
+            sample_part_bytes: bytes = item.to_bytes(bytes_per_sample, byteorder='little', signed=False)
             self._data.extend(bytearray(sample_part_bytes))
 
     # OTHER ####################################################################
@@ -430,7 +432,7 @@ class WavePCMAudio:
         print('Bits per Sample:     ', str(self.bits_per_sample))
         print('Sample Format:       ', str(self.sample_format))
 
-    def write_to_file(self, arg_file_name='output.wav'):
+    def write_to_file(self, arg_file_name='output.wav') -> None:
         """Write to file"""
 
         print('')

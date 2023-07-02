@@ -16,14 +16,14 @@ def get(code: int) -> dict:
     """Get response code"""
 
     try:
-        d_details = _responses[code]
+        details: dict = _responses[code]
     except KeyError as exc:
         raise ValueError(f'Response code not found: {code}') from exc
 
-    return d_details
+    return details
 
 
-_responses = {
+_responses: dict[int, dict[str, str]] = {
 
     # ---------------------------------------------------------------- #
     # Informational responses (100–199)

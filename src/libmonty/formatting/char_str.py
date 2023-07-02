@@ -23,16 +23,16 @@ def _byte_to_printable_non_ws_or_space(value: int,
                                        ) -> str:
     """Byte to printable non-WS or space"""
 
-    s_char = chr(value)
+    char: str = chr(value)
 
-    if s_char in ('\r', '\n'):
+    if char in ('\r', '\n'):
         return chr(0x21B5)  # ↵ Downwards Arrow with Corner Leftwards
 
-    if s_char == ' ':
+    if char == ' ':
         return space
 
-    if s_char in string.printable and s_char not in string.whitespace:
-        return s_char
+    if char in string.printable and char not in string.whitespace:
+        return char
 
     return default
 
@@ -40,16 +40,16 @@ def _byte_to_printable_non_ws_or_space(value: int,
 def byte_to_compact_printable_with_dots(value: int) -> str:
     """Byte to compact printable with dots"""
 
-    s_default = '.'
-    s_space = chr(0x22C5)  # ⋅ Dot Operator
+    default: str = '.'
+    space: str = chr(0x22C5)  # ⋅ Dot Operator
 
-    return _byte_to_printable_non_ws_or_space(value, s_default, s_space)
+    return _byte_to_printable_non_ws_or_space(value, default, space)
 
 
 def byte_to_compact_printable_with_frames(value: int) -> str:
     """Byte to compact printable with frames"""
 
-    s_default = chr(0x2395)  # ⎕ Apl Functional Symbol Quad
-    s_space = chr(0x02FD)  # ⋅˽ Modifier Letter Shelf
+    default: str = chr(0x2395)  # ⎕ Apl Functional Symbol Quad
+    space: str = chr(0x02FD)  # ⋅˽ Modifier Letter Shelf
 
-    return _byte_to_printable_non_ws_or_space(value, s_default, s_space)
+    return _byte_to_printable_non_ws_or_space(value, default, space)
