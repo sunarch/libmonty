@@ -1,7 +1,5 @@
-codetiming == 1.4.0
 email-validator == 2.0.0.post2
 libmonty-logging == 0.1.1
 numpy == 1.25.0
 Pillow == 10.0.0
-pygame == 2.4.0
 tqdm == 4.65.0

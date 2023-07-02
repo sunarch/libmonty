@@ -2,11 +2,6 @@
 
 Python libraries
 
-## parts
-
-- [libmonty-easypass](easypass.md)
-    - a passphrase generation tool
-
 ## Installation
 
 The package is on PyPI: [libmonty](https://pypi.org/project/libmonty/)
