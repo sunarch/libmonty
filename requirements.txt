@@ -1,5 +1,6 @@
-email-validator == 2.0.0.post2
+email-validator == 2.1.1
 libmonty-logging == 0.1.1
-numpy == 1.25.0
-Pillow == 10.0.0
-tqdm == 4.65.0
+numpy == 1.26.4
+pillow == 10.3.0
+tqdm == 4.66.2
+pygame==2.5.2
